@@ -1,0 +1,78 @@
+.wd-l-Container, .wd-l-Content {
+    background-color: #f4eae0;
+}
+
+.region-banner-sidebar {
+    background: #fee0af; /* Old browsers */
+    background: -moz-linear-gradient(top,  #fee0af 0%, #f4eae0 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fee0af), color-stop(100%,#f4eae0)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #fee0af 0%,#f4eae0 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #fee0af 0%,#f4eae0 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #fee0af 0%,#f4eae0 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #fee0af 0%,#f4eae0 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fee0af', endColorstr='#f4eae0',GradientType=0 ); /* IE6-9 */
+    margin-left: -20px;
+    width: 327px;
+}
+.front-button {
+    border-bottom: 2px solid #fff;
+}
+.front-button:nth-child(1) {
+    height:72px;
+}
+.front-button a {
+    text-decoration: none;
+    color: #996633;
+    display: block;
+    line-height: 70px;
+    padding-left: 85px;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+}
+.front-button.button-client-login { background: transparent url("/sites/default/files/vdl/vdl/LargeImageButtons/large-button-clientLogin.jpg")  no-repeat 12px 8px; }
+.front-button.button-tests-fees   { background: transparent url("/sites/default/files/vdl/vdl/LargeImageButtons/large-button-tests.jpg")        no-repeat 12px 6px; }
+.front-button.button-forms        { background: transparent url("/sites/default/files/vdl/vdl/LargeImageButtons/large-button-forms.jpg")        no-repeat 12px 6px; }
+.front-button.button-submissions  { background: transparent url("/sites/default/files/vdl/vdl/LargeImageButtons/large-button-submissions.jpg")  no-repeat 12px 6px; }
+.front-button.button-contact-us   { background: transparent url("/sites/default/files/vdl/vdl/LargeImageButtons/large-button-contact.jpg")      no-repeat 12px 6px; }
+
+.triptychs .region {
+    border: none;
+    margin-bottom: 0;
+}
+.region-triptych-one {
+    background: #f4eae0; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f4eae0 0%, #fee0af 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f4eae0), color-stop(100%,#fee0af)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f4eae0 0%,#fee0af 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f4eae0 0%,#fee0af 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f4eae0 0%,#fee0af 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f4eae0 0%,#fee0af 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4eae0', endColorstr='#fee0af',GradientType=0 ); /* IE6-9 */
+}
+
+.footer-outer {
+    border-top: 6px solid #fdbc4a;
+    background-color: #fff;
+}
+.footer {
+    border-top: none;
+    margin-top: 0;
+}
+.footer-inner {
+    background-color: #fff;
+}
+.region-footer-triptych-one {
+    max-width: 400px;
+    text-align: center;
+}
+
+@media screen and (max-width: 719px) {
+
+.region-banner-sidebar {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+}
+
