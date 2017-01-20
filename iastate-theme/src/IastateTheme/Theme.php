@@ -441,6 +441,25 @@ class Theme
 	}
 
 	/**
+	 * Draws the header (html before the content up to and including the page title)
+	 */
+	public function drawFrontPage()
+	{
+		echo $this->renderHtmlStart();
+		echo $this->renderHead();
+		echo $this->renderBodyStart();
+		echo $this->renderPageStart();
+		echo $this->renderSkipNavigation();
+		echo $this->renderHeader();
+		echo $this->renderFrontStart();
+		echo $this->renderSidebar();
+		echo $this->renderContentStart();
+		echo $this->renderAnchorImage();
+		echo $this->renderPageTitle();
+		return $this;
+	}
+
+	/**
 	 * Draws the footer (html after the content)
 	 */
 	public function drawFooter()
@@ -1591,6 +1610,25 @@ HTML;
 		$html[] = '</ul>';
 
 		return implode("\n", $html);
+	}
+
+	/**
+	 * Render the start of the container <div>.
+	 *
+	 * @return string
+	 */
+	public function renderFrontStart()
+	{
+		$legacyClass = $this->getOption('legacy_html_class_support') ? 'cwrapper' : '';
+		$legacyId = $this->getOption('legacy_html_id_support') ? 'id="container"' : '';
+
+		return <<<HTML
+<div class="wd-l-Container" id="skip-content">
+<div class="wd-l-Container-inner wd-l-Container-inner-FrontPage">
+<div class="wd-l-Content" id="content" role="main">
+<div class="wd-l-Content-inner wd-l-Content-inner-FrontPage">
+	<div class="wd-l-Container-inner {$legacyClass}" {$legacyId}>
+HTML;
 	}
 
 	/**
