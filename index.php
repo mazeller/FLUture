@@ -62,6 +62,12 @@ Shows the distribution of the hemagglutinin and neuraminidase combinations over 
 							<div class="front-button button-submissions">
 								<a href="/heatmap.php">HeatMap</a>
 							</div>
+							<div class="front-button button-forms">
+								<a href="/phylogeny.php">Phylogeny</a>
+							</div>
+							<div class="front-button button-submissions">
+								<a href="/contact.php">Contact Us</a>
+							</div>
 						</div>
 					</div>
 				</div>

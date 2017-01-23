@@ -28,13 +28,17 @@ class Theme extends \IastateTheme\Theme
                     'label' => 'Regional',
                     'uri' => '/regional.php',
                 ),
-                /*array(
-                    'label' => 'Phylogeny',
-                    'uri' => '/',
-                ),*/
                 array(
                     'label' => 'Heat Map',
                     'uri' => '/heatmap.php',
+                ),
+                array(
+                    'label' => 'Phylogeny',
+                    'uri' => '/phylogeny.php',
+                ),
+                array(
+                    'label' => 'Contact Us',
+                    'uri' => '/contact.php',
                 ),
                 /*array(
                     'label' => '3D View',
