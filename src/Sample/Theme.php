@@ -31,15 +31,12 @@ class Theme extends \IastateTheme\Theme
                 array(
                     'label' => 'Heat Map',
                     'uri' => '/heatmap.php',
-                ),
-                array(
-                    'label' => 'Phylogeny',
-                    'uri' => '/phylogeny.php',
-                ),
+              	),
                 array(
                     'label' => 'Contact Us',
                     'uri' => '/contact.php',
                 ),
+
                 /*array(
                     'label' => '3D View',
                     'uri' => '/3dview.php',

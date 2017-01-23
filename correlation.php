@@ -29,10 +29,10 @@ $theme->drawHeader();
                                         <option value="month">Month</option>
 					<option value="pcr_specimen">PCR Specimen</option>
                                         <option value="site_state">Pig State</option>
-                                        <option value="testing_facility" selected="selected">Sequence Testing Facility</option>
+                                        <option value="testing_facility">Sequence Testing Facility</option>
                                         <option value="subtype">Subtype</option>
 					<option value="week">Week</option>
-                                        <option value="year">Year</option>
+                                        <option value="year" selected="selected">Year</option>
                                     </select>
                                     <br>
                                     <b>Y Axis</b><br>
