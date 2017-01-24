@@ -69,18 +69,9 @@ Demonstrates the distribution of the hemagglutinin and neuraminidase subtype com
 							<div class="front-button button-heat-map">
 								<a href="/heatmap.php">HeatMap</a>
 							</div>
-<<<<<<< HEAD
-							<div class="front-button button-forms">
-								<a href="/phylogeny.php">Phylogeny</a>
-							</div>
-							<div class="front-button button-submissions">
-								<a href="/contact.php">Contact Us</a>
-							</div>
-=======
                                                         <div class="front-button button-contact0us">
                                                                 <a href="/contact.php">Contact Us</a>
                                                         </div>
->>>>>>> de26971202562d518800c6547036b42d443ce94c
 						</div>
 					</div>
 				</div>
