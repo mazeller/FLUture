@@ -147,11 +147,11 @@ function drawTimeBar()
 	$("#slider" ).dateRangeSlider({
                 bounds:{
                         min: new Date(2010, 0, 1),
-                        max: new Date(2016, 12, 0)
+                        max: new Date()
                 },
                 defaultValues:{
                         min: new Date(2010, 0, 1),
-                        max: new Date(2016, 12, 0)
+                        max: new Date()
                 }
         });
 	
