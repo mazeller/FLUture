@@ -169,7 +169,7 @@ function parse(rdata) {
 
                 for (var i in xAxis) {
                     if (obj[xAxis[i]] != null)
-                        tempData.push(obj[xAxis[i]] / xScore[xAxis[i]]);
+                        tempData.push((obj[xAxis[i]] / xScore[xAxis[i]]).toFixed(2));
                     else
                         tempData.push(0);
                 }
