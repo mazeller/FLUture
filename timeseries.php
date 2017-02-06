@@ -209,7 +209,10 @@ function graphFlu(data, xAxis, groups, xComponent, yComponent) {
 	}
     }
     else
+    {
 	xAxisText = " Count";
+	groups = [];
+    }
 
     //Sorting
     if (yComponent == "h3_clade" || yComponent == "na_clade" || yComponent == "sequence_specimen" || yComponent == "site_state" || yComponent == "subtype"   || yComponent == "pcr_specimen")
