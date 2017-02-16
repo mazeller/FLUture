@@ -55,7 +55,7 @@ $theme->drawHeader();
                                     </select><br>
                                     <strong>Display Options</strong><br>
                                     <input type="checkbox" id="stack" value="stack">Stack columns<br>
-                                    <input type="checkbox" id="normalize" value="normalize">Account by Percent<br>
+                                    <input type="checkbox" id="normalize" value="normalize">Account by Proportion<br>
                                     </fieldset>
                     </div>
 <script>

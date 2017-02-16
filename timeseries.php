@@ -44,7 +44,7 @@ $theme->drawHeader();
                                         <option value="year">Year</option>
                                     </select><br>
 				    <strong>Display Options</strong><br>
-				    <input type="checkbox" id="normalize" value="normalize">Account by Percent<br>
+				    <input type="checkbox" id="normalize" value="normalize">Account by Proportion<br>
                                     </fieldset>
                     </div>
 <script>
