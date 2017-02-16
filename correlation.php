@@ -19,7 +19,8 @@ $theme->drawHeader();
                                     <b>X Axis</b><br>
                                     <select id="axisx">
                                         <option value="age_days">Age</option>
-   					<option value="day">Day of Year</option> 
+   					<option value="day">Day of Year</option>
+					<option value="testing_facility">Data Source</option> 
                                         <!-- <option value="cultureResult">Coinfection</option> -->
 					<option value="ha_clade">HA Clade</option>
 					<option value="h1_clade">H1 Clade</option>
@@ -29,7 +30,6 @@ $theme->drawHeader();
                                         <option value="month">Month</option>
 					<option value="pcr_specimen">PCR Specimen</option>
                                         <option value="site_state">Pig State</option>
-                                        <option value="testing_facility">Sequence Testing Facility</option>
                                         <option value="subtype">Subtype</option>
 					<option value="week">Week</option>
                                         <option value="year" selected="selected">Year</option>
@@ -38,7 +38,8 @@ $theme->drawHeader();
                                     <b>Y Axis</b><br>
                                     <select id="axisy">
                                         <option value="age_days">Age</option>
-                                        <option value="day">Day of Year</option> 
+                                        <option value="day">Day of Year</option>
+                                        <option value="testing_facility">Data Source</option>
 					<!-- <option value="cultureResult">Coinfection</option> -->
                                         <option value="ha_clade">HA Clade</option>
 					<option value="h1_clade">H1 Clade</option>
@@ -48,7 +49,6 @@ $theme->drawHeader();
                                         <option value="month">Month</option>
 					<option value="pcr_specimen">PCR Specimen</option>
                                         <option value="site_state">Pig State</option>
-                                        <option value="testing_facility">Sequence Testing Facility</option>
                                         <option value="subtype" selected="selected">Subtype</option>
 					<option value="week">Week</option>
                                         <option value="year">Year</option>

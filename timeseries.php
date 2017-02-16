@@ -30,6 +30,7 @@ $theme->drawHeader();
                                     <select id="axisy">
                                         <option value="age_days">Age</option>
 					<!-- <option value="cultureResult">Coinfection</option> -->
+                                        <option value="testing_facility">Data Source</option>
                                         <option value="ha_clade">HA Clade</option>
 					<option value="h1_clade">H1 Clade</option>
 					<option value="h3_clade">H3 Clade</option>
@@ -38,7 +39,6 @@ $theme->drawHeader();
                                         <option value="month">Month</option>
 					<option value="pcr_specimen">PCR Specimen</option>
                                         <option value="site_state">Pig State</option>
-                                        <option value="testing_facility">Sequence Testing Facility</option>
                                         <option value="subtype" selected="selected">Subtype</option>
 					<option value="week">Week</option>
                                         <option value="year">Year</option>
@@ -284,7 +284,7 @@ function translateLabel(label)
 	if(label == "subtype")
 		transLabel = "Subtype";
 	if(label == "testing_facility")
-		transLabel = "Diagnostic Facility";
+		transLabel = "Source of Data";
 	
 	return transLabel; 
 }
