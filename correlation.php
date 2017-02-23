@@ -272,7 +272,7 @@ function translateLabel(label)
 	if(label == "subtype")
 		transLabel = "Subtype";
 	if(label == "testing_facility")
-		transLabel = "Diagnostic Facility";
+		transLabel = "Data Source";
 	
 	return transLabel; 
 }

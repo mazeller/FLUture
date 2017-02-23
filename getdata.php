@@ -8,6 +8,12 @@ $connection = db_connect();
 $columns = $_POST['col'];
 if($columns == NULL)
 	exit;
+else if($columns == "counts,counts")
+{
+	$rows = db_select("SELECT LEFT(accession_isu,4) AS 'flu_year',COUNT(LEFT(accession_isu,4)) AS 'flu_count' FROM flu GROUP BY LEFT(accession_isu,4);");
+	echo json_encode($rows);
+	return;	
+}
 
 //Check Flags
 $whereClause = "";
