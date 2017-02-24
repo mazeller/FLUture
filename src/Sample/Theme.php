@@ -33,7 +33,7 @@ class Theme extends \IastateTheme\Theme
                     'uri' => '/heatmap.php',
               	),
                 array(
-                    'label' => 'Contact Us',
+                    'label' => 'Contact',
                     'uri' => '/contact.php',
                 ),
 
