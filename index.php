@@ -77,7 +77,7 @@ The stream that handeled the sequencing of the sample. Samples with cycle thresh
 The week of the year that the flu positive sample was taken.<br/>
 
 <strong>Year</strong><br/>
-The yeat of the year that the flu positive sample was taken.<br/>
+The year that the flu positive sample was taken.<br/>
 </p>
 
 <script>
