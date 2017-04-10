@@ -20,6 +20,14 @@ $theme->drawHeader();
 ISU FluView is an interactive web-based tool developed to provide  diagnostic information from an Influenza A Virus database of test results, metadata, and sequences collected at the Iowa State University Veterinary Diagnostic Laboratory. The goal of ISU FluView is to allow veterinarians, swine producers, and researchers to seek out and find trends in the data that will allow them to make informed decisions regarding influenza and swine health. ISU FluView data is derived from diagnostic samples submitted from a diverse array of swine farms and production systems around the United States and North America. The metadata used at ISU FluView is dependent on submitters supplying accurate and thorough information provided on submission forms with diagnostic samples to the Iowa State University Veterinary Diagnostic Laboratory.
 </p>
 
+<h2>Recommended Browsers</h2>
+<div>
+	<img src="/img/browser_chrome.png" alt="Chrome">
+	<img src="/img/browser_firefox.png" alt="Firefox">
+	<img src="/img/browser_safari.png" alt="Safari">	
+</div>
+<br>
+
 <h2>Suite of Tools</h2>
 <p>
 <strong>Correlations</strong><br>

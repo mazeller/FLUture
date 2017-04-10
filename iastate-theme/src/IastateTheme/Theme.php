@@ -1722,7 +1722,7 @@ HTML;
 		{
 			return '';
 		}
-		return '<h1><a href="/" style="text-decoration: none"><span style="color:red">ISU <em>Flu</em></span><span style="color:gold">View</span></a></h1>';
+		return '<h1><a href="/" style="text-decoration: none"><span style="color:red">ISU <em>FLU</em></span><span style="color:gold">ture</span></a></h1>';
 		//return '<h1>' . $this->escape($this->getOption('page_title')) . '</h1>';
 	}
 
