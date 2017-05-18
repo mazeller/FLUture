@@ -96,7 +96,7 @@ $theme->drawHeader();
                            { quality : 'medium', width: 'auto', height : 'auto',
                              antialias : true, outline : true});
 
-$.ajax('http://pdb.org/pdb/files/' + '4uo0' + '.pdb')
+$.ajax('http://pdb.org/pdb/files/' + '4f3z' + '.pdb')
 .done(function(data) {
     // data contains the contents of the PDB file in text form
     structure = pv.io.pdb(data);
