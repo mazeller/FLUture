@@ -14,6 +14,12 @@ else if($columns == "counts,counts")
 	echo json_encode($rows);
 	return;	
 }
+else if($columns == "lastrecord")
+{
+	$rows = db_select("SELECT received_date FROM `flu` ORDER BY ID DESC LIMIT 1;");
+	echo json_encode($rows);
+        return;
+}
 
 //Check Flags
 $whereClause = "";

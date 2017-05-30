@@ -4,6 +4,24 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
+//Get LR
+function getLastRecord(callback){
+	//Request Data
+        $.ajax({
+                url: '/getdata.php',
+                type: 'post',
+                data: {'col': "lastrecord"},
+                success: function(data, status) {
+                        data = JSON.parse(data);
+                        callback(data[0]['received_date']);
+                },
+                error: function(xhr, desc, err) {
+                        console.log(xhr);
+                        console.log("Details: " + desc + "\nError:" + err);
+                }
+        });
+}
+
 //Query for the data
 function getJsonData(xComponent, yComponent, callback) {
 	//Check if yComponents is array

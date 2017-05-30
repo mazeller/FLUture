@@ -15,7 +15,7 @@ $theme->drawHeader();
 
 <h2 id="chartTitle">Submitted Flu Positive Cases per Year</h2>
 <div id="chart" style="height:300px"></div>
-
+<h6 style="text-align:center;">(Last Record from <span id="lr"></span>)</h6>
 <p>
 ISU FluView is an interactive web-based tool developed to provide  diagnostic information from an Influenza A Virus database of test results, metadata, and sequences collected at the Iowa State University Veterinary Diagnostic Laboratory. The goal of ISU FluView is to allow veterinarians, swine producers, and researchers to seek out and find trends in the data that will allow them to make informed decisions regarding influenza and swine health. ISU FluView data is derived from diagnostic samples submitted from a diverse array of swine farms and production systems around the United States and North America. The metadata used at ISU FluView is dependent on submitters supplying accurate and thorough information provided on submission forms with diagnostic samples to the Iowa State University Veterinary Diagnostic Laboratory.
 </p>
@@ -94,10 +94,19 @@ $(document).ready(function() {
 
 //Pull out data specific to Type xData State
 function requestData() {
+    getLastRecord(updateLastRecord);
+
     var xComponent = "counts";
     var yComponent = "counts";
 
     getJsonData(xComponent, yComponent, parse, flags="count");
+}
+
+//Update time
+function updateLastRecord(dateLR) {
+     dateString = new Date(dateLR);
+     dateLR = dateString.toDateString();
+     $("#lr").text (dateLR);	
 }
 
 //Pull out data specific to Type xData State
