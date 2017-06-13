@@ -256,13 +256,13 @@ function translateLabel(label)
 	if(label == "day")
 		transLabel = "Day of Year";
 	if(label == "ha_clade")
-		transLabel = "HA Clade";
+		transLabel = "HA Clade Frequency Detection";
 	if(label == "h1_clade")
-		transLabel = "H1 Clade";
+		transLabel = "H1 Clade Frequency Detection";
 	if(label == "h3_clade")
-		transLabel = "H3 Clade";
+		transLabel = "H3 Clade Frequency Detection";
 	if(label == "na_clade")
-		transLabel = "NA Clade";
+		transLabel = "NA Clade Clade Frequency Detection";
 	if(label == "pcr_specimen")
 		transLabel = "Specimen used for PCR";
 	if(label == "sequence_specimen")
@@ -338,6 +338,8 @@ function cladeToNumber(cladeString) {
                 clade = 18;
         if (cladeString == "human-like")
                 clade = 19;
+	if(cladeString == "2016-human-like")
+		clade = 20;
         return clade;
 }
 

@@ -13,7 +13,7 @@ $theme->drawHeader();
 <strong>Warning:</strong> This website is currently under construction. Webpages and text may change between viewings. If you find a part of the site not working or information missing from this site, you may contact the developer through the Contact Us link.
 </p> -->
 
-<h2 id="chartTitle">Submitted Flu Positive Cases per Year</h2>
+<h2 id="chartTitle">Influenza PCR positive submissions per year</h2>
 <div id="chart" style="height:300px"></div>
 <h6 style="text-align:center;">(Last Record from <span id="lr"></span>)</h6>
 <p>
