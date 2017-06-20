@@ -17,7 +17,7 @@ $theme->drawHeader();
 <div id="chart" style="height:300px"></div>
 <h6 style="text-align:center;">(Last Record from <span id="lr"></span>)</h6>
 <p>
-ISU FluView is an interactive web-based tool developed to provide  diagnostic information from an Influenza A Virus database of test results, metadata, and sequences collected at the Iowa State University Veterinary Diagnostic Laboratory. The goal of ISU FluView is to allow veterinarians, swine producers, and researchers to seek out and find trends in the data that will allow them to make informed decisions regarding influenza and swine health. ISU FluView data is derived from diagnostic samples submitted from a diverse array of swine farms and production systems around the United States and North America. The metadata used at ISU FluView is dependent on submitters supplying accurate and thorough information provided on submission forms with diagnostic samples to the Iowa State University Veterinary Diagnostic Laboratory.
+ISU <em>FLU</em>ture is an interactive web-based tool developed to provide  diagnostic information from an Influenza A Virus database of test results, metadata, and sequences collected at the Iowa State University Veterinary Diagnostic Laboratory. The goal of ISU <em>FLU</em>ture is to allow veterinarians, swine producers, and researchers to seek out and find trends in the data that will allow them to make informed decisions regarding influenza and swine health. ISU <em>FLU</em>ture data is derived from diagnostic samples submitted from a diverse array of swine farms and production systems around the United States and North America. The metadata used at ISU <em>FLU</em>ture is dependent on submitters supplying accurate and thorough information provided on submission forms with diagnostic samples to the Iowa State University Veterinary Diagnostic Laboratory.
 </p>
 
 <h2>Recommended Browsers</h2>
@@ -42,7 +42,7 @@ Demonstrates the distribution of the hemagglutinin and neuraminidase subtype com
 
 <h2>Variables</h2>
 <p>
-The ISU FluView database curates information related to the individual swine cases. An explanation of each of the variables that ISU FluView allows searching for can be found below.<br/><br/>
+The ISU <em>FLU</em>ture database curates information related to the individual swine cases. An explanation of each of the variables that ISU <em>FLU</em>ture allows searching for can be found below.<br/><br/>
 
 <strong>Age</strong><br/>
 The age of the pig at the time the flu positive sample was taken.<br/>
@@ -51,7 +51,7 @@ The age of the pig at the time the flu positive sample was taken.<br/>
 The day of the year that the flu positive sample was taken.<br/>
 
 <strong>HA Clade</strong><br/>
-The phylogenetic clade that a flu positive sample is part of, based on the hemagglutinin sequence. Currently the ISU FluView database tracks only H1 and H3 subtype hemagglutinin, thus clades will be derived from one of these subtypes.<br/>
+The phylogenetic clade that a flu positive sample is part of, based on the hemagglutinin sequence. Currently the ISU <em>FLU</em>ture database tracks only H1 and H3 subtype hemagglutinin, thus clades will be derived from one of these subtypes.<br/>
 
 <strong>HA Sequence</strong><br/>
 The genetic sequence of the hemagglutinin of a specific influenza virus case. Sequencing is only attempted for sample with cycle threshold (CT) values less then or equal to 38.<br/>
@@ -60,7 +60,7 @@ The genetic sequence of the hemagglutinin of a specific influenza virus case. Se
 The month of the year that the flu positive sample was taken.<br/>
 
 <strong>NA Clade</strong><br/>
-The phylogenetic clade that a flu positive sample is part of, based on neuraminidase. Currently the ISU FluView database tracks only N1 and N2 subtype neuraminidase, thus clades will be derived from one of these subtypes. Only samples with cycle threshold (CT) values less then or equal to 25 are sequenced, and are applicable for this type of data.<br/>
+The phylogenetic clade that a flu positive sample is part of, based on neuraminidase. Currently the ISU <em>FLU</em>ture database tracks only N1 and N2 subtype neuraminidase, thus clades will be derived from one of these subtypes. Only samples with cycle threshold (CT) values less then or equal to 25 are sequenced, and are applicable for this type of data.<br/>
 
 <strong>PCR Specimen</strong><br/>
 The specimen from which the subtyping RT-PCR was derived from.<br/>
