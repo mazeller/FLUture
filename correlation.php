@@ -32,6 +32,7 @@ $theme->drawHeader();
                                         <option value="site_state">Pig State</option>
                                         <option value="subtype">Subtype</option>
 					<option value="week">Week</option>
+					<option value="weight_pounds">Weight</option>
                                         <option value="year" selected="selected">Year</option>
                                     </select>
                                     <br>
@@ -51,6 +52,7 @@ $theme->drawHeader();
                                         <option value="site_state">Pig State</option>
                                         <option value="subtype" selected="selected">Subtype</option>
 					<option value="week">Week</option>
+					<option value="weight_pounds">Weight</option>
                                         <option value="year">Year</option>
                                     </select><br>
                                     <strong>Display Options</strong><br>
@@ -86,7 +88,7 @@ $(document).ready(function() {
 //Pull out data specific to Type xData State
 function requestData() {
     var xComponent = "ha_clade";
-    var yComponent = ["na_clade","H1","H3","N1","N2","received_date","age_days","site_state","testing_facility","sequence_specimen","pcr_specimen"];
+    var yComponent = ["na_clade","H1","H3","N1","N2","received_date","age_days","weight_pounds","site_state","testing_facility","sequence_specimen","pcr_specimen"];
         
     getJsonData(xComponent, yComponent, parse, flags="");
 }
@@ -139,6 +141,8 @@ function parse(rdata) {
 	    xAxis.sort();
     if (xComponent == "age_days")
 	    xAxis.sort(sortAge);
+    if (xComponent == "weight_pounds")
+	    xAxis.sort(sortNumber);
     if (xComponent == "h1_clade" || xComponent == "h3_clade" || xComponent == "ha_clade")
 	    xAxis.sort(sortClade);
 
@@ -356,6 +360,11 @@ function ageToNumber(ageString) {
         if (ageString == "adult")
                 age = 4;
 	return age;
+}
+
+function weightToBin(weight) {
+	binnedWeight = Math.floor(weight/5) * 5;
+	return binnedWeight;
 }
 
 //Find unique values
