@@ -277,7 +277,8 @@ function translateLabel(label)
 		transLabel = "Subtype";
 	if(label == "testing_facility")
 		transLabel = "Data Source";
-	
+	if(label == "weight_pounds")
+		transLabel = "Weight";
 	return transLabel; 
 }
 
