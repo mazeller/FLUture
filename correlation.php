@@ -341,9 +341,9 @@ function cladeToNumber(cladeString) {
                 clade = 17;
         if (cladeString == "cluster_IVF")
                 clade = 18;
-        if (cladeString == "human-like")
+        if (cladeString == "2011-human-like")
                 clade = 19;
-	if(cladeString == "2016-human-like")
+	if (cladeString == "2016-human-like")
 		clade = 20;
         return clade;
 }
