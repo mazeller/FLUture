@@ -219,8 +219,11 @@ function drawTable(haclade, naclade, haData, title)
         for (var key2 in naclade)
         {
 		//Postfix subtype
-		if (naclade[key2] == "1998" | naclade[key2] == "2002" | naclade[key2] == "Human_like"){
+		if (naclade[key2] == "1998" | naclade[key2] == "2002"){
 			naclade[key2] = "N2." + naclade[key2];
+		}
+		if (naclade[key2] == "2010" | naclade[key2] == "2016"){
+			naclade[key2] = "hu-N2." + naclade[key2];
 		}
                 if (naclade[key2] == "classical" | naclade[key2] == "pandemic"){
                         naclade[key2] = "N1." + naclade[key2];
