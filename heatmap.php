@@ -115,7 +115,7 @@ function parse(requestData) {
 		}
                 if(fluCase.H3 == "1") {
                         //Remove specific  clades
-                        if(fluCase.ha_clade != "delta1a" & fluCase.ha_clade != "delta1b" & fluCase.ha_clade != "delta2" & fluCase.ha_clade != "gamma-like" & fluCase.ha_clade != "gamma") {
+                        if(fluCase.ha_clade != "delta1a" & fluCase.ha_clade != "delta1b" & fluCase.ha_clade != "delta2" & fluCase.ha_clade != "gamma-like" & fluCase.ha_clade != "gamma" & fluCase.ha_clade != "alpha") {
 	                        if(!(fluCase.ha_clade + "." + fluCase.na_clade in h3Data)){
         	                        h3Data[fluCase.ha_clade + "." + fluCase.na_clade] = 1;
                 	        }
