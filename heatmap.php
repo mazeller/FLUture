@@ -115,7 +115,7 @@ function parse(requestData) {
 		}
                 if(fluCase.H3 == "1") {
                         //Remove specific  clades
-                        if(fluCase.ha_clade != "delta1a" & fluCase.ha_clade != "delta1b" & fluCase.ha_clade != "delta2" & fluCase.ha_clade != "gamma-like" & fluCase.ha_clade != "gamma") {
+                        if(fluCase.ha_clade != "delta1a" & fluCase.ha_clade != "delta1b" & fluCase.ha_clade != "delta2" & fluCase.ha_clade != "gamma-like" & fluCase.ha_clade != "gamma" & fluCase.ha_clade != "alpha") {
 	                        if(!(fluCase.ha_clade + "." + fluCase.na_clade in h3Data)){
         	                        h3Data[fluCase.ha_clade + "." + fluCase.na_clade] = 1;
                 	        }
@@ -219,8 +219,11 @@ function drawTable(haclade, naclade, haData, title)
         for (var key2 in naclade)
         {
 		//Postfix subtype
-		if (naclade[key2] == "1998" | naclade[key2] == "2002" | naclade[key2] == "Human_like"){
+		if (naclade[key2] == "1998" | naclade[key2] == "2002"){
 			naclade[key2] = "N2." + naclade[key2];
+		}
+		if (naclade[key2] == "2010" | naclade[key2] == "2016"){
+			naclade[key2] = "hu-N2." + naclade[key2];
 		}
                 if (naclade[key2] == "classical" | naclade[key2] == "pandemic"){
                         naclade[key2] = "N1." + naclade[key2];
