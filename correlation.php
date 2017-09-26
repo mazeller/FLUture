@@ -173,9 +173,9 @@ function parse(rdata) {
 
                 for (var i in xAxis) {
                     if (obj[xAxis[i]] != null)
-                        tempData.push((obj[xAxis[i]] / xScore[xAxis[i]]).toFixed(2));
+                        tempData.push((obj[xAxis[i]] / xScore[xAxis[i]]).toFixed(3));
                     else
-                        tempData.push(0);
+                        tempData.push(null);
                 }
             }
             graphData.push(tempData);
@@ -193,7 +193,7 @@ function parse(rdata) {
                     if (obj[xAxis[i]] != null)
                         tempData.push(obj[xAxis[i]]);
                     else
-                        tempData.push(0);
+                        tempData.push(null);
             	}
             }
             graphData.push(tempData);

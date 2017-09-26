@@ -183,7 +183,7 @@ function parse(rdata) {
 		//Regenerate numbers as percents
                 for (i = 0; i < subsets; i++)
                 {
-                        graphData[i][value] = (graphData[i][value] / total).toFixed(2);
+                        graphData[i][value] = (graphData[i][value] / total).toFixed(3);
                 }
 	}
     }
