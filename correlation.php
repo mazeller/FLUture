@@ -205,6 +205,7 @@ function parse(rdata) {
 
 //Draw our data
 function graphFlu(data, xAxis, groups, xComponent, yComponent) {
+console.log(data);
     var stack = $("#stack").is(":checked");
     var normalize = $("#normalize").is(":checked");
     if (normalize == true)
@@ -341,7 +342,7 @@ function cladeToNumber(cladeString) {
                 clade = 17;
         if (cladeString == "cluster_IVF")
                 clade = 18;
-        if (cladeString == "2011-human-like")
+        if (cladeString == "2010-human-like")
                 clade = 19;
 	if (cladeString == "2016-human-like")
 		clade = 20;
