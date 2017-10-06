@@ -221,8 +221,6 @@ function graphFlu(data, xAxis, groups, xComponent, yComponent) {
         data.sort(sortAge);
     if (yComponent == "h1_clade" || yComponent == "h3_clade" || yComponent == "ha_clade")
 	data.sort(sortClade);
-console.log(typeData);
-console.log([groups]); 
     //Generate Chart
     var chart = c3.generate({
         data: {
@@ -234,8 +232,6 @@ console.log([groups]);
 	axis: {
                 x: {
                     type: 'timeseries',
-                    //min: start,
-                    //max: end,
                     tick: {
                         format: '%Y-%m-%d',
                         rotate: 60,
@@ -305,7 +301,6 @@ function sortAge(a,b) {
 function sortClade(a,b) {
         aVal = cladeToNumber(a[0]);
         bVal = cladeToNumber(b[0]);
-	console.log(aVal + ":" + bVal);
         return aVal - bVal;
 }
 
