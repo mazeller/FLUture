@@ -2,7 +2,7 @@
 require 'autoload.php';
 $theme = new Sample\Theme('');
 $scripts = $theme->getOption('head_script');
-$scripts["file"] = array("/js/jquery.min.js","/js/jquery-ui.min.js","/js/c3.min.js","/js/d3.v3.min.js","/js/dataloader.js");
+$scripts["file"] = array("/js/dataloader.js","/js/jquery.min.js","/js/jquery-ui.min.js","/js/c3.min.js","/js/d3.v3.min.js");
 $theme->setOption('head_script',$scripts,true);
 $theme->addStyle('{{asset_path}}/css/c3.min.css');
 $theme->addStyle('{{asset_path}}/css/jquery-ui.css');
@@ -58,6 +58,7 @@ $theme->drawHeader();
                                     <strong>Display Options</strong><br>
                                     <input type="checkbox" id="stack" value="stack">Stack columns<br>
                                     <input type="checkbox" id="normalize" value="normalize">Account by Proportion<br>
+					<a id="grabData">Download Graph Data</a>
                                     </fieldset>
                     </div>
 <script>
@@ -69,6 +70,7 @@ $(document).ready(function() {
 	$("#axisx").change(parse);
 	$("#axisy").change(parse);
 	$("#stack").change(parse);
+	$("#grabData").click(grabData);
 	$("#normalize").change(parse);
 
 	$('#dateEnd').datepicker({
@@ -84,6 +86,20 @@ $(document).ready(function() {
        //Load in data one time
 	requestData();        
 });
+
+//*** Move to master file ****
+//Download Data Summaries
+function grabData() {
+    //Convert JSON to CSV format (https://stackoverflow.com/questions/11257062/converting-json-object-to-csv-format-in-javascript)
+    var graphCSV = JSON.stringify(graphData);
+    graphCSV = ConvertToCSV(graphCSV);
+    var text = "," + xAxis.toString() + "\n" + graphCSV;
+    download("data.csv",text);
+    //console.log(xAxis.toString());
+    //console.log(graphCSV);
+}
+
+//*** end master section ***
 
 //Pull out data specific to Type xData State
 function requestData() {
@@ -107,7 +123,7 @@ function parse(rdata) {
     var normalize = $("#normalize").is(":checked");
 
     //Reset Axis
-    var xAxis = [];
+    xAxis = [];
     var groups = [];
 
     //Create primary structure
@@ -205,7 +221,6 @@ function parse(rdata) {
 
 //Draw our data
 function graphFlu(data, xAxis, groups, xComponent, yComponent) {
-console.log(data);
     var stack = $("#stack").is(":checked");
     var normalize = $("#normalize").is(":checked");
     if (normalize == true)
