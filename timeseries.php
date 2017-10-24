@@ -45,7 +45,7 @@ $theme->drawHeader();
                                     </select><br>
 				    <strong>Display Options</strong><br>
 				    <input type="checkbox" id="normalize" value="normalize">Account by Proportion<br>
-				    <a href="javascript:;" id="grabData">Download Graph Data</a>
+				    <!-- <a href="javascript:;" id="grabData">Download Graph Data</a> -->
                                     </fieldset>
                     </div>
 <script>
