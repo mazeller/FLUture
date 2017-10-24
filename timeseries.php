@@ -45,7 +45,7 @@ $theme->drawHeader();
                                     </select><br>
 				    <strong>Display Options</strong><br>
 				    <input type="checkbox" id="normalize" value="normalize">Account by Proportion<br>
-				    <!-- <a href="javascript:;" id="grabData">Download Graph Data</a> -->
+				    <a href="javascript:;" id="grabData">Download Graph Data</a>
                                     </fieldset>
                     </div>
 <script>
@@ -85,10 +85,6 @@ function grabData() {
     //Convert JSON to CSV format (https://stackoverflow.com/questions/11257062/converting-json-object-to-csv-format-in-javascript)
     var graphCSV = JSON.stringify(graphData);
     graphCSV = ConvertToCSV(graphCSV);
-    var tempGraph = graphCSV.split("\n");
-    tempGraph.pop();
-    tempGraph.splice(-1,1);
-    graphCSV = tempGraph.join("\n");
     var text = xAxis.toString() + "\n" + graphCSV;
     download("data.csv",text);
 }
@@ -210,8 +206,10 @@ function parse(rdata) {
 //Draw our data
 function graphFlu(data, xAxis, groups, xComponent, yComponent) {
     //Merge xAxis to data
-    xAxis.unshift("x"); 
-    data.unshift(xAxis);
+    xAxis.unshift("x");
+    var temp = data.slice();
+    temp.unshift(xAxis);
+    data = temp;
 
     //Check if normalized for text
     var normalize = $("#normalize").is(":checked");
