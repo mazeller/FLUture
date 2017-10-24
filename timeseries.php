@@ -86,6 +86,7 @@ function grabData() {
     var graphCSV = JSON.stringify(graphData);
     graphCSV = ConvertToCSV(graphCSV);
     var tempGraph = graphCSV.split("\n");
+    tempGraph.pop();
     tempGraph.splice(-1,1);
     graphCSV = tempGraph.join("\n");
     var text = xAxis.toString() + "\n" + graphCSV;
