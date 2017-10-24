@@ -32,6 +32,7 @@ $theme->drawHeader();
 </div>
 <div id="map" style="height: 600px;"></div>
 <div id="slider"></div>
+<div><a href="javascript:;" id="grabData">Download Graph Data</a></div>
 <div id="dataTable"></div>
 <!-- Leaflet legend, hardcoded because lazy -->
 
@@ -57,7 +58,10 @@ $(document).ready(function() {
                         max: new Date()
                 }
 	});
-
+	
+	//Allow user to acquire data
+	$("#grabData").click(grabData);
+	
 	//Load in data one time
 	requestData();
 
@@ -65,12 +69,26 @@ $(document).ready(function() {
 	$("#slider").on("valuesChanging", parse);
 });
 
+//Download Data Summaries
+function grabData() {
+    //Convert JSON to CSV format (https://stackoverflow.com/questions/11257062/converting-json-object-to-csv-format-in-javascript)
+    var graphCSV = JSON.stringify(tempData);
+    
+    //Manual Rearrangements
+    graphCSV = graphCSV.replace(/,/g,'\n');
+    graphCSV = graphCSV.replace(/:/g,',');
+    graphCSV = graphCSV.replace('{','');
+    graphCSV = graphCSV.replace('}','');
+
+    //var text = graphCSV;
+    download("data.csv",graphCSV);
+}
+
 //Pull out data specific to Type xData State
 function requestData() {
     var xComponent = "site_state";
     var yComponent = "received_date";
 	
-    //console.log(data);
     getJsonData(xComponent, yComponent, parse, flags="nu");
 }
 
