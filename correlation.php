@@ -58,7 +58,7 @@ $theme->drawHeader();
                                     <strong>Display Options</strong><br>
                                     <input type="checkbox" id="stack" value="stack">Stack columns<br>
                                     <input type="checkbox" id="normalize" value="normalize">Account by Proportion<br>
-					<a id="grabData">Download Graph Data</a>
+				    <a href="javascript:;" id="grabData">Download Graph Data</a>
                                     </fieldset>
                     </div>
 <script>
@@ -87,7 +87,6 @@ $(document).ready(function() {
 	requestData();        
 });
 
-//*** Move to master file ****
 //Download Data Summaries
 function grabData() {
     //Convert JSON to CSV format (https://stackoverflow.com/questions/11257062/converting-json-object-to-csv-format-in-javascript)
@@ -95,11 +94,7 @@ function grabData() {
     graphCSV = ConvertToCSV(graphCSV);
     var text = "," + xAxis.toString() + "\n" + graphCSV;
     download("data.csv",text);
-    //console.log(xAxis.toString());
-    //console.log(graphCSV);
 }
-
-//*** end master section ***
 
 //Pull out data specific to Type xData State
 function requestData() {

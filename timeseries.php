@@ -45,6 +45,7 @@ $theme->drawHeader();
                                     </select><br>
 				    <strong>Display Options</strong><br>
 				    <input type="checkbox" id="normalize" value="normalize">Account by Proportion<br>
+				    <a href="javascript:;" id="grabData">Download Graph Data</a>
                                     </fieldset>
                     </div>
 <script>
@@ -58,6 +59,7 @@ $(document).ready(function() {
 	$("#stack").change(parse);
 	$("#normalize").change(parse);
 	$("#area").change(parse);
+	$("#grabData").click(grabData);
 
         //Make Slider
         $("#slider").dateRangeSlider({
@@ -77,6 +79,18 @@ $(document).ready(function() {
        //Load in data one time
 	requestData(); 
 });
+
+//Download Data Summaries
+function grabData() {
+    //Convert JSON to CSV format (https://stackoverflow.com/questions/11257062/converting-json-object-to-csv-format-in-javascript)
+    var graphCSV = JSON.stringify(graphData);
+    graphCSV = ConvertToCSV(graphCSV);
+    var tempGraph = graphCSV.split("\n");
+    tempGraph.splice(-1,1);
+    graphCSV = tempGraph.join("\n");
+    var text = xAxis.toString() + "\n" + graphCSV;
+    download("data.csv",text);
+}
 
 //Pull out data specific to Type xData State
 function requestData() {
@@ -101,7 +115,7 @@ function parse(rdata) {
     var normalize = $("#normalize").is(":checked");
 
     //Reset Axis
-    var xAxis = [];
+    xAxis = [];
     var groups = [];
 
     //Create primary structure
@@ -124,10 +138,10 @@ function parse(rdata) {
 
 	if(granularity == "week") {
 		caseDate.setDate(caseDate.getDate() - caseDate.getDay());
-		useDate = caseDate.getFullYear() + "-" + caseDate.getMonth() + "-" + caseDate.getDate();		
+		useDate = caseDate.getFullYear() + "-" + (caseDate.getMonth() + 1) + "-" + caseDate.getDate();		
 	}
 	if(granularity == "month")
-		useDate = caseDate.getFullYear() + "-" + caseDate.getMonth() + "-" + "01";
+		useDate = caseDate.getFullYear() + "-" + (caseDate.getMonth() + 1) + "-" + "01";
 	if(granularity == "year")
 		useDate = caseDate.getFullYear() + "-" + "01" + "-" + "01";
 
