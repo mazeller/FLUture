@@ -96,7 +96,7 @@ function parse(requestData) {
 		//Add in H1 counts
 		if(fluCase.H1 == "1") {
 			//Remove specific  clades
-			if(fluCase.ha_clade != "cluster_IVA" & fluCase.ha_clade != "cluster_IVE") {
+			if(fluCase.ha_clade != "cluster_IVA" & fluCase.ha_clade != "cluster_IVE" & fluCase.ha_clade != "2010-human-like" & fluCase.ha_clade != "cluster_IV") {
 				if(!(fluCase.ha_clade + "." + fluCase.na_clade in h1Data)){
 					h1Data[fluCase.ha_clade + "." + fluCase.na_clade] = 1;	
 				}
@@ -115,7 +115,7 @@ function parse(requestData) {
 		}
                 if(fluCase.H3 == "1") {
                         //Remove specific  clades
-                        if(fluCase.ha_clade != "delta1a" & fluCase.ha_clade != "delta1b" & fluCase.ha_clade != "delta2" & fluCase.ha_clade != "gamma-like" & fluCase.ha_clade != "gamma" & fluCase.ha_clade != "alpha") {
+                        if(fluCase.ha_clade != "delta1a" & fluCase.ha_clade != "delta1b" & fluCase.ha_clade != "delta2" & fluCase.ha_clade != "gamma-like" & fluCase.ha_clade != "gamma" & fluCase.ha_clade != "alpha" & fluCase.ha_clade != "beta") {
 	                        if(!(fluCase.ha_clade + "." + fluCase.na_clade in h3Data)){
         	                        h3Data[fluCase.ha_clade + "." + fluCase.na_clade] = 1;
                 	        }
