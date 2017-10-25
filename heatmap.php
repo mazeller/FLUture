@@ -41,7 +41,7 @@ $theme->drawHeader();
 <div id="heatmap"></div>
 
 <div id="slider"></div>
-<!-- Leaflet legend, hardcoded because lazy -->
+<a href="javascript:;" id="grabData">Download Graph Data</a>
 
 <script>
 //Global access to data
@@ -49,10 +49,79 @@ var data;
 
 //Page load
 $(document).ready(function() {
+	//Add hook for data download link
+	$("#grabData").click(grabData);
+
 	//Load in data one time
 	requestData();
 	drawTimeBar()
 });
+
+//Download Data Summaries
+function grabData() {
+	//Output variables
+	var text;
+
+	text = "Count of H1 and NA combinations\n";
+	text += tabulateData(h1clade, nh1clade, h1Data, "Count  of H1 and NA combinations");
+	text += "\n\nCount of H3 and NA combinations\n";	
+	text += tabulateData(h3clade, nh3clade, h3Data, "Count of H3 and NA combinations");
+
+	download("data.csv",text);
+}
+
+
+//Generate tabulated plots of data
+function tabulateData(haclade, naclade, haData) {
+        var haTable = "";
+
+console.log(haData);
+	//Sort weirdly/alphabetically
+        haclade.sort(function (a, b) {
+                if(a[0] == 'g' | a[0] == 'p') { a = 'c' + a; }
+                if(b[0] == 'g' | b[0] == 'p') { b = 'c' + b; }  
+                return a.toLowerCase().localeCompare(b.toLowerCase());
+        });
+        naclade.sort(function (a, b) {
+                return a.toLowerCase().localeCompare(b.toLowerCase());
+        });
+
+        for (var key in haclade)
+        {
+                haTable += haclade[key] + ",";
+                for (var key2 in naclade)
+                {
+                        //Check if data exists and if so, print it
+			console.log(haclade[key] + "." + naclade[key2]);
+			console.log(haData[haclade[key] + "." + naclade[key2]]);
+			if ( haData[haclade[key] + "." + naclade[key2]]!= null ) {
+                                haTable += haData[haclade[key] + "." + naclade[key2]] + ",";
+                        }
+                        else
+                                haTable += ",";
+                }
+                haTable += "\n";
+        }
+
+	haTable += "\n,";
+        for (var key2 in naclade)
+        {
+                //Postfix subtype
+                if (naclade[key2] == "1998" | naclade[key2] == "2002"){
+                        naclade[key2] = "N2." + naclade[key2];
+                }
+                if (naclade[key2] == "2010" | naclade[key2] == "2016"){
+                        naclade[key2] = "hu-N2." + naclade[key2];
+                }
+                if (naclade[key2] == "classical" | naclade[key2] == "pandemic"){
+                        naclade[key2] = "N1." + naclade[key2];
+                }
+
+                haTable += naclade[key2] + ",";
+        }
+        haTable += "\n";
+	return haTable;	
+}
 
 //Pull out data specific to Type xData State
 function requestData() {
@@ -136,9 +205,9 @@ function parse(requestData) {
 
 	//Draw tables and tools
 	$("#heatmap").empty();
-	drawTable(h1clade, nh1clade, h1Data, "Count  of H1 and NA combinations");
+	drawTable(h1clade, nh1clade.slice(), h1Data, "Count  of H1 and NA combinations");
 	drawLegend(h1Data, "h1legend");
-	drawTable(h3clade, nh3clade, h3Data, "Count of H3 and NA combinations");
+	drawTable(h3clade, nh3clade.slice(), h3Data, "Count of H3 and NA combinations");
 	drawLegend(h3Data, "h3legend");
 }
 
