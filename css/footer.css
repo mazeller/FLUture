@@ -1,0 +1,49 @@
+.footer {
+    border-top: 1px dashed #9d9d9d;
+    max-width: 1260px;
+    margin: 10px auto 0;
+    font-size: 0;
+}
+.footer.footer-front {
+    max-width: 960px;
+}
+.footer-inner {
+    background-color: #d7d2c3;
+    padding: 10px;
+    margin: 10px 0 0;
+    vertical-align: top;
+}
+.footer-inner > div {
+    display: inline-block;
+    vertical-align: top;
+}
+.wordmark {
+    position: relative;
+    overflow: hidden;
+    max-width: 110px;
+}
+.wordmark a {
+    display: block;
+    max-width: 130px;
+    height: 36px;
+}
+.wordmark img {
+    max-width: 530px;
+    height: 97px;
+    position: relative;
+    left: -410px;
+}
+.social-buttons {
+    margin: 0 10px;
+    padding: 0 10px;
+    border-left: 1px dashed #939086;
+    border-right: 1px dashed #939086;
+}
+.footer-tryptych {
+    margin-right: 10px;
+    font-size: 10px;
+    line-height: 1.5em;
+}
+.footer a {
+    text-decoration: none;
+}
