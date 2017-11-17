@@ -3,11 +3,17 @@ Source Code for the ISU FLUture website
 
 <h2>Pages</h2>
 <h3>index.php</h3>
+Landing page with instructions and explanation of the website. Additionally has a C3 chart component that shows the number of cases per year to date, with a feature at the bottom that shows the date recieved of case on the last row of the database.
 <h3>correlation.php</h3>
+A C3 bar chart that is used to display any binned database varriable against any other database vairable.
 <h3>timeseries.php</h3>
+A C3 timeseries chart used to show any variable in the database plotted against time, using recieved date as the value for the x-Axis.
 <h3>regional.php</h3>
+An implementation of the US-map library that relies on raphael to show where case data originated from over time. There are future plans for this functionality to be extended to plot other variables geographically.
 <h3>heatmap.php</h3>
+A script that renders tables based on count data for ha clades and na clades where where applicable.
 <h3>3dview.php</h3>
+An unreleased component that uses PV protein viewer to render HA for visual structural analysis.
 
 
 <h2>JavaScript Libraries</h2>
