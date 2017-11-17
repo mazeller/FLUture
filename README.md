@@ -1,2 +1,2 @@
 # ISFluView
-Source Code for the ISFluView website
+Source Code for the ISU FLUture website
