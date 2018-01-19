@@ -85,6 +85,32 @@ class Theme extends \IastateTheme\Theme
 </div>
   </div>
     </div>
+
+    <div class="footer-tryptych">
+          <div class="region region-footer-triptych-two">
+    <div id="block-block-41" class="block block-block collapsiblock-processed">
+
+    
+  <div class="content">
+    <p><img alt="" src="/img/usda_symbol.png" style="width: 86px; height: 66px;"></p>
+  </div>
+</div>
+  </div>
+    </div>
+<div class="footer-tryptych">
+          <div class="region region-footer-triptych-one">
+    <div id="block-block-40" class="block block-block collapsiblock-processed">
+
+    
+  <div class="content">
+	<strong>United States Department of Agriculture</strong><br>
+	Agricultural Research Service<br>
+	National Animal Disease Center  
+ </p>
+  </div>
+</div>
+  </div>
+    </div>
     <div class="footer-tryptych">
           <div class="region region-footer-triptych-two">
     <div id="block-block-41" class="block block-block collapsiblock-processed">
