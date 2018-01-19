@@ -31,6 +31,9 @@ if($_POST['flags'] == "hc")
 //var_dump(mysqli_real_escape_string($columns));
 
 $rows = db_select("SELECT $columns FROM `flu` " . $whereClause . ";"); 
-echo json_encode($rows);
 
+//Compression
+ob_start('ob_gzhandler');
+echo json_encode($rows);
+ob_end_flush();
 #send data back to requester
