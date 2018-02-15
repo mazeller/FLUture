@@ -277,7 +277,7 @@ function translateLabel(label)
 	if(label == "h3_clade")
 		transLabel = "H3 Clade Frequency Detection";
 	if(label == "na_clade")
-		transLabel = "NA Clade Clade Frequency Detection";
+		transLabel = "NA Clade Frequency Detection";
 	if(label == "pcr_specimen")
 		transLabel = "Specimen used for PCR";
 	if(label == "sequence_specimen")
