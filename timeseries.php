@@ -359,9 +359,9 @@ function cladeToNumber(cladeString) {
                 clade = 18;
         if (cladeString == "2010-human-like")
                 clade = 19;
-	if (cladeString == "2016-human-like")
+	if (cladeString == "human-to-swine-2016")
 		clade = 20;
-	if (cladeString == "2017-human-like")
+	if (cladeString == "human-to-swine-2017")
 		clade = 21;
         return clade;
 }
