@@ -361,6 +361,8 @@ function cladeToNumber(cladeString) {
                 clade = 19;
 	if (cladeString == "2016-human-like")
 		clade = 20;
+	if (cladeString == "2017-human-like")
+		clade = 21;
         return clade;
 }
 
