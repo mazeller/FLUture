@@ -107,11 +107,8 @@ console.log(haData);
         for (var key2 in naclade)
         {
                 //Postfix subtype
-                if (naclade[key2] == "1998" | naclade[key2] == "2002"){
+                if (naclade[key2] == "1998" | naclade[key2] == "2002" | naclade[key2] == "human-to-swine-2010" | naclade[key2] == "human-to-swine-2016" ){
                         naclade[key2] = "N2." + naclade[key2];
-                }
-                if (naclade[key2] == "2010" | naclade[key2] == "2016"){
-                        naclade[key2] = "hu-N2." + naclade[key2];
                 }
                 if (naclade[key2] == "classical" | naclade[key2] == "pandemic"){
                         naclade[key2] = "N1." + naclade[key2];
@@ -165,7 +162,7 @@ function parse(requestData) {
 		//Add in H1 counts
 		if(fluCase.H1 == "1") {
 			//Remove specific  clades
-			if(fluCase.ha_clade != "cluster_IVA" & fluCase.ha_clade != "cluster_IVE" & fluCase.ha_clade != "2010-human-like" & fluCase.ha_clade != "cluster_IV") {
+			if(fluCase.ha_clade != "cluster_IVA" & fluCase.ha_clade != "cluster_IVE" & fluCase.ha_clade != "2010-human-like"  & fluCase.ha_clade != "human-to-swine-2016" & fluCase.ha_clade != "cluster_IV") {
 				if(!(fluCase.ha_clade + "." + fluCase.na_clade in h1Data)){
 					h1Data[fluCase.ha_clade + "." + fluCase.na_clade] = 1;	
 				}
@@ -288,13 +285,10 @@ function drawTable(haclade, naclade, haData, title)
         for (var key2 in naclade)
         {
 		//Postfix subtype
-		if (naclade[key2] == "1998" | naclade[key2] == "2002"){
+		if (naclade[key2] == "1998" | naclade[key2] == "2002" | naclade[key2] == "human-to-swine-2010" | naclade[key2] == "human-to-swine-2016" ){
 			naclade[key2] = "N2." + naclade[key2];
 		}
-		if (naclade[key2] == "2010" | naclade[key2] == "2016"){
-			naclade[key2] = "hu-N2." + naclade[key2];
-		}
-                if (naclade[key2] == "classical" | naclade[key2] == "pandemic"){
+	        if (naclade[key2] == "classical" | naclade[key2] == "pandemic"){
                         naclade[key2] = "N1." + naclade[key2];
 		}
 
