@@ -15,7 +15,7 @@ Please wait, BLAST in progress...
 </div>
 <form id="target">
 <textarea rows="16" cols="100" id="sequences" placeholder="Paste sequences (fasta/plain text)">
-</textarea>
+</textarea><br/>
 <b>Sequence type</b><br/>
 <input type="radio" name="blasttype" value="nt" checked="checked" />nucleotide<br>
 <input type="radio" name="blasttype" value="aa" />amino acid<br>
