@@ -49,7 +49,21 @@ for ($i = 0; $i <= count($blastHits); $i++)
 	$hits = explode("+", $blastHits[$i]);
 	for ($j = 1; $j < count($hits); $j++)	//This j starts at 1 to leave out db id, less then the count ot leave off blank row
 	{
-		$table .= "<td>" . $hits[$j] . "</td>";		
+		$table .= "<td>"; 
+		
+		#Add in an ncbi link if on the first item
+		if($j == 1 && $hits[$j] != "")
+		{
+			$table .= "<a href=\"https://www.ncbi.nlm.nih.gov/nuccore/?term=" . $hits[$j] . "\">" . $hits[$j] . "</a></td>";
+		}
+		elseif($j == 1 && $hits[$j] == "")
+		{
+			$table .= "ISU VDL" . "</td>";
+		}
+		else
+		{
+			$table .= $hits[$j] . "</td>";		
+		}
 	}
 
 	//Clsoe row

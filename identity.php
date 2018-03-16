@@ -10,9 +10,6 @@ $theme->drawHeader();
 
 <h2 id="chartTitle">Sequence Identity Tool</h2>
 
-<div class="wd-Alert" id="wait">
-Please wait, BLAST in progress...
-</div>
 <form id="target">
 <textarea rows="16" cols="100" id="sequences" placeholder="Paste sequences (fasta/plain text)">
 </textarea><br/>
@@ -21,6 +18,11 @@ Please wait, BLAST in progress...
 <input type="radio" name="blasttype" value="aa" />amino acid<br>
 <a class="wd-Button" id="submit">Search</a>
 </form>
+
+<br/>
+<div class="wd-Alert" id="wait">
+Please wait, BLAST in progress...
+</div>
 
 <div id="results">
 
@@ -46,12 +48,15 @@ $(document).ready(function() {
 function getBlastResult() {
 	//Hide form, show wait
 	$("#wait").slideDown("slow");
-	$("#target").slideUp("slow");
+	$("#sequences").prop("disabled", true);
+	
+	//Disconnect button
+	$("#submit").unbind("click");
 
         //Process fasta input into specific object structure
         var fastaString = $("#sequences").val();
 	var blastType = $('input[name=blasttype]:checked').val(); 
-	console.log(blastType);
+
         //Request data
         $.ajax({
                 url: '/getblastresult.php',
@@ -71,9 +76,19 @@ function getBlastResult() {
 }
 
 function returnData(data) {
+	//Show results as soon as they come in
+	$("#results").html(data);
+
+	//Force pause
+	setTimeout(function() {
+
 	//Hide wait
         $("#wait").slideUp("slow");
-	$('#results').html(data);
+	$("#sequences").prop("disabled", false);
+
+	//Reconnect button	
+	$("#submit").click(getBlastResult);
+	}, 1000);
 }
 
 </script>
