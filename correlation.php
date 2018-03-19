@@ -57,7 +57,7 @@ $theme->drawHeader();
                                         <option value="year">Year</option>
                                     </select><br>
                                     <strong>Display Options</strong><br>
-                                    <input type="checkbox" id="stack" value="stack">Stack columns<br>
+                                    <input type="checkbox" id="stack" value="stack" checked>Stack columns<br>
                                     <input type="checkbox" id="normalize" value="normalize" checked>Account by Proportion<br>
 				    <a href="javascript:;" id="grabData">Download Graph Data</a>
                                     </fieldset>
