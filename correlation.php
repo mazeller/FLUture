@@ -15,6 +15,7 @@ $theme->drawHeader();
                             <legend>Options</legend>
                             <!-- Start Date: <input type="text" id="dateStart">
                                 End Date: <input type="text" id="dateEnd"> -->
+				    <a href="/#variables">Description of Variables</a>
                                     <br>
                                     <b>X Axis</b><br>
                                     <select id="axisx">
