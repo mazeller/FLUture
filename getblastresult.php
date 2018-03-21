@@ -124,36 +124,22 @@ for ($i = 0; $i <= count($blastHits); $i++)
 $table .= "</table>";
 
 //Process percentages
-//Return an assoc array with % represented in input array
-function getArrayProportions($arr)
-{
-	//Get unique values/ init vars
-	$uniqueValues = array_unique($arr);
-	$proportions = array();
-
-	//Iterate through unique values
-	for($i = 0; $i <= count($uniqueValues); $i++)
-	{
-		$proportions[$uniqueValues[$i]] = array_count_values($arr)[$uniqueValues[$i]];
-	}
-	
-	//Return proportions
-	return $proportions;
-}
-
-$stateProp = getArrayProportions($state);
-$haProp = getArrayProportions($haClade);
-$naProp = getArrayProportions($naClade);
+$stateProp = array_count_values($state);
+$haClade = array_count_values($haClade);
+$naProp = array_count_values($naClade);
 $stateCode = generatePieChart($stateProp,"stateChart");
-$haCode = generatePieChart($haProp,"haChart");
 $naCode = generatePieChart($naProp,"naChart");
 
+//Get most populous item from array
+$topClade = array_search(max($haClade),$haClade);
+
 //Send back to server
+echo "<br/><h2>This sequence is most likely from the following clade: " . $topClade . "</h2><br/>";
+echo count($state) . " sequences above 98% identity threshold<br/>";
 echo $table;
 
 echo "<script>";
 echo $stateCode;
-echo $haCode;
 echo $naCode;
 echo "</script>";
 ?>

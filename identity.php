@@ -11,7 +11,7 @@ $theme->addStyle(<<<CSS
     overflow: hidden;
 }
 .chartChild {
-    width: 33%;
+    width: 50%;
     float:left;
 }
 CSS
@@ -19,7 +19,11 @@ CSS
 $theme->drawHeader();
 ?>
 
-<h2 id="chartTitle">Sequence Identity Tool</h2>
+<h2 id="chartTitle">HA Sequence Identity Tool</h2>
+
+<p>
+The HA sequence identity tool uses BLAST to find similair hemagglutinin sequences in the ISU VDL data. Results are limited to greater than 98% identity, with at max 100 results returned. For a more complex analysis, please refer to the <a href="https://www.fludb.org/brc/blast.spg?method=ShowCleanInputPage&decorator=influenza">IRD BLAST tool</a>. 
+</p>
 
 <form id="target">
 <textarea rows="16" cols="100" id="sequences" placeholder="Paste sequences (fasta/plain text)">
@@ -36,9 +40,15 @@ Please wait, BLAST in progress...
 </div>
 
 <div id="wrapper">
-	<div id="stateChart" class="chartChild"></div>
-	<div id="haChart" class="chartChild"></div>
-	<div id="naChart" class="chartChild"></div>
+	<h2>Influenza cases in ISU FLUture with 98% or greater similarity to query sequence</h2>
+	<div class="chartChild">
+		<h3>State of Detection</h3>
+		<div id="stateChart" class="chartChild"></div>
+	</div>
+	<div class="chartChild">
+		<h3>Paired Neuraminidase</h3>
+		<div id="naChart" class="chartChild"></div>
+	</div>
 </div>
 <div id="results">
 
@@ -58,12 +68,14 @@ Please wait, BLAST in progress...
 $(document).ready(function() {
 	//Hide wait
 	$("#wait").hide();
+	$("#wrapper").hide();
         $("#submit").click(getBlastResult);
 });
 
 function getBlastResult() {
 	//Hide form, show wait
 	$("#wait").slideDown("slow");
+	$("#wrapper").show();
 	$("#sequences").prop("disabled", true);
 	
 	//Disconnect button
@@ -86,7 +98,7 @@ function getBlastResult() {
                         console.log(xhr);
                         console.log("Details: " + desc + "\nError:" + err);
 			$("#results").html("Server Error");
-                }
+			}
         });
 
         return;
