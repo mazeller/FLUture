@@ -134,7 +134,21 @@ $naCode = generatePieChart($naProp,"naChart");
 $topClade = array_search(max($haClade),$haClade);
 
 //Send back to server
-echo "<br/><h2>This sequence is most likely from the following clade: " . $topClade . "</h2><br/>";
+echo "<br/><h2>This sequence has the best BLAST match to: <spani style='color:red'>" . $topClade . "</span></h2><br/>";
+echo <<<EOF
+<div id="wrapper"> 
+        <h2>Influenza cases in ISU FLUture with 98% or greater similarity to query sequence</h2> 
+        <div class="chartChild"> 
+                <h3>State of Detection</h3> 
+                <div id="stateChart" class="chartChild"></div> 
+        </div> 
+        <div class="chartChild"> 
+                <h3>Paired Neuraminidase</h3> 
+                <div id="naChart" class="chartChild"></div> 
+        </div> 
+</div>
+EOF;
+
 echo count($state) . " sequences above 98% identity threshold<br/>";
 echo $table;
 

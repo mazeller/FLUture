@@ -39,7 +39,7 @@ The HA sequence identity tool uses BLAST to find similair hemagglutinin sequence
 Please wait, BLAST in progress...
 </div>
 
-<div id="wrapper">
+<!-- <div id="wrapper">
 	<h2>Influenza cases in ISU FLUture with 98% or greater similarity to query sequence</h2>
 	<div class="chartChild">
 		<h3>State of Detection</h3>
@@ -49,7 +49,7 @@ Please wait, BLAST in progress...
 		<h3>Paired Neuraminidase</h3>
 		<div id="naChart" class="chartChild"></div>
 	</div>
-</div>
+</div> -->
 <div id="results">
 
 </div>
