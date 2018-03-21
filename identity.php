@@ -2,9 +2,20 @@
 require 'autoload.php';
 $theme = new Sample\Theme('');
 $scripts = $theme->getOption('head_script');
-$scripts["file"] = array("/js/jquery.min.js","/js/jquery-ui.min.js");
+$scripts["file"] = array("/js/jquery.min.js","/js/jquery-ui.min.js","/js/c3.min.js","/js/d3.v3.min.js");
 $theme->setOption('head_script',$scripts,true);
 $theme->addStyle('{{asset_path}}/css/jquery-ui.css');
+$theme->addStyle(<<<CSS
+#wrapper {
+    width: 100%;
+    overflow: hidden;
+}
+.chartChild {
+    width: 33%;
+    float:left;
+}
+CSS
+, 'style');
 $theme->drawHeader();
 ?>
 
@@ -24,6 +35,11 @@ $theme->drawHeader();
 Please wait, BLAST in progress...
 </div>
 
+<div id="wrapper">
+	<div id="stateChart" class="chartChild"></div>
+	<div id="haChart" class="chartChild"></div>
+	<div id="naChart" class="chartChild"></div>
+</div>
 <div id="results">
 
 </div>
@@ -69,6 +85,7 @@ function getBlastResult() {
                 error: function(xhr, desc, err) {
                         console.log(xhr);
                         console.log("Details: " + desc + "\nError:" + err);
+			$("#results").html("Server Error");
                 }
         });
 
