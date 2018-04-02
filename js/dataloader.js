@@ -22,6 +22,23 @@ function getLastRecord(callback){
         });
 }
 
+//Get acc
+function getAccessions(callback){
+	//Request Data
+        $.ajax({
+                url: '/getdata.php',
+                type: 'post',
+                data: {'col': "accessions"},
+                success: function(data, status) {
+                        callback(data);
+                },
+                error: function(xhr, desc, err) {
+                        console.log(xhr);
+                        console.log("Details: " + desc + "\nError:" + err);
+                }
+        });
+}
+
 //Query for the data
 function getJsonData(xComponent, yComponent, callback) {
 	//Check if yComponents is array

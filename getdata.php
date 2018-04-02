@@ -20,6 +20,23 @@ else if($columns == "lastrecord")
 	echo json_encode($rows);
         return;
 }
+elseif($columns == "accessions")
+{
+	$rows = db_select("SELECT accession_id from `flu` WHERE accession_id != ''");
+
+	//flatten results
+	$accessionList = "";	
+	for($i == 0; $i <= count($rows); $i++)
+	{
+		$accessionList .= $rows[$i]['accession_id'] . ",\n";
+	}
+
+	//Send list
+	ob_start('ob_gzhandler');
+	echo $accessionList;
+	ob_end_flush();
+	return;
+}
 
 //Check Flags
 $whereClause = "WHERE research=0 ";

@@ -40,12 +40,15 @@ The incidence of flu positive cases that have been processed by the USDA/ISU-VDL
 Demonstrates the distribution of the hemagglutinin and neuraminidase subtype combinations over a period of time.<br>
 </p>
 
-<h2>Variables</h2>
+<a name="variables"><h2>Variables</h2></a>
 <p>
 The ISU <em>FLU</em>ture database curates information related to the individual swine cases. An explanation of each of the variables that ISU <em>FLU</em>ture allows searching for can be found below.<br/><br/>
 
 <strong>Age</strong><br/>
 The age of the pig at the time the flu positive sample was taken.<br/>
+
+<strong>Data Source</strong><br/>
+The stream that handeled the sequencing of the sample. Samples with cycle threshold (CT) values less then or equal to 25 are handled by the USDA stream, while samples with CT values less then or equal to 38 are processed by the ISU VDL stream. Samples with CT values above 38 are not sequenced.<br/>
 
 <strong>Day</strong><br/>
 The day of the year that the flu positive sample was taken.<br/>
@@ -73,9 +76,6 @@ The state that the pig was located in when the sample was taken for submission t
 
 <strong>Subtype</strong><br/>
 The subtype of the influenza virus, based on PCR identificatin of the hemagglutinin and neuraminidase proteins.<br/>
-
-<strong>Testing Facility</strong><br/>
-The stream that handeled the sequencing of the sample. Samples with cycle threshold (CT) values less then or equal to 25 are handled by the USDA stream, while samples with CT values less then or equal to 38 are processed by the ISU VDL stream. Samples with CT values above 38 are not sequenced.<br/>
 
 <strong>Week</strong><br/>
 The week of the year that the flu positive sample was taken.<br/>
