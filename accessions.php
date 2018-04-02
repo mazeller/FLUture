@@ -9,6 +9,11 @@ $theme->addStyle('{{asset_path}}/css/jquery-ui.css');
 $theme->drawHeader();
 ?>
 <h2>Retrieve Accessions</h2>
+
+<p>
+Cases submitted through the swine survelliance system have their sequences available through genbank. The accession number of the cases are provided for your convenience, and can be quickly accessed though geanbank's <a href="https://www.ncbi.nlm.nih.gov/genomes/FLU/Database/nph-select.cgi?go=database">Influenza Virus Resource tool</a>.
+</p>
+
 <div>
 	<a href="javascript:;" id="grabData" class="wd-Button--default">Download Graph Data</a>
 </div>
