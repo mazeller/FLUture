@@ -22,7 +22,7 @@ else if($columns == "lastrecord")
 }
 elseif($columns == "accessions")
 {
-	$rows = db_select("SELECT accession_id from `flu` WHERE accession_id != ''");
+	$rows = db_select("SELECT accession_id from `flu` WHERE accession_id != '' AND LEFT(accession_id,2) = 'A0';");	#Adding the conditional AND to ensure USDA barcode
 
 	//flatten results
 	$accessionList = "";	

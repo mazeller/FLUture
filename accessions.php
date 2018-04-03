@@ -11,7 +11,7 @@ $theme->drawHeader();
 <h2>Retrieve Accessions</h2>
 
 <p>
-Cases submitted through the swine survelliance system have their sequences available through genbank. The accession number of the cases are provided for your convenience, and can be quickly accessed though geanbank's <a href="https://www.ncbi.nlm.nih.gov/genomes/FLU/Database/nph-select.cgi?go=database">Influenza Virus Resource tool</a>.
+Sequences for cases submitted through the <a href ="https://www.aphis.usda.gov/aphis/ourfocus/animalhealth/animal-disease-information/swine-disease-information/ct_swine_health_monitoring_surveillance">swine surveillance system</a> are available through GenBank. The United States Department of Agriculture (USDA) barcodes of these cases are provided for your convenience, and can be quickly accessed through a keyword search in either <a href="https://www.ncbi.nlm.nih.gov/genomes/FLU/Database/nph-select.cgi?go=database">GenBank’s Influenza Virus Resource Tool (IVR)</a> or the <a href="https://www.fludb.org/">Influenza Research Database (IRD)</a>.
 </p>
 
 <div>
