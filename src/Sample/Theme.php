@@ -33,8 +33,8 @@ class Theme extends \IastateTheme\Theme
                     'uri' => '/heatmap.php',
               	),
                 array(
-                    'label' => 'Contact',
-                    'uri' => '/contact.php',
+                    'label' => 'About',
+                    'uri' => '/about.php',
                 ),
 		array(
                     'label' => 'H3N2 Awareness',
