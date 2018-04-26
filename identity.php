@@ -22,7 +22,7 @@ $theme->drawHeader();
 <h2 id="chartTitle">HA Sequence Identity Tool</h2>
 
 <p>
-The HA sequence identity tool uses BLAST to find similair hemagglutinin sequences in the ISU VDL data. Results are limited to greater than 98% identity, with at max 100 results returned. For a more complex analysis, please refer to the <a href="https://www.fludb.org/brc/blast.spg?method=ShowCleanInputPage&decorator=influenza">IRD BLAST tool</a>. 
+The HA sequence identity tool uses BLAST to find similair hemagglutinin sequences in the ISU VDL data. Results are limited to greater than 96% identity, with at max 100 results returned. For a more complex analysis, please refer to the <a href="https://www.fludb.org/brc/blast.spg?method=ShowCleanInputPage&decorator=influenza">IRD BLAST tool</a>. 
 </p>
 
 <form id="target">
@@ -40,7 +40,7 @@ Please wait, BLAST in progress...
 </div>
 
 <!-- <div id="wrapper">
-	<h2>Influenza cases in ISU FLUture with 98% or greater similarity to query sequence</h2>
+	<h2>Influenza cases in ISU FLUture with 96% or greater similarity to query sequence</h2>
 	<div class="chartChild">
 		<h3>State of Detection</h3>
 		<div id="stateChart" class="chartChild"></div>

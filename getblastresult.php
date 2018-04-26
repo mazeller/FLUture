@@ -50,11 +50,11 @@ $path = $path['uri'];
 //Default NT, unless type = AA
 if($blast_type == "aa")
 {
-        $result = shell_exec("/opt/ncbi-blast-2.7.1+/bin/blastp -query " . $path . " -db /var/www/BLASTdb/vdl_flu_aa -outfmt \"6 sseqid pident\" -perc_identity 98 -max_target_seqs=100 2>&1");
+        $result = shell_exec("/opt/ncbi-blast-2.7.1+/bin/blastp -query " . $path . " -db /var/www/BLASTdb/vdl_flu_aa -outfmt \"6 sseqid pident\" -perc_identity 96 -max_target_seqs=100 2>&1");
 }
 else
 {
-	$result = shell_exec("/opt/ncbi-blast-2.7.1+/bin/blastn -query " . $path . " -db /var/www/BLASTdb/vdl_flu_nt -outfmt \"6 sseqid pident\" -perc_identity 98 -max_target_seqs=100 2>&1");
+	$result = shell_exec("/opt/ncbi-blast-2.7.1+/bin/blastn -query " . $path . " -db /var/www/BLASTdb/vdl_flu_nt -outfmt \"6 sseqid pident\" -perc_identity 96 -max_target_seqs=100 2>&1");
 }
 
 //Delete temp
