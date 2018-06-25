@@ -57,7 +57,7 @@ function getJsonData(xComponent, yComponent, callback) {
  	fields = fields.replaceAll("Year","received_date");
 	fields = fields.replaceAll("WeekNum","received_date");
 	fields = fields.replaceAll("H1","H1,H3,N1,N2");
-	
+	fields = fields.replaceAll("barcode","accession_id");	
 	//Request data
 	$.ajax({
 		url: '/getdata.php',
@@ -96,13 +96,13 @@ function preProcess(xComponent, yComponent, data, callback, flags = "") {
 				if (yComponent[j] == "age_days") //Special case age
 				{	
 			                age = yData;
-			                if (age >= 0 & age < 5)
+			                if (age > 0 & age < 5)
 			                    yData = "neonate";
 			                if (age >= 5 & age < 22)
 			                    yData = "suckling";
 			                if (age >= 22 & age < 92)
 			                    yData = "nursery";
-			                if (age >= 93 & age < 240)
+			                if (age >= 92 & age < 240)
 			                    yData = "grow finisher";
 			                if (age >= 240)
 			                    yData = "adult";
