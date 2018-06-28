@@ -60,7 +60,7 @@ $theme->drawHeader();
                                     <input type="checkbox" id="stack" value="stack" checked>Stack columns<br>
                                     <input type="checkbox" id="normalize" value="normalize" checked>Account by Proportion<br>
 				    <a href="javascript:;" id="grabData">Download Graph Data</a><br>
-        			    <a href="javascript:;" id="grabBarcode">Download Public USDA Barcodes</a>
+        			    <a href="javascript:;" id="grabBarcode">Download Sequence Identifiers</a>
                                     </fieldset>
                     </div>
 <script>

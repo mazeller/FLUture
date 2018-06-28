@@ -42,7 +42,7 @@ $theme->drawHeader();
 
 <div id="slider"></div>
 <a href="javascript:;" id="grabData">Download Graph Data</a><br>
-<a href="javascript:;" id="grabBarcode">Download Public USDA Barcodes</a>
+<a href="javascript:;" id="grabBarcode">Download Sequence Identifiers</a>
 
 <script>
 //Global access to data
