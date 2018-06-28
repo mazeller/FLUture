@@ -59,7 +59,8 @@ $theme->drawHeader();
                                     <strong>Display Options</strong><br>
                                     <input type="checkbox" id="stack" value="stack" checked>Stack columns<br>
                                     <input type="checkbox" id="normalize" value="normalize" checked>Account by Proportion<br>
-				    <a href="javascript:;" id="grabData">Download Graph Data</a>
+				    <a href="javascript:;" id="grabData">Download Graph Data</a><br>
+        			    <a href="javascript:;" id="grabBarcode">Download Public USDA Barcodes</a>
                                     </fieldset>
                     </div>
 <script>
@@ -72,6 +73,7 @@ $(document).ready(function() {
 	$("#axisy").change(parse);
 	$("#stack").change(parse);
 	$("#grabData").click(grabData);
+	$("#grabBarcode").click(grabBarcode);
 	$("#normalize").change(parse);
 
 	$('#dateEnd').datepicker({
@@ -97,10 +99,19 @@ function grabData() {
     download("data.csv",text);
 }
 
+//Download Data Summaries
+function grabBarcode() {
+    //Convert JSON to CSV format (https://stackoverflow.com/questions/11257062/converting-json-object-to-csv-format-in-javascript)
+    var barcodeCSV = JSON.stringify(barcodeData);
+    barcodeCSV = ConvertToCSV(barcodeCSV);
+    var text = "," + xAxis.toString() + "\n" + barcodeCSV;
+    download("barcode.csv",text);
+}
+
 //Pull out data specific to Type xData State
 function requestData() {
     var xComponent = "ha_clade";
-    var yComponent = ["na_clade","H1","H3","N1","N2","received_date","age_days","weight_pounds","site_state","testing_facility","sequence_specimen","pcr_specimen"];
+    var yComponent = ["barcode","na_clade","H1","H3","N1","N2","received_date","age_days","weight_pounds","site_state","testing_facility","sequence_specimen","pcr_specimen"];
         
     getJsonData(xComponent, yComponent, parse, flags="");
 }
@@ -113,7 +124,6 @@ function parse(rdata) {
     if(rdata.constructor.name != 'Array')
             rdata = data;
     data = rdata;
-
     var xComponent = $("#axisx").val();
     var yComponent = $("#axisy").val();
     var normalize = $("#normalize").is(":checked");
@@ -124,6 +134,7 @@ function parse(rdata) {
 
     //Create primary structure
     var flu = {};
+    var barcode = {};
     var skipList = ["","-1","USA", undefined];
     
     for (var key in rdata) {
@@ -134,16 +145,23 @@ function parse(rdata) {
 	//Make sure x axis exists
 	if (!flu.hasOwnProperty(rdata[key][yComponent])){
 		flu[rdata[key][yComponent]] = {};
+		barcode[rdata[key][yComponent]] = {};
 		groups.push(rdata[key][yComponent]);
 	}		
 	//Make sure y axis exists
         if (!flu[rdata[key][yComponent]].hasOwnProperty(rdata[key][xComponent])){
                 flu[rdata[key][yComponent]][rdata[key][xComponent]] = 0;
+		barcode[rdata[key][yComponent]][rdata[key][xComponent]] = "";
 		//If unique, add to x axis
 		if(xAxis.indexOf(rdata[key][xComponent]) == -1)
 	                xAxis.push(rdata[key][xComponent]);
         }
 	flu[rdata[key][yComponent]][rdata[key][xComponent]]++;
+
+	//Add barcode to list
+	if(skipList.indexOf(rdata[key]["accession_id"]) == -1){
+		barcode[rdata[key][yComponent]][rdata[key][xComponent]]+= " " + rdata[key]["accession_id"];
+	}
     }
 
     //Correctly sort per data type (numerical | lexigraphical | colloquial )
@@ -210,7 +228,26 @@ function parse(rdata) {
             }
             graphData.push(tempData);
         }
-   }
+    }
+
+    //Put barcodes in correct format
+    barcodeData = [];
+        for (var key in barcode) {
+            tempData = [];
+            if (barcode.hasOwnProperty(key)) {
+                tempData.push(key);
+                var obj = barcode[key];
+
+                for (var i in xAxis) {
+                    if (obj[xAxis[i]] != null)
+                        tempData.push(obj[xAxis[i]]);
+                    else
+                        tempData.push(null);
+                }
+            }
+            barcodeData.push(tempData);
+    }
+
     //Graph it
     graphFlu(graphData, xAxis, groups, xComponent, yComponent);
 }
