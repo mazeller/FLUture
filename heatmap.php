@@ -41,7 +41,8 @@ $theme->drawHeader();
 <div id="heatmap"></div>
 
 <div id="slider"></div>
-<a href="javascript:;" id="grabData">Download Graph Data</a>
+<a href="javascript:;" id="grabData">Download Graph Data</a><br>
+<a href="javascript:;" id="grabBarcode">Download Public USDA Barcodes</a>
 
 <script>
 //Global access to data
@@ -51,11 +52,23 @@ var data;
 $(document).ready(function() {
 	//Add hook for data download link
 	$("#grabData").click(grabData);
+	$("#grabBarcode").click(grabBarcode);
 
 	//Load in data one time
 	requestData();
 	drawTimeBar()
 });
+
+//Download Data Summaries
+function grabBarcode() {
+    //Convert JSON to CSV format (https://stackoverflow.com/questions/11257062/converting-json-object-to-csv-format-in-javascript)
+    var h1barcodeCSV = JSON.stringify(h1barcodeData);
+    h1barcodeCSV = ConvertToCSV(h1barcodeCSV);
+    var h3barcodeCSV = JSON.stringify(h3barcodeData);
+    h3barcodeCSV = ConvertToCSV(h3barcodeCSV);
+    var text = "," + nh1clade.toString() + "\n" + h1barcodeCSV + "\n\n" + "," + nh3clade.toString() + "\n" + h3barcodeCSV;
+    download("barcode.csv",text);
+}
 
 //Download Data Summaries
 function grabData() {
@@ -75,7 +88,6 @@ function grabData() {
 function tabulateData(haclade, naclade, haData) {
         var haTable = "";
 
-console.log(haData);
 	//Sort weirdly/alphabetically
         haclade.sort(function (a, b) {
                 if(a[0] == 'g' | a[0] == 'p') { a = 'c' + a; }
@@ -92,8 +104,6 @@ console.log(haData);
                 for (var key2 in naclade)
                 {
                         //Check if data exists and if so, print it
-			console.log(haclade[key] + "." + naclade[key2]);
-			console.log(haData[haclade[key] + "." + naclade[key2]]);
 			if ( haData[haclade[key] + "." + naclade[key2]]!= null ) {
                                 haTable += haData[haclade[key] + "." + naclade[key2]] + ",";
                         }
@@ -123,7 +133,7 @@ console.log(haData);
 //Pull out data specific to Type xData State
 function requestData() {
     var xComponent = "ha_clade";
-    var yComponent = ["na_clade","H1","H3","N1","N2","received_date"];
+    var yComponent = ["barcode","na_clade","H1","H3","N1","N2","received_date"];
 	
     getJsonData(xComponent, yComponent, parse, flags="hc");
 }
@@ -135,6 +145,8 @@ function parse(requestData) {
 		requestData = flu;
 	if("H1" in requestData[0])
 		flu = requestData;	
+	var h1Barcode = {};
+	var h3Barcode = {};
 
 	//Gather numbers between dates to color states
 	h3Data = {};
@@ -147,8 +159,6 @@ function parse(requestData) {
 	h3Size = 0;
 
 	//Sort by dates
-	//var sliderBounds = $("#slider").dateRangeSlider("values");
-	//console.log(sliderBounds.min.toString() + " " + sliderBounds.max.toString());
 	var sliderBounds = $("#slider").dateRangeSlider("values");	
 	for (var key in requestData)
 	{
@@ -163,42 +173,106 @@ function parse(requestData) {
 		if(fluCase.H1 == "1") {
 			//Remove specific  clades
 			if(fluCase.ha_clade != "cluster_IVA" & fluCase.ha_clade != "cluster_IVE" & fluCase.ha_clade != "2010-human-like"  & fluCase.ha_clade != "human-to-swine-2016" & fluCase.ha_clade != "cluster_IV") {
-				if(!(fluCase.ha_clade + "." + fluCase.na_clade in h1Data)){
-					h1Data[fluCase.ha_clade + "." + fluCase.na_clade] = 1;	
-				}
-				else {
-					h1Data[fluCase.ha_clade + "." + fluCase.na_clade] += 1;
-				}
-			
 				//Capture H1 Clades
 				if(h1clade.indexOf(fluCase.ha_clade) < 0)
+				{
 		                        h1clade.push(fluCase.ha_clade);
-	
+					h1Barcode[fluCase.ha_clade] = {};
+				}
+
 	        	        //Capture NA clades
         		        if(nh1clade.indexOf(fluCase.na_clade) < 0)
+				{
 	                	        nh1clade.push(fluCase.na_clade);
+					h1Barcode[fluCase.ha_clade][fluCase.na_clade] = "";
+				}
+
+				//Create barcode data
+                                if(fluCase.accession_id != undefined)
+	                        {
+         	                	if(h1Barcode[fluCase.ha_clade][fluCase.na_clade] == undefined)
+                	                	h1Barcode[fluCase.ha_clade][fluCase.na_clade] = fluCase.accession_id + " ";
+                                       	else
+                        	        	h1Barcode[fluCase.ha_clade][fluCase.na_clade] += fluCase.accession_id + " ";
+                                }
+
+				//Count H1.Nx pairings
+				if(!(fluCase.ha_clade + "." + fluCase.na_clade in h1Data))
+					h1Data[fluCase.ha_clade + "." + fluCase.na_clade] = 1;
+				else 
+					h1Data[fluCase.ha_clade + "." + fluCase.na_clade] += 1;
 			}
 		}
+
                 if(fluCase.H3 == "1") {
                         //Remove specific  clades
                         if(fluCase.ha_clade != "delta1a" & fluCase.ha_clade != "delta1b" & fluCase.ha_clade != "delta2" & fluCase.ha_clade != "gamma-like" & fluCase.ha_clade != "gamma" & fluCase.ha_clade != "alpha" & fluCase.ha_clade != "beta") {
-	                        if(!(fluCase.ha_clade + "." + fluCase.na_clade in h3Data)){
-        	                        h3Data[fluCase.ha_clade + "." + fluCase.na_clade] = 1;
-                	        }
-	                        else {
-        	                        h3Data[fluCase.ha_clade + "." + fluCase.na_clade] += 1;
-                	        }
-
 	                        //Capture H3 Clades
         	                if(h3clade.indexOf(fluCase.ha_clade) < 0)
+				{
                 	                h3clade.push(fluCase.ha_clade);
-                
+					h3Barcode[fluCase.ha_clade] = {};
+                		}
+
 		                //Capture NA clades
 		                if(nh3clade.indexOf(fluCase.na_clade) < 0)
+				{
 		                        nh3clade.push(fluCase.na_clade);
+					h3Barcode[fluCase.ha_clade][fluCase.na_clade] = "";
+				}
+
+                                //Create barcode data
+                                if(fluCase.accession_id != undefined)
+                                {
+                                        if(h3Barcode[fluCase.ha_clade][fluCase.na_clade] == undefined)
+                                                h3Barcode[fluCase.ha_clade][fluCase.na_clade] = fluCase.accession_id + " ";
+                                        else
+                                                h3Barcode[fluCase.ha_clade][fluCase.na_clade] += fluCase.accession_id + " ";
+                                }
+
+				//Count H3.Nx pairings
+	                        if(!(fluCase.ha_clade + "." + fluCase.na_clade in h3Data))
+        	                        h3Data[fluCase.ha_clade + "." + fluCase.na_clade] = 1;
+	                        else 
+        	                        h3Data[fluCase.ha_clade + "." + fluCase.na_clade] += 1;
 			}
 		}
 	}
+
+	//Put barcodes in correct format
+	h1barcodeData = [];
+	for (var key in h1Barcode) {
+        	tempData = [];
+        	if (h1Barcode.hasOwnProperty(key)) {
+                	tempData.push(key);
+                	var obj = h1Barcode[key];
+
+                	for (var i in nh1clade) {
+                    		if (obj[nh1clade[i]] != null)
+                        		tempData.push(obj[nh1clade[i]]);
+                    		else
+                        		tempData.push(null);
+                	}
+        	}
+		h1barcodeData.push(tempData);
+	}
+
+        h3barcodeData = [];
+        for (var key in h3Barcode) {
+                tempData = [];
+                if (h3Barcode.hasOwnProperty(key)) {
+                        tempData.push(key);
+                        var obj = h3Barcode[key];
+
+                        for (var i in nh3clade) {
+                                if (obj[nh3clade[i]] != null)
+                                        tempData.push(obj[nh3clade[i]]);
+                                else
+                                        tempData.push(null);
+                        }
+                }
+                h3barcodeData.push(tempData);
+        }
 
 	//Draw tables and tools
 	$("#heatmap").empty();
