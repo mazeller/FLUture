@@ -46,7 +46,7 @@ $theme->drawHeader();
                                     </select><br>
 				    <strong>Display Options</strong><br>
 				    <input type="checkbox" id="normalize" value="normalize">Account by Proportion<br>
-				    <!-- <a href="javascript:;" id="grabData">Download Graph Data</a><br> -->
+				    <a href="javascript:;" id="grabData">Download Graph Data</a><br>
 			    <a href="javascript:;" id="grabBarcode">Download Public USDA Barcodes</a>
                                     </fieldset>
                     </div>
@@ -173,7 +173,7 @@ function parse(rdata) {
 	flu[rdata[key][yComponent]][useDate]++;
         //Add barcode to list
         if(skipList.indexOf(rdata[key]["accession_id"]) == -1){
-                barcode[rdata[key][yComponent]][rdata[key][xComponent]]+= " " + rdata[key]["accession_id"];
+        	barcode[rdata[key][yComponent]][useDate] += " " + rdata[key]["accession_id"];
         }
     }
 console.log(barcode);
