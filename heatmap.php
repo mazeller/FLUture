@@ -191,9 +191,9 @@ function parse(requestData) {
                                 if(fluCase.accession_id != undefined)
 	                        {
          	                	if(h1Barcode[fluCase.ha_clade][fluCase.na_clade] == undefined)
-                	                	h1Barcode[fluCase.ha_clade][fluCase.na_clade] = fluCase.accession_id + " ";
+                	                	h1Barcode[fluCase.ha_clade][fluCase.na_clade] = fluCase.accession_id + ",";
                                        	else
-                        	        	h1Barcode[fluCase.ha_clade][fluCase.na_clade] += fluCase.accession_id + " ";
+                        	        	h1Barcode[fluCase.ha_clade][fluCase.na_clade] += fluCase.accession_id + ",";
                                 }
 
 				//Count H1.Nx pairings
@@ -225,9 +225,9 @@ function parse(requestData) {
                                 if(fluCase.accession_id != undefined)
                                 {
                                         if(h3Barcode[fluCase.ha_clade][fluCase.na_clade] == undefined)
-                                                h3Barcode[fluCase.ha_clade][fluCase.na_clade] = fluCase.accession_id + " ";
+                                                h3Barcode[fluCase.ha_clade][fluCase.na_clade] = fluCase.accession_id + ",";
                                         else
-                                                h3Barcode[fluCase.ha_clade][fluCase.na_clade] += fluCase.accession_id + " ";
+                                                h3Barcode[fluCase.ha_clade][fluCase.na_clade] += fluCase.accession_id + ",";
                                 }
 
 				//Count H3.Nx pairings
@@ -241,6 +241,7 @@ function parse(requestData) {
 
 	//Put barcodes in correct format
 	h1barcodeData = [];
+console.log(h1Barcode);
 	for (var key in h1Barcode) {
         	tempData = [];
         	if (h1Barcode.hasOwnProperty(key)) {
@@ -249,7 +250,10 @@ function parse(requestData) {
 
                 	for (var i in nh1clade) {
                     		if (obj[nh1clade[i]] != null)
+				{
+					obj[nh1clade[i]] = "\"" + obj[nh1clade[i]] + "\"";
                         		tempData.push(obj[nh1clade[i]]);
+				}
                     		else
                         		tempData.push(null);
                 	}
@@ -266,7 +270,10 @@ function parse(requestData) {
 
                         for (var i in nh3clade) {
                                 if (obj[nh3clade[i]] != null)
+				{
+					obj[nh3clade[i]] = "\"" + obj[nh3clade[i]] + "\"";
                                         tempData.push(obj[nh3clade[i]]);
+				}
                                 else
                                         tempData.push(null);
                         }

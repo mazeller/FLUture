@@ -151,7 +151,7 @@ function parse(rdata) {
 	//Make sure y axis exists
         if (!flu[rdata[key][yComponent]].hasOwnProperty(rdata[key][xComponent])){
                 flu[rdata[key][yComponent]][rdata[key][xComponent]] = 0;
-		barcode[rdata[key][yComponent]][rdata[key][xComponent]] = "";
+		barcode[rdata[key][yComponent]][rdata[key][xComponent]] = "\"";
 		//If unique, add to x axis
 		if(xAxis.indexOf(rdata[key][xComponent]) == -1)
 	                xAxis.push(rdata[key][xComponent]);
@@ -160,7 +160,7 @@ function parse(rdata) {
 
 	//Add barcode to list
 	if(skipList.indexOf(rdata[key]["accession_id"]) == -1){
-		barcode[rdata[key][yComponent]][rdata[key][xComponent]]+= " " + rdata[key]["accession_id"];
+		barcode[rdata[key][yComponent]][rdata[key][xComponent]]+= rdata[key]["accession_id"] + ",";;
 	}
     }
 
@@ -240,7 +240,10 @@ function parse(rdata) {
 
                 for (var i in xAxis) {
                     if (obj[xAxis[i]] != null)
+{
+			obj[xAxis[i]] += "\"";
                         tempData.push(obj[xAxis[i]]);
+}
                     else
                         tempData.push(null);
                 }

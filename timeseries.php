@@ -97,7 +97,7 @@ function grabBarcode() {
     //Convert JSON to CSV format (https://stackoverflow.com/questions/11257062/converting-json-object-to-csv-format-in-javascript)
     var barcodeCSV = JSON.stringify(barcodeData);
     barcodeCSV = ConvertToCSV(barcodeCSV);
-    var text = "," + xAxis.toString() + "\n" + barcodeCSV;
+    var text = xAxis.toString() + "\n" + barcodeCSV;
     download("barcode.csv",text);
 }
 
@@ -173,7 +173,7 @@ function parse(rdata) {
 	flu[rdata[key][yComponent]][useDate]++;
         //Add barcode to list
         if(skipList.indexOf(rdata[key]["accession_id"]) == -1){
-        	barcode[rdata[key][yComponent]][useDate] += " " + rdata[key]["accession_id"];
+        	barcode[rdata[key][yComponent]][useDate] += rdata[key]["accession_id"] + ",";
         }
     }
 console.log(barcode);
@@ -228,7 +228,10 @@ console.log(barcode);
 
                 for (var i in xAxis) {
                     if (obj[xAxis[i]] != null)
+		    {
+			obj[xAxis[i]] = "\"" + obj[xAxis[i]] + "\"";
                         tempData.push(obj[xAxis[i]]);
+		    }
                     else
                         tempData.push(null);
                 }
