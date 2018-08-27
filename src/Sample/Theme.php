@@ -33,6 +33,10 @@ class Theme extends \IastateTheme\Theme
                     'uri' => '/heatmap.php',
               	),
                 array(
+                    'label' => 'HA Identity Tool',
+                    'uri' => '/identity.php',
+              	),
+                array(
                     'label' => 'About',
                     'uri' => '/about.php',
                 ),
@@ -121,7 +125,7 @@ class Theme extends \IastateTheme\Theme
 
     
   <div class="content">
-    <p><img alt="" src="http://cvmvdl-dev.cvm.iastate.edu/sites/default/files/vdl/AAVLD_logo.jpg" style="width: 86px; height: 66px;"></p>
+    <p><img alt="" src="https://vetmed.iastate.edu/sites/default/files/vdl/AAVLD_logo.jpg" style="width: 86px; height: 66px;"></p>
   </div>
 </div>
   </div>

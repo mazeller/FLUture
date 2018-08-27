@@ -19,7 +19,8 @@ $theme->drawHeader();
 <p>515-294-1950&nbsp;(Mon-Fri, 8 am - 5 pm CST)</p>
 
 <h2>By Email</h2>
-<p><span style="unicode-bidi:bidi-override; direction: rtl;">ude.etatsai@rellezam</span></p>
+<p><b>Michael Zeller</b> <span style="unicode-bidi:bidi-override; direction: rtl;">ude.etatsai@rellezam</span><br/>
+<b>Phillip Gauger DVM, PhD</b> <span style="unicode-bidi:bidi-override; direction: rtl;">ude.etatsai@reguagcp</span></p>
 
 <h2>By Mail</h2>
 <p>Veterinary Diagnostic Laboratory<br>
