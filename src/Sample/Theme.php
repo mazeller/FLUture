@@ -33,6 +33,10 @@ class Theme extends \IastateTheme\Theme
                     'uri' => '/heatmap.php',
               	),
                 array(
+                    'label' => 'HA Identity Tool',
+                    'uri' => '/identity.php',
+              	),
+                array(
                     'label' => 'About',
                     'uri' => '/about.php',
                 ),
