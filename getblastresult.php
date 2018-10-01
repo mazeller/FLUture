@@ -109,6 +109,8 @@ for ($i = 0; $i <= count($blastHits); $i++)
 		//If the %identity is too low, break assuming results are in order. This is mainly for blastp, which perc_identity does not work
 		if((float)$hits[7] < 96.0)
 		{
+			if($i ==0)
+				$no_result_flag = 1;
 			break;
 		}
 
@@ -139,6 +141,11 @@ for ($i = 0; $i <= count($blastHits); $i++)
 			$haClade[] = $hits[$j];
 		if($j == 6)
 			$naClade[] = $hits[$j];
+	}
+	if($no_result_flag == 1)
+	{
+		echo "No results were returned";
+		return;
 	}
 
 	//Close row
