@@ -23,10 +23,7 @@ EOF;
 	$jsCode .= $stringProp;
 	$jsCode .= <<<EOF
         ],
-        type : 'pie',
-        onclick: function (d, i) { console.log("onclick", d, i); },
-        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+        type : 'pie'
     }
 });
 EOF;
@@ -50,11 +47,11 @@ $path = $path['uri'];
 //Default NT, unless type = AA
 if($blast_type == "aa")
 {
-        $result = shell_exec("/opt/ncbi-blast-2.7.1+/bin/blastp -query " . $path . " -db /var/www/BLASTdb/vdl_flu_aa -outfmt \"6 sseqid pident\" -max_target_seqs=100 2>&1");
+        $result = shell_exec("/opt/ncbi-blast-2.7.1+/bin/blastp -query " . $path . " -db /var/www/BLASTdb/vdl_flu_aa -outfmt \"6 sseqid pident\" -num_alignments=100 2>&1");
 }
 else
 {
-	$result = shell_exec("/opt/ncbi-blast-2.7.1+/bin/blastn -query " . $path . " -db /var/www/BLASTdb/vdl_flu_nt -outfmt \"6 sseqid pident\" -perc_identity 96 -max_target_seqs=100 2>&1");
+	$result = shell_exec("/opt/ncbi-blast-2.7.1+/bin/blastn -query " . $path . " -db /var/www/BLASTdb/vdl_flu_nt -outfmt \"6 sseqid pident\" -perc_identity 96 -num_alignments=100 2>&1");
 }
 
 //Delete temp
@@ -71,9 +68,27 @@ $blastHits = explode("\n", $result);
 if(count($blastHits) < 2)
 {
 	//Send error message
-	echo "<p>There was a problem with the input provided.</p>";
+	echo "<p>No results were returned.</p>";
 	//Exit gracefully
 	return;
+}
+
+//Finer error handeling - Empty search
+if($blastHits[0] == "Warning: [blastn] Query is Empty!" | $blastHits[0] == "Warning: [blastp] Query is Empty!")
+{
+	//Send error message
+	echo "<p>Empty query submitted.</p>";
+	//Exit gracefully
+	return;
+}
+
+//Invalid searches
+if(strpos($blastHits[0], "FASTA-Reader: Ignoring invalid residues at position") !== false)
+{
+        //Send error message
+        echo "<p>Potentially invalid characters detected.</p>";
+        //Exit gracefully
+        return;	
 }
 
 //Init arrays of interest
