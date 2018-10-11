@@ -102,7 +102,8 @@ for ($i = 0; $i <= count($blastHits); $i++)
 {
 	//Table row
 	$table .= "<tr>";
-
+	
+	$no_result_flag = 0;
 	$hits = explode("+", $blastHits[$i]);
 	for ($j = 1; $j < count($hits); $j++)	//This j starts at 1 to leave out db id, less then the count to leave off blank row
 	{
