@@ -40,10 +40,10 @@ class Theme extends \IastateTheme\Theme
                     'label' => 'About',
                     'uri' => '/about.php',
                 ),
-		/*array(
-                    'label' => 'H3N2 Awareness',
-                    'uri' => 'https://vetmed.iastate.edu/story/vdl-h3n2-transmission',
-                ),*/
+		array(
+                    'label' => 'General Influenza Information',
+                    'uri' => 'https://library.pork.org/media/?mediaId=01DDE7D8-BA0E-4253-9A39D06E90FE17EA',
+                ),
 
                 /*array(
                     'label' => '3D View',
