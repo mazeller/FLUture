@@ -30,7 +30,7 @@ $theme->drawHeader();
                                         Ames, IA 50011-1134</p>
 
 <br>
-<h1>Files for the 2018 MckKean Swine Disease Workshop</h1>
+<h1>Files for the 2018 McKean Swine Disease Workshop</h1>
 <a href = "/files/tutorial2018.zip">Download</a>
 </div>
 
