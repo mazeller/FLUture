@@ -80,6 +80,8 @@ function grabData() {
 	text += "\n\nCount of H3 and NA combinations\n";	
 	text += tabulateData(h3clade, nh3clade, h3Data, "Count of H3 and NA combinations");
 
+    text += "\n\n\"If you use data provided by ISU FLUture in your work, please credit in the following format;\"\n\"Zeller, M. A., Anderson, T. K., Walia, R. W., Vincent, A. L., &amp; Gauger, P. C. (2018). ISU FLUture: a veterinary diagnostic laboratory web-based platform to monitor the temporal genetic patterns of Influenza A virus in swine. BMC bioinformatics, 19(1), 397.\"\n\"(data retrieved <?php echo (new DateTime())->format('d M, Y');?>).\"";
+
 	download("data.csv",text);
 }
 

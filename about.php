@@ -12,8 +12,10 @@ $theme->drawHeader();
 <div class="content">
 
 <h1>How to Cite</h1>
-<p>If you use data provided by ISU <i>FLU</i>ture in your work, please credit in the following format;<br/><br/>  ISU <i>FLU</i>ture, http://influenza.cvm.iastate.edu, (data retrieved <?php echo (new DateTime())->format('d M, Y');?>).</p>
-<p>Citation is subject to change pending publication.</p>
+<p>If you use data provided by ISU <i>FLU</i>ture in your work, please credit in the following format;<br/><br/>  
+Zeller, M. A., Anderson, T. K., Walia, R. W., Vincent, A. L., &amp; Gauger, P. C. (2018). ISU FLUture: a veterinary diagnostic laboratory web-based platform to monitor the temporal genetic patterns of Influenza A virus in swine. <i>BMC bioinformatics</i>, <i>19</i>(1), 397.
+(data retrieved <?php echo (new DateTime())->format('d M, Y');?>).</p>
+
 <h1>Contact</h1>
 <h2>By Phone</h2>
 <p>515-294-1950&nbsp;(Mon-Fri, 8 am - 5 pm CST)</p>
