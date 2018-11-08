@@ -67,6 +67,8 @@ function grabBarcode() {
     var h3barcodeCSV = JSON.stringify(h3barcodeData);
     h3barcodeCSV = ConvertToCSV(h3barcodeCSV);
     var text = "," + nh1clade.toString() + "\n" + h1barcodeCSV + "\n\n" + "," + nh3clade.toString() + "\n" + h3barcodeCSV;
+    text += "\n\n\"If you use data provided by ISU FLUture in your work, please credit in the following format;\"\n\"Zeller, M. A., Anderson, T. K., Walia, R. W., Vincent, A. L., &amp; Gauger, P. C. (2018). ISU FLUture: a veterinary diagnostic laboratory web-based platform to monitor the temporal genetic patterns of Influenza A virus in swine. BMC bioinformatics, 19(1), 397.\"\n\"(data retrieved <?php echo (new DateTime())->format('d M, Y');?>).\"";
+
     download("barcode.csv",text);
 }
 
