@@ -383,26 +383,28 @@ function cladeToNumber(cladeString) {
                 clade = 10;
         if (cladeString == "pdmH1")
                 clade = 11;
+	if (cladeString == "cluster_I")
+		clade = 12;
 	if (cladeString == "cluster_IV")
-                clade = 12;
-        if (cladeString == "cluster_IVA")
                 clade = 13;
-        if (cladeString == "cluster_IVB")
+        if (cladeString == "cluster_IVA")
                 clade = 14;
-        if (cladeString == "cluster_IVC")
+        if (cladeString == "cluster_IVB")
                 clade = 15;
-        if (cladeString == "cluster_IVD")
+        if (cladeString == "cluster_IVC")
                 clade = 16;
-        if (cladeString == "cluster_IVE")
+        if (cladeString == "cluster_IVD")
                 clade = 17;
-        if (cladeString == "cluster_IVF")
+        if (cladeString == "cluster_IVE")
                 clade = 18;
-        if (cladeString == "2010-human-like")
+        if (cladeString == "cluster_IVF")
                 clade = 19;
+        if (cladeString == "2010-human-like")
+                clade = 20;
 	if (cladeString == "human-to-swine-2016")
-		clade = 20;
-	 if (cladeString == "human-to-swine-2017")
 		clade = 21;
+	 if (cladeString == "human-to-swine-2017")
+		clade = 22;
         return clade;
 }
 
