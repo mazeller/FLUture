@@ -44,6 +44,10 @@ class Theme extends \IastateTheme\Theme
                     'label' => 'General Influenza Information',
                     'uri' => 'https://library.pork.org/media/?mediaId=01DDE7D8-BA0E-4253-9A39D06E90FE17EA',
                 ),
+                array(
+                    'label' => 'GitHub',
+                    'uri' => 'https://github.com/mazeller/FLUture',
+                ),
 
                 /*array(
                     'label' => '3D View',

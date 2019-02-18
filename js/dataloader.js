@@ -145,7 +145,7 @@ function preProcess(xComponent, yComponent, data, callback, flags = "") {
 					//Define Clades
 					var clade = xData;
 					var h1clade = ['alpha','beta','gamma','gamma2','gamma2-beta-like','gamma-like','gamma-pdm-like','delta2','delta1a','delta1','delta1b','delta-like','pdmH1'];
-					var h3clade = ['cluster_I','cluster_IV','cluster_IVA','cluster_IVB','cluster_IVE','cluster_IVF','cluster_IVD','cluster_IVC','2010-human-like','human-to-swine-2016','human-to-swine-2017'];
+					var h3clade = ['cluster_I','cluster_IV','cluster_IVA','cluster_IVB','cluster_IVE','cluster_IVF','cluster_IVD','cluster_IVC','2010.1','2010.2','human-to-swine-2016','human-to-swine-2017'];
 						
 					if (h1clade.indexOf(clade) != -1)
 						data[i]['h1_clade'] = clade;
