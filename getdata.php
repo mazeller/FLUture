@@ -16,7 +16,7 @@ else if($columns == "counts,counts")
 }
 else if($columns == "lastrecord")
 {
-	$rows = db_select("SELECT received_date FROM `flu` WHERE research=0 ORDER BY ID DESC LIMIT 1;");
+	$rows = db_select("SELECT received_date FROM `flu` WHERE research=0 ORDER BY received_date DESC LIMIT 1;");
 	echo json_encode($rows);
         return;
 }
