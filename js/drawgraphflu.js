@@ -214,60 +214,75 @@ function cladeToNumber(cladeString) {
 	        case "gamma-like":
 	                clade = 4;
 			break;
+                case "gamma-npdm-like":
+                        clade = 5;
+                        break;
 	        case "gamma2-beta-like":
-	                clade = 5;
+	                clade = 6;
 			break;
 	        case "delta1":
-			clade = 6;
+			clade = 7;
 			break;
         	case "delta1a":
-        	        clade = 7;
-			break;
-        	case "delta1b":
         	        clade = 8;
 			break;
-        	case "delta2":
+        	case "delta1b":
         	        clade = 9;
 			break;
-        	case "delta-like":
+        	case "delta2":
         	        clade = 10;
 			break;
-        	case "pdmH1":
+        	case "delta-like":
         	        clade = 11;
 			break;
+        	case "pdmH1":
+        	        clade = 12;
+			break;
+                case "H4":
+                        clade = 13;
+                        break;
+                case "cluster_I":
+                        clade = 14;
+                        break;
         	case "cluster_IV":
-			clade = 12;
+			clade = 15;
 			break;
         	case "cluster_IVA":
-        	        clade = 13;
+        	        clade = 16;
 			break;
 	        case "cluster_IVB":
-	                clade = 14;
-			break;
-	        case "cluster_IVC":
-	                clade = 15;
-			break;
-	        case "cluster_IVD":
-	                clade = 16;
-			break;
-	        case "cluster_IVE":
 	                clade = 17;
 			break;
-	        case "cluster_IVF":
+	        case "cluster_IVC":
 	                clade = 18;
 			break;
-	        case "2010.1":
+	        case "cluster_IVD":
 	                clade = 19;
 			break;
-	        case "2010.2":
+	        case "cluster_IVE":
 	                clade = 20;
 			break;
-	        case "human-to-swine-2016":
+	        case "cluster_IVF":
 	                clade = 21;
 			break;
-	        case "human-to-swine-2017":
+	        case "2010.1":
 	                clade = 22;
 			break;
+	        case "2010.2":
+	                clade = 23;
+			break;
+                case "human-to-swine-2013":
+                        clade = 24;
+                        break;
+	        case "human-to-swine-2016":
+	                clade = 25;
+			break;
+	        case "human-to-swine-2017":
+	                clade = 26;
+			break;
+                case "Other":
+                        clade = 27;
+                        break;
 		default:
 			clade = -1;
 	}
