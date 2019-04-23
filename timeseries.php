@@ -2,7 +2,7 @@
 require 'autoload.php';
 $theme = new Sample\Theme('');
 $scripts = $theme->getOption('head_script');
-$scripts["file"] = array("/js/jquery.min.js","/js/jquery-ui.min.js","/js/c3.min.js","/js/d3.v3.min.js","/js/dataloader.js","/js/jQDateRangeSlider-withRuler-min.js");
+$scripts["file"] = array("/js/jquery.min.js","/js/jquery-ui.min.js","/js/c3.min.js","/js/d3.v3.min.js","/js/dataloader.js","/js/jQDateRangeSlider-withRuler-min.js","/js/drawgraphflu.js");
 $theme->setOption('head_script',$scripts,true);
 $theme->addStyle('{{asset_path}}/css/c3.min.css');
 $theme->addStyle('{{asset_path}}/css/jquery-ui.css');
@@ -172,7 +172,7 @@ function parse(rdata) {
                 barcode[rdata[key][yComponent]][useDate] = "";
 		//If unique, add to x axis
 		if(xAxis.indexOf(useDate) == -1)
-	                xAxis.push(useDate);
+	               xAxis.push(useDate);
         }
 	flu[rdata[key][yComponent]][useDate]++;
         //Add barcode to list
@@ -180,7 +180,6 @@ function parse(rdata) {
         	barcode[rdata[key][yComponent]][useDate] += rdata[key]["accession_id"] + ",";
         }
     }
-console.log(barcode);
     //Collapse the structure into data for c3 charts
     graphData = [];
     for (var key in flu) {
@@ -242,202 +241,16 @@ console.log(barcode);
             }
             barcodeData.push(tempData);
     }
-    console.log(barcodeData);
 
     //Graph it
     graphFlu(graphData, xAxis, groups, xComponent, yComponent);
 }
 
-//Draw our data
-function graphFlu(data, xAxis, groups, xComponent, yComponent) {
-    //Merge xAxis to data
-    xAxis.unshift("x");
-    var temp = data.slice();
-    temp.unshift(xAxis);
-    data = temp;
-
-    //Check if normalized for text
+function graphFlu(graphData, xAxis, groups, xComponent, yComponent) {
     var normalize = $("#normalize").is(":checked");
-    var typeData = {};
-    if (normalize == true)
-    {
-	xAxisText = " Percent";
-	for (tag in groups) {
-	   typeData[groups[tag]] = 'area'; 
-	}
-    }
-    else
-    {
-	xAxisText = " Count";
-	groups = [];
-    }
-
-    //Sorting
-    if (yComponent == "h3_clade" || yComponent == "na_clade" || yComponent == "sequence_specimen" || yComponent == "site_state" || yComponent == "subtype"   || yComponent == "pcr_specimen")
-            data.sort();
-    if (yComponent == "age_days")
-        data.sort(sortAge);
-    if (yComponent == "h1_clade" || yComponent == "h3_clade" || yComponent == "ha_clade")
-	data.sort(sortClade);
-    //Generate Chart
-    var chart = c3.generate({
-        data: {
-	    x: 'x',
-            columns: data,
-	    types: typeData,
-	    groups: [groups],
-        },
-	axis: {
-                x: {
-                    type: 'timeseries',
-                    tick: {
-                        format: '%Y-%m-%d',
-                        rotate: 60,
-                        fit: true
-                    },
-                    label: {
-                        text: "Time" ,
-                        position: 'outer-center',
-                    },
-                },
-		y: {
-                    label: {
-                       	text: translateLabel(yComponent) + xAxisText,
-                       	position: 'middle',
-                    },
-            	},
-            }
-    });
-
-    //Update Title
-    $("#chartTitle").text(translateLabel(yComponent) + " over Time");
-}
-
-//Make the data labels more readable
-function translateLabel(label)
-{
-	var transLabel = label;
-	if(label == "age_days")
-		transLabel = "Age Group";
-	if(label == "day")
-		transLabel = "Day of Year";
-	if(label == "ha_clade")
-		transLabel = "HA Clade Frequency of Detection";
-	if(label == "h1_clade")
-		transLabel = "H1 Clade Frequency of Detection";
-	if(label == "h3_clade")
-		transLabel = "H3 Clade Frequency of Detection";
-	if(label == "na_clade")
-		transLabel = "NA Clade Frequency of Detection";
-	if(label == "pcr_specimen")
-		transLabel = "Specimen used for PCR";
-	if(label == "sequence_specimen")
-		transLabel = "Specimen used for Sequencing";
-	if(label == "site_state")
-		transLabel = "Pig's Origin State";
-	if(label == "subtype")
-		transLabel = "Subtype";
-	if(label == "testing_facility")
-		transLabel = "Source of Data";
-	
-	return transLabel; 
-}
-
-//Numerical sorting
-function sortNumber(a,b) {
-    return a - b;
-}
-
-//Age sorting
-function sortAge(a,b) {
-        aVal = ageToNumber(a[0]);
-        bVal = ageToNumber(b[0]);
-        return aVal - bVal;
-}
-
-//H1 clade sort
-function sortClade(a,b) {
-        aVal = cladeToNumber(a[0]);
-        bVal = cladeToNumber(b[0]);
-        return aVal - bVal;
-}
-
-function cladeToNumber(cladeString) {
-        clade = -1;
-        if (cladeString == "alpha")
-                clade = 0;
-        if (cladeString == "beta")
-                clade = 1;
-        if (cladeString == "gamma")
-                clade = 2;
-        if (cladeString == "gamma2")
-                clade = 3;
-        if (cladeString == "gamma-like")
-                clade = 4;
-        if (cladeString == "gamma2-beta-like")
-                clade = 5;
-        if (cladeString == "delta1")
-                clade = 6;
-        if (cladeString == "delta1a")
-                clade = 7;
-        if (cladeString == "delta1b")
-                clade = 8;
-        if (cladeString == "delta2")
-                clade = 9;
-        if (cladeString == "delta-like")
-                clade = 10;
-        if (cladeString == "pdmH1")
-                clade = 11;
-        if (cladeString == "cluster_IV")
-                clade = 12;
-        if (cladeString == "cluster_IVA")
-                clade = 13;
-        if (cladeString == "cluster_IVB")
-                clade = 14;
-        if (cladeString == "cluster_IVC")
-                clade = 15;
-        if (cladeString == "cluster_IVD")
-                clade = 16;
-        if (cladeString == "cluster_IVE")
-                clade = 17;
-        if (cladeString == "cluster_IVF")
-                clade = 18;
-        if (cladeString == "2010.1")
-                clade = 19;
-        if (cladeString == "2010.2")
-                clade = 20;
-	if (cladeString == "human-to-swine-2016")
-		clade = 21;
-	if (cladeString == "human-to-swine-2017")
-		clade = 22;
-        return clade;
-}
-
-function ageToNumber(ageString) {
-        age = -1;
-        if (ageString == "neonate")
-                age = 0;
-        if (ageString == "suckling")
-                age = 1;
-        if (ageString == "nursery")
-                age = 2;
-        if (ageString == "grow finisher")
-                age = 3;
-        if (ageString == "adult")
-                age = 4;
-	return age;
-}
-
-//Find unique values
-function uniqueValues(dataObject, field)
-{
-	var result = [];
-	for (var key in dataObject) {
-		if (result.indexOf(dataObject[key][field]) == -1) {
-			result.push(dataObject[key][field]);
-		}
-        }	
-	return result;
+    var tool = "timeseries";
+    // helper js function to draw the graph for the tools
+    drawGraphFlu(graphData, xAxis, groups, xComponent, yComponent, tool, normalize);
 }
 </script>
 <?php
