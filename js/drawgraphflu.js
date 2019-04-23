@@ -1,4 +1,9 @@
 /**
+ * @file Consists of functions to sort data, map labels and draw graph for the tools.
+ * @author Anugrah Saxena
+ */
+
+/**
  * Summary: This function draws the graph for the attributes passed by the tools.
  *
  * The drawGraphFlu function takes in the attributes passed by the timeseries and correlation PHP files, and the form's id values from the webpage.
