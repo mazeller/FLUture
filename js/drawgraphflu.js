@@ -194,6 +194,13 @@ function sortAge(a,b) {
         return aVal - bVal;
 }
 
+//Weight sorting. Author: Siying Lyu
+function sortWeight(a,b) {
+        aVal = weightToNumber(a);
+        bVal = weightToNumber(b);
+        return aVal - bVal;
+}
+
 //H1 clade sort
 function sortClade(a,b) {
         aVal = cladeToNumber(a[0]);
@@ -318,6 +325,47 @@ function ageToNumber(ageString) {
         return age;
 }
 
+// This function converts the swine weight label to corresponding number. Author: Siying Lyu
+function weightToNumber(weightString) {
+        switch (weightString) {
+                case "Under\t50":
+                        weight = 0;
+                        break;
+                case "50\-100":
+                        weight = 1;
+                        break;
+                case "100\-150":
+                        weight = 2;
+                        break;
+                case "150\-200":
+                        weight = 3;
+                        break;
+                case "200\-250":
+                        weight = 4;
+                        break;
+                case "250\-300":
+                        weight = 5;
+                        break;
+                case "300\-350":
+                        weight = 6;
+                        break;
+                case "350\-400":
+                        weight = 7;
+                        break;
+                case "400\-450":
+                        weight = 8;
+                        break;
+                case "450\-500":
+                        weight = 9;
+                        break;
+                case "Above\t500":
+                        weight = 10;
+                        break;
+                default:
+                        weight = -1;
+        }
+        return weight;
+}
 //Find unique values
 function uniqueValues(dataObject, field)
 {

@@ -176,7 +176,7 @@ function parse(rdata) {
     if (xComponent == "age_days")
 	    xAxis.sort(sortAge);
     if (xComponent == "weight_pounds")
-	    xAxis.sort(sortNumber);
+	    xAxis.sort(sortWeight);
     if (xComponent == "h1_clade" || xComponent == "h3_clade" || xComponent == "ha_clade" || xComponent == "na_clade")
 	    xAxis.sort(sortClade);
 

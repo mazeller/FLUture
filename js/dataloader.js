@@ -108,6 +108,34 @@ function preProcess(xComponent, yComponent, data, callback, flags = "") {
 			                    yData = "adult";
 					data[i][yComponent[j]] = yData;
             			}
+				// Special case, handle weight_pounds. Author: Siying Lyu
+				if (yComponent[j] == "weight_pounds")
+				{
+					weight = yData;
+                                        if (weight > 0 & weight < 50)
+                                            yData = "Under\t50";
+                                        if (weight >= 50 & weight < 100)
+                                            yData = "50\-100";
+                                        if (weight >= 100 & weight < 150)
+                                            yData = "100\-150";
+                                        if (weight >= 150 & weight < 200)
+                                            yData = "150\-200";
+                                        if (weight >= 200 & weight < 250)
+                                            yData = "200\-250";
+                                        if (weight >= 250 & weight < 300)
+                                            yData = "250\-300";
+                                        if (weight >= 300 & weight < 350)
+                                            yData = "300\-350";
+                                        if (weight >= 350 & weight < 400)
+                                            yData = "350\-400";
+                                        if (weight >= 400 & weight < 450)
+                                            yData = "400\-450";
+                                        if (weight >= 450 & weight < 500)
+                                            yData = "450\-500";
+                                        if (weight >= 500)
+                                            yData = "Above\t500";
+					data[i][yComponent[j]] = yData;
+				}
 
 				//Process Dates
 				if (yComponent[j] == "received_date")
