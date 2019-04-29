@@ -92,6 +92,8 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, graphType, no
             data.sort();
     if (yComponent == "age_days")
             data.sort(sortAge);
+    if (yComponent == "weight_pounds")
+            data.sort(sortWeight);
     if (yComponent == "h1_clade" || yComponent == "h3_clade" || yComponent == "ha_clade" || yComponent == "na_clade")
 	    data.sort(sortClade); 
 
@@ -196,8 +198,8 @@ function sortAge(a,b) {
 
 //Weight sorting. Author: Siying Lyu
 function sortWeight(a,b) {
-        aVal = weightToNumber(a);
-        bVal = weightToNumber(b);
+        aVal = weightToNumber(a[0]);
+        bVal = weightToNumber(b[0]);
         return aVal - bVal;
 }
 
