@@ -198,8 +198,13 @@ function sortAge(a,b) {
 
 //Weight sorting. Author: Siying Lyu
 function sortWeight(a,b) {
-        aVal = weightToNumber(a[0]);
-        bVal = weightToNumber(b[0]);
+	if (a instanceof Array) {
+		aVal = weightToNumber(a[0]);
+		bVal = weightToNumber(b[0]);
+	} else {
+        	aVal = weightToNumber(a);
+        	bVal = weightToNumber(b);
+	}
         return aVal - bVal;
 }
 
