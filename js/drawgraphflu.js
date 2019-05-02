@@ -15,11 +15,9 @@
  * @param {array} groups - The array of hemagglutinin lineage names or clusters for which the data exists.
  * @param {string} xComponent - The component corresponding to the x-axis values.
  * @param {string} yComponent - The component corresponding to the y-axis values.
- * @param {striong} graphType - This parameter is used to differentiate which tool  made the function call.
- * @param {boolean} normalize - This parameter is part of the webtools. When set, it shows the graph based on percentage rather then count.
- * @param {boolean} [stack=false] - Optional parameter with default value false. It is part of the correlation tool webform.
+ * @param {map} paramMap - This parameter consists of a map of key: value pairs of graph type, normalize, stack and granularity variables
  */
-function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, graphType, normalize, stack=false) {
+function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
     // define variables and objects for c3 generator with default values
     var typeData = void 0;
     var typesData = {};
@@ -36,6 +34,11 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, graphType, no
     var textLabelYAxis;
     var linesYGrid = [];
     var patternColor = ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5'];
+
+    var graphType = paramMap.get("tool");
+    var granularity = (paramMap.has("granularity")) ? paramMap.get("granularity") : "";
+    var normalize = paramMap.get("normalize");
+    var stack = (paramMap.has("stack")) ? paramMap.get("stack") : false;
 
     if (graphType == "timeseries") {
         // sorting the data
@@ -59,7 +62,7 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, graphType, no
 	    xAxisText = " Count";
 	    groups = [];
         }
-        translateLabelXComponent = translateLabel(xComponent);
+	translateLabelXComponent = granularity;
         translateLabelYComponent = translateLabel(yComponent);
         textLabelXAxis = 'Time';
         textLabelYAxis = translateLabelYComponent + xAxisText;
@@ -178,6 +181,9 @@ function translateLabel(label)
 	        case "testing_facility":
 	                transLabel = "Source of Data";
 			break;
+                case "weight_pounds":
+                        transLabel = "Weight(lbs)";
+                        break;
 		default:
 			transLabel = label;
 	}
@@ -299,8 +305,11 @@ function cladeToNumber(cladeString) {
 	        case "human-to-swine-2017":
 	                clade = 26;
 			break;
-                case "Other":
+                case "human-to-swine-2018":
                         clade = 27;
+                        break;
+                case "Other":
+                        clade = 28;
                         break;
 		default:
 			clade = -1;

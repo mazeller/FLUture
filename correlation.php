@@ -265,8 +265,12 @@ function graphFlu(data, xAxis, groups, xComponent, yComponent) {
     var stack = $("#stack").is(":checked");
     var normalize = $("#normalize").is(":checked");
     var tool = "correlation";
+    var kwMap = new Map();
+    kwMap.set('normalize', normalize);
+    kwMap.set('tool', tool);
+    kwMap.set('stack', stack);
     // helper js function to draw the graph for the tools
-    drawGraphFlu(data, xAxis, groups, xComponent, yComponent, tool, normalize, stack);
+    drawGraphFlu(data, xAxis, groups, xComponent, yComponent, kwMap);
 }
 </script>
 <?php

@@ -248,9 +248,14 @@ function parse(rdata) {
 
 function graphFlu(graphData, xAxis, groups, xComponent, yComponent) {
     var normalize = $("#normalize").is(":checked");
+    var granularity = $("#axisx").val();
     var tool = "timeseries";
+    var kwMap = new Map();
+    kwMap.set('normalize', normalize);
+    kwMap.set('tool', tool);
+    kwMap.set('granularity', granularity);
     // helper js function to draw the graph for the tools
-    drawGraphFlu(graphData, xAxis, groups, xComponent, yComponent, tool, normalize);
+    drawGraphFlu(graphData, xAxis, groups, xComponent, yComponent, kwMap);
 }
 </script>
 <?php
