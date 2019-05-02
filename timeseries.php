@@ -250,12 +250,12 @@ function graphFlu(graphData, xAxis, groups, xComponent, yComponent) {
     var normalize = $("#normalize").is(":checked");
     var granularity = $("#axisx").val();
     var tool = "timeseries";
-    var kwMap = new Map();
-    kwMap.set('normalize', normalize);
-    kwMap.set('tool', tool);
-    kwMap.set('granularity', granularity);
+    var keywordMap = new Map();
+    keywordMap.set('normalize', normalize);
+    keywordMap.set('tool', tool);
+    keywordMap.set('granularity', granularity);
     // helper js function to draw the graph for the tools
-    drawGraphFlu(graphData, xAxis, groups, xComponent, yComponent, kwMap);
+    drawGraphFlu(graphData, xAxis, groups, xComponent, yComponent, keywordMap);
 }
 </script>
 <?php
