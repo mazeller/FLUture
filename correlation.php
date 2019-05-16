@@ -180,6 +180,7 @@ function parse(rdata) {
     if (xComponent == "h1_clade" || xComponent == "h3_clade" || xComponent == "ha_clade" || xComponent == "na_clade")
 	    xAxis.sort(sortClade);
 
+    var testSum = [];
     //Turn off groups if unchecked
     if (normalize == true) {
         //Collapse the structure into data for c3 charts
@@ -188,47 +189,61 @@ function parse(rdata) {
         for (var key in flu) {
             var obj = flu[key];
 
-            if (flu.hasOwnProperty(key)) {
-                //Gather count datafor normalization
-                for (var i in xAxis) {
-                    if (obj[xAxis[i]] != null) {
-                        if (xScore[xAxis[i]] == null)
-                            xScore[xAxis[i]] = 0;
-                        xScore[xAxis[i]] = xScore[xAxis[i]] + obj[xAxis[i]];
-                    }
+            //Gather count datafor normalization
+            for (var i in xAxis) {
+                if (obj[xAxis[i]] != null) {
+                    if (xScore[xAxis[i]] == null)
+                        xScore[xAxis[i]] = 0;
+                    xScore[xAxis[i]] = xScore[xAxis[i]] + obj[xAxis[i]];
                 }
             }
         }
         for (var key in flu) {
             tempData = [];
-            if (flu.hasOwnProperty(key)) {
-                tempData.push(key);
-                var obj = flu[key];
+            tempData.push(key);
+            var obj = flu[key];
 
-                for (var i in xAxis) {
-                    if (obj[xAxis[i]] != null)
-                        tempData.push((obj[xAxis[i]] / xScore[xAxis[i]]).toFixed(3));
-                    else
-                        tempData.push(null);
-                }
+            for (var i in xAxis) {
+                if (obj[xAxis[i]] != null)
+                    tempData.push((obj[xAxis[i]] / xScore[xAxis[i]]).toFixed(3));
+                else
+                    tempData.push(null);
             }
             graphData.push(tempData);
-        }
+        } 
+
+/*        // Problem: the 100% percentage part is incurrect
+        for (var key in flu) {
+            tempData = [];
+            var obj = flu[key];
+            tempData.push(key);
+            for (var i in xAxis) {
+                if (obj[xAxis[i]] != null) {
+                    if (xScore[xAxis[i]] == null)
+                        xScore[xAxis[i]] = 0;
+	             xScore[xAxis[i]] = xScore[xAxis[i]] + obj[xAxis[i]];
+                     tempData.push((obj[xAxis[i]] / xScore[xAxis[i]]).toFixed(3));
+                } else {
+                    tempData.push(null);
+		}
+            }
+            graphData.push(tempData);
+        } */ 
     } else {
         //Collapse the structure into data for c3 charts
         graphData = [];
+
         for (var key in flu) {
             tempData = [];
-            if (flu.hasOwnProperty(key)) {
-                tempData.push(key);
-                var obj = flu[key];
+            tempData.push(key);
+            var obj = flu[key];
 
-                for (var i in xAxis) {
-                    if (obj[xAxis[i]] != null)
-                        tempData.push(obj[xAxis[i]]);
-                    else
-                        tempData.push(null);
-            	}
+            for (var i in xAxis) {
+                if (obj[xAxis[i]] != null) {
+                    tempData.push(obj[xAxis[i]]);
+                } else {
+                    tempData.push(0);
+                }
             }
             graphData.push(tempData);
         }
@@ -238,24 +253,23 @@ function parse(rdata) {
     barcodeData = [];
         for (var key in barcode) {
             tempData = [];
-            if (barcode.hasOwnProperty(key)) {
-                tempData.push(key);
-                var obj = barcode[key];
+            tempData.push(key);
+            var obj = barcode[key];
 
-                for (var i in xAxis) {
-                    if (obj[xAxis[i]] != null)
-{
-			obj[xAxis[i]] += "\"";
-                        tempData.push(obj[xAxis[i]]);
-}
-                    else
-                        tempData.push(null);
+            for (var i in xAxis) {
+                if (obj[xAxis[i]] != null)
+                {
+		    obj[xAxis[i]] += "\"";
+                    tempData.push(obj[xAxis[i]]);
                 }
+                else
+                    tempData.push(null);
             }
             barcodeData.push(tempData);
     }
 
     //Graph it
+    console.log(graphData);
     graphFlu(graphData, xAxis, groups, xComponent, yComponent);
 }
 

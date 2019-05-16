@@ -184,17 +184,15 @@ function parse(rdata) {
     graphData = [];
     for (var key in flu) {
         tempData = [];
-        if (flu.hasOwnProperty(key)) {
-            tempData.push(key);
-            var obj = flu[key];
+        tempData.push(key);
+        var obj = flu[key];
 
-            for (var i in xAxis) {
-                if (obj[xAxis[i]] != null)
-                    tempData.push(obj[xAxis[i]]);
-                else
-                    tempData.push(0);
-	    	}
-        }
+        for (var i in xAxis) {
+            if (obj[xAxis[i]] != null)
+                tempData.push(obj[xAxis[i]]);
+            else
+                tempData.push(0);
+    	}
         graphData.push(tempData);
     }
 
@@ -225,20 +223,18 @@ function parse(rdata) {
     barcodeData = [];
         for (var key in barcode) {
             tempData = [];
-            if (barcode.hasOwnProperty(key)) {
-                tempData.push(key);
-                var obj = barcode[key];
+            tempData.push(key);
+            var obj = barcode[key];
 
-                for (var i in xAxis) {
-                    if (obj[xAxis[i]] != null)
-		    {
-			obj[xAxis[i]] = "\"" + obj[xAxis[i]] + "\"";
-                        tempData.push(obj[xAxis[i]]);
-		    }
-                    else
-                        tempData.push(null);
+            for (var i in xAxis) {
+                if (obj[xAxis[i]] != null)
+                {
+		    obj[xAxis[i]] = "\"" + obj[xAxis[i]] + "\"";
+                    tempData.push(obj[xAxis[i]]);
+		}
+                else
+                    tempData.push(null);
                 }
-            }
             barcodeData.push(tempData);
     }
 
