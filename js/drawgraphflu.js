@@ -263,7 +263,7 @@ function cladeToNumber(cladeString) {
         	case "pdmH1":
         	        clade = 12;
 			break;
-                case "H4":
+                case "Other":
                         clade = 13;
                         break;
                 case "cluster_I":
@@ -308,7 +308,7 @@ function cladeToNumber(cladeString) {
                 case "human-to-swine-2018":
                         clade = 27;
                         break;
-                case "Other":
+                case "H4":
                         clade = 28;
                         break;
 		default:
