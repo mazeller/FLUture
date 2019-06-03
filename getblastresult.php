@@ -110,7 +110,7 @@ if (substr($blastHits[0],0,2) != "ha")
 	{
 		echo "<h2>This sequence has the best BLAST match to the <span style='color:red'>" . $hit[5] . "</span> gene.</h2>";
 	}
-	echo "<p>This result can be validated using either the <a href='https://www.fludb.org/brc/blast.spg?method=ShowCleanInputPage&decorator=influenza'>IRD BLAST Tool</a> or the <a rhef = 'https://www.fludb.org/brc/influenza_batch_submission.spg?method=NewAnnotation&decorator=influenza'>IRD Annotate Nucleotide Sequence Tool</a>.</p>";
+	echo "<p>This result can be validated using either the <a href=\"https://www.fludb.org/brc/blast.spg?method=ShowCleanInputPage&decorator=influenza\" target=\"_blank\">IRD BLAST Tool</a> or the <a href = \"https://www.fludb.org/brc/influenza_batch_submission.spg?method=NewAnnotation&decorator=influenza\" target=\"_blank\">IRD Annotate Nucleotide Sequence Tool</a>.</p>";
 	return;
 }
 
