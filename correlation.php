@@ -150,7 +150,7 @@ function parse(rdata) {
 	if (!flu.hasOwnProperty(rdata[key][yComponent])){
 		flu[rdata[key][yComponent]] = {};
 		barcode[rdata[key][yComponent]] = {};
-		groups.push(rdata[key][yComponent]);
+		groups.push(rdata[key][yComponent].toString());
 	}		
 	//Make sure y axis exists
         if (!flu[rdata[key][yComponent]].hasOwnProperty(rdata[key][xComponent])){

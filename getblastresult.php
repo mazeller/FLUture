@@ -97,6 +97,23 @@ $haClade = array();
 $naClade = array();
 $subtype = array ();
 
+//Check if first BLAST hit is not HA, use alternative action
+if (substr($blastHits[0],0,2) != "ha")
+{
+	$hit = explode("+", $blastHits[0]);
+	if (substr($hit[0],0,2) == "na")
+	{
+		echo "<h2>This sequence has the best BLAST match to the <span style='color:red'>" . $hit[4] . "</span> gene.</h2>";
+		echo "<h3>The top BLAST hit matches the following NA clade: <span style='color:red'>" . $hit[6] . "</span>.</h2>";
+	}
+	else
+	{
+		echo "<h2>This sequence has the best BLAST match to the <span style='color:red'>" . $hit[5] . "</span> gene.</h2>";
+	}
+	echo "<p>This result can be validated using either the <a href='https://www.fludb.org/brc/blast.spg?method=ShowCleanInputPage&decorator=influenza'>IRD BLAST Tool</a> or the <a rhef = 'https://www.fludb.org/brc/influenza_batch_submission.spg?method=NewAnnotation&decorator=influenza'>IRD Annotate Nucleotide Sequence Tool</a>.</p>";
+	return;
+}
+
 //Fill table and begin to calculate percentages
 for ($i = 0; $i <= count($blastHits); $i++)
 {

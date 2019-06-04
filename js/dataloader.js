@@ -65,7 +65,7 @@ function getJsonData(xComponent, yComponent, callback) {
 		data: {'col': fields,'flags':flags},
  		success: function(data, status) {
 			data = JSON.parse(data);
-			preProcess(xComponent, yComponent, data, callback);
+                        preProcess(xComponent, yComponent, data, callback);
 		},
  		error: function(xhr, desc, err) {
  			console.log(xhr);
@@ -79,6 +79,26 @@ function preProcess(xComponent, yComponent, data, callback, flags = "") {
         flu = {};
         xAxis = [];
         groups = [];
+        h1clade = [];
+        h3clade = [];
+
+        if(data.hasOwnProperty("h1clade")) {
+            var keys = Object.keys(data.h1clade);
+            keys.forEach(function(key) {
+                h1clade.push(data.h1clade[key].clade);
+            });
+        }
+
+         if(data.hasOwnProperty("h3clade")) {
+            var keys = Object.keys(data.h3clade);
+            keys.forEach(function(key) {
+                h3clade.push(data.h3clade[key].clade);
+            });
+        }
+
+        if(data.hasOwnProperty("fludata")) {
+            data = data.fludata;
+        }
 
         if(yComponent.constructor === Array) {
 		for (var i = 0; i < data.length; i++) {
@@ -172,8 +192,8 @@ function preProcess(xComponent, yComponent, data, callback, flags = "") {
 				{
 					//Define Clades
 					var clade = xData;
-					var h1clade = ['alpha','beta','gamma','gamma2','gamma2-beta-like','gamma-like','gamma-pdm-like','delta2','delta1a','delta1','delta1b','delta-like','pdmH1'];
-					var h3clade = ['cluster_I','cluster_IV','cluster_IVA','cluster_IVB','cluster_IVE','cluster_IVF','cluster_IVD','cluster_IVC','2010.1','2010.2','human-to-swine-2016','human-to-swine-2017','human-to-swine-2018'];
+                                        //var h1clade = ['alpha','beta','gamma','gamma2','gamma2-beta-like','gamma-like','gamma-pdm-like','delta2','delta1a','delta1','delta1b','delta-like','pdmH1','Other'];
+					//var h3clade = ['cluster_I','cluster_IV','cluster_IVA','cluster_IVB','cluster_IVE','cluster_IVF','cluster_IVD','cluster_IVC','2010.1','2010.2','human-to-swine-2016','human-to-swine-2017','human-to-swine-2018'];
 						
 					if (h1clade.indexOf(clade) != -1)
 						data[i]['h1_clade'] = clade;

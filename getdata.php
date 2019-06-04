@@ -37,7 +37,18 @@ elseif($columns == "accessions")
 	ob_end_flush();
 	return;
 }
-
+elseif($columns == "cleandata")
+{
+//        $rows = db_select("SELECT flu.case_name, ha_sequence, ha_clade from flu right join (SELECT case_name FROM `flu` group by case_name having count(case_name) > 1) t using(case_name)");
+        $harows = db_select("SELECT distinct ha_sequence as sequence from flu");
+        $narows = db_select("SELECT distinct na_sequence as sequence from flu");
+        $rows["haseq"] = $harows;
+        $rows["naseq"] = $narows;
+        echo json_encode($rows);
+        return;
+}
+else
+{
 //Check Flags
 $whereClause = "WHERE research=0 ";
 if($_POST['flags'] == "nu")
@@ -47,10 +58,17 @@ if($_POST['flags'] == "hc")
 //Sanitize
 //var_dump(mysqli_real_escape_string($columns));
 
-$rows = db_select("SELECT $columns FROM `flu` " . $whereClause . ";"); 
+$flurows = db_select("SELECT $columns FROM `flu` " . $whereClause . ";"); 
+$h1rows  = db_select("SELECT us_clade as clade FROM `ha_clade` where subtype = 'H1' order by sort;");
+$h3rows  = db_select("SELECT us_clade as clade FROM `ha_clade` where subtype = 'H3' order by sort;");
+
+$rows["fludata"] = $flurows;
+$rows["h1clade"] = $h1rows;
+$rows["h3clade"] = $h3rows;
 
 //Compression
 ob_start('ob_gzhandler');
 echo json_encode($rows);
 ob_end_flush();
 #send data back to requester
+}

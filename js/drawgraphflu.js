@@ -91,7 +91,7 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
     }
 
     // adding the missing sorting logic
-    if (yComponent == "sequence_specimen" || yComponent == "site_state" || yComponent == "subtype" || yComponent == "pcr_specimen")
+    if (yComponent == "sequence_specimen" || yComponent == "site_state" || yComponent == "subtype" || yComponent == "pcr_specimen" || yComponent == "year")
             data.sort();
     if (yComponent == "age_days")
             data.sort(sortAge);

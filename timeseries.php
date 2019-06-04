@@ -134,7 +134,7 @@ function parse(rdata) {
     //Create primary structure
     var flu = {};
     var barcode = {};
-    var skipList = ["","-1","USA", undefined];
+    var skipList = ["","-1","USA", undefined, "Unknown"];
     
     for (var key in rdata) {
 	//Skip certain subsets
