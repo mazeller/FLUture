@@ -1552,6 +1552,7 @@ HTML;
 				if (isset($page['uri']))
 				{
 					$attr['href'] = $this->render($page['uri']);
+					$attr['target'] = '_blank';
 				}
 				elseif (isset($page['route']))
 				{
