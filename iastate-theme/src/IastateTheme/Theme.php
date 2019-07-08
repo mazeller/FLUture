@@ -1552,6 +1552,9 @@ HTML;
 				if (isset($page['uri']))
 				{
 					$attr['href'] = $this->render($page['uri']);
+					if (substr($attr['href'], -3) != 'php') {
+						$attr['target'] = '_blank';
+					}
 				}
 				elseif (isset($page['route']))
 				{

@@ -17,7 +17,33 @@
  * @param {string} yComponent - The component corresponding to the y-axis values.
  * @param {map} paramMap - This parameter consists of a map of key: value pairs of graph type, normalize, stack and granularity variables
  */
+
+// orders extracted from database for sorting
+// Diag mapping info
+var orders = {};
+var diag_map = {};
+
+// request orders data
+function getOrder(callback) {
+	$.ajax({
+                url: '/getdata.php',
+                type: 'post',
+		dataType: 'json',
+                data: {'col': "orders"},
+                success: function(data, status) {
+			callback(data);
+                },
+                error: function(xhr, desc, err) {
+                        console.log(xhr);
+                        console.log("Details: " + desc + "\nError:" + err);
+                }
+        });
+}
+
 function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
+    // Get the orders from databass if orders are not ready
+    if (Object.getOwnPropertyNames(orders).length === 0)
+	getOrder(extractOrders);
     // define variables and objects for c3 generator with default values
     var typeData = void 0;
     var typesData = {};
@@ -62,7 +88,7 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
 	    xAxisText = " Count";
 	    groups = [];
         }
-	translateLabelXComponent = granularity;
+	translateLabelXComponent = translateLabel(granularity);
         translateLabelYComponent = translateLabel(yComponent);
         textLabelXAxis = 'Time';
         textLabelYAxis = translateLabelYComponent + xAxisText;
@@ -97,8 +123,12 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
             data.sort(sortAge);
     if (yComponent == "weight_pounds")
             data.sort(sortWeight);
-    if (yComponent == "h1_clade" || yComponent == "h3_clade" || yComponent == "ha_clade" || yComponent == "na_clade")
-	    data.sort(sortClade); 
+    if (yComponent == "h1_clade" || yComponent == "h3_clade" || yComponent == "ha_clade")
+	    data.sort(sortHaClade); 
+    if (yComponent == "na_clade")
+            data.sort(sortNaClade);
+    if (yComponent == "diag_code")
+            data.sort(sortDiag);
 
     // Generate C3 Plot    
     var chat = c3.generate({
@@ -137,7 +167,38 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
         },
         color: {
             pattern: patternColor
-        }
+        },
+	tooltip: {
+	    contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
+		var $$ = this, config = $$.config,
+                    titleFormat = config.tooltip_format_title || defaultTitleFormat,
+                    nameFormat = config.tooltip_format_name || function (name) { return name; },
+                    valueFormat = config.tooltip_format_value || defaultValueFormat,
+                    text, i, title, value, name, bgcolor;
+		for (i = 0; i < d.length; i++) {
+                    if (! (d[i] && (d[i].value || d[i].value === 0))) { continue; }
+    
+                    if (! text) {
+                        title = titleFormat ? titleFormat(d[i].x) : d[i].x;
+                        text = "<table class='" + $$.CLASS.tooltip + "'>" + (title || title === 0 ? "<tr><th colspan='3'>" + title + "</th></tr>" : "");
+                    }
+    
+                    name = nameFormat(d[i].name);
+                    value = valueFormat(d[i].value, d[i].ratio, d[i].id, d[i].index);
+                    bgcolor = $$.levelColor ? $$.levelColor(d[i].value) : color(d[i].id);
+    
+                    text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[i].id + "'>";
+                    text += "<td class='name'><span style='background-color:" + bgcolor + "'></span>" + name + "</td>";
+		    if (diag_map.hasOwnProperty(name)) {
+		    	text += "<td align='left'>" + diag_map[name] + "</td>";
+		    }
+                    text += "<td class='value'>" + value + "</td>";
+                    text += "</tr>";
+                }
+		return text + "</table>";
+	    }
+	}
+
     });
 
     //Update Title
@@ -154,6 +215,15 @@ function translateLabel(label)
 	        case "day":
 	                transLabel = "Day of Year";
 			break;
+                case "week":
+                        transLabel = "Week";
+                        break;
+                case "month":
+                        transLabel = "Month";
+                        break;
+                case "year":
+                        transLabel = "Year";
+                        break;
 	        case "ha_clade":
 	                transLabel = "HA Clade Frequency of Detection";
 			break;
@@ -184,6 +254,9 @@ function translateLabel(label)
                 case "weight_pounds":
                         transLabel = "Weight(lbs)";
                         break;
+		case "diag_code":
+			transLabel = "Diagnostic Code";
+			break;
 		default:
 			transLabel = label;
 	}
@@ -197,32 +270,74 @@ function sortNumber(a,b) {
 
 //Age sorting
 function sortAge(a,b) {
-        aVal = ageToNumber(a[0]);
-        bVal = ageToNumber(b[0]);
+	if (a instanceof HTMLOptionElement) {
+		a = a.value;
+		b = b.value;
+	} else {
+		a = a[0];
+		b = b[0];
+	}
+        aVal = ageToNumber(a);
+        bVal = ageToNumber(b);
         return aVal - bVal;
 }
 
 //Weight sorting. Author: Siying Lyu
 function sortWeight(a,b) {
 	if (a instanceof Array) {
-		aVal = weightToNumber(a[0]);
-		bVal = weightToNumber(b[0]);
-	} else {
-        	aVal = weightToNumber(a);
-        	bVal = weightToNumber(b);
+		a = a[0];
+		b = b[0];
+	} else if (a instanceof HTMLOptionElement) {
+		a = a.value;
+		b = b.value;
 	}
+        aVal = weightToNumber(a);
+        bVal = weightToNumber(b);
         return aVal - bVal;
 }
 
-//H1 clade sort
-function sortClade(a,b) {
-        aVal = cladeToNumber(a[0]);
-        bVal = cladeToNumber(b[0]);
+//Ha clade sort
+function sortHaClade(a,b) {
+        if (a instanceof Array) {
+                a = a[0];
+                b = b[0];
+        } else if (a instanceof HTMLOptionElement) {
+		a = a.value;
+		b = b.value;
+	}
+	aVal = orders["ha_clade"].indexOf(a);
+        bVal = orders["ha_clade"].indexOf(b);
         return aVal - bVal;
 }
+
+//Na clade sort
+function sortNaClade(a,b) {
+        if (a instanceof Array) {
+                a = a[0];
+                b = b[0];
+        }else if (a instanceof HTMLOptionElement) {
+		a = a.value;
+		b = b.value;
+	}
+        aVal = orders["na_clade"].indexOf(a);
+        bVal = orders["na_clade"].indexOf(b);
+        return aVal - bVal;
+}
+
+//diag sort
+function sortDiag(a,b) {
+        if (a instanceof Array) {
+                a = a[0];
+                b = b[0];
+        } 
+	aVal = orders["diag_code"].indexOf(a);
+	bVal = orders["diag_code"].indexOf(b);
+        return aVal - bVal;
+}
+
 
 // This function converts the clade string to a corresponding number that is used to sort the labels as per the Latin symbol order
-function cladeToNumber(cladeString) {
+/*function cladeToNumber(cladeString) {
         switch (cladeString) {
 	        case "alpha":
 	                clade = 0;
@@ -314,8 +429,9 @@ function cladeToNumber(cladeString) {
 		default:
 			clade = -1;
 	}
+	clade = orders["ha_clade"].indexOf(cladeString);
         return clade;
-}
+}*/
 
 // This function converts the swine age label to corresponding number
 function ageToNumber(ageString) {
@@ -392,4 +508,19 @@ function uniqueValues(dataObject, field)
                 }
         }
         return result;
+}
+//Get orders
+function extractOrders(rOrders) {
+	orders["ha_clade"] = rOrders["ha_clade"];
+	orders["na_clade"] = rOrders["na_clade"];
+        orders["diag_code"] = [];
+
+	if(rOrders.hasOwnProperty("diag_info")) {
+		var keys = Object.keys(rOrders.diag_info);
+		keys.forEach(function(key) {
+			diag_map[rOrders.diag_info[key].diag_code] = rOrders.diag_info[key].diag_text;	
+			orders["diag_code"].push(rOrders.diag_info[key].diag_code);
+		});
+	}
+
 }

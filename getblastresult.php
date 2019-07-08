@@ -174,15 +174,18 @@ $table .= "</table>";
 
 //Process percentages
 $stateProp = array_count_values($state);
-$haClade = array_count_values($haClade);
+//$haClade = array_count_values($haClade);
 $naProp = array_count_values($naClade);
-$subtype = array_count_values($subtype);
+//$subtype = array_count_values($subtype);
 $stateCode = generatePieChart($stateProp,"stateChart");
 $naCode = generatePieChart($naProp,"naChart");
 
 //Get most populous item from array
-$topClade = array_search(max($haClade),$haClade);
-$topSubtype = array_search(max($subtype),$subtype);
+//$topClade = array_search(max($haClade),$haClade);
+//$topSubtype = array_search(max($subtype),$subtype);
+//logic needs to be more clear 
+$topClade = $haClade[0];
+$topSubtype = $subtype[0];
 
 //Heuristic; check if left char is an H, if so take 2 chars, else take none
 if($topSubtype[0] == "H")

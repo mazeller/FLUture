@@ -22,6 +22,7 @@ $theme->drawHeader();
                                         <option value="age_days">Age</option>
    					<option value="day">Day of Year</option>
 					<option value="testing_facility">Data Source</option> 
+					<option value="diag_code">Diagnostic Code</option>
                                         <!-- <option value="cultureResult">Coinfection</option> -->
 					<option value="ha_clade">HA Clade</option>
 					<option value="h1_clade">H1 Clade</option>
@@ -42,6 +43,7 @@ $theme->drawHeader();
                                         <option value="age_days">Age</option>
                                         <option value="day">Day of Year</option>
                                         <option value="testing_facility">Data Source</option>
+					<option value="diag_code">Diagnostic Code</option>
 					<!-- <option value="cultureResult">Coinfection</option> -->
                                         <option value="ha_clade">HA Clade</option>
 					<option value="h1_clade">H1 Clade</option>
@@ -115,12 +117,13 @@ function grabBarcode() {
 //Pull out data specific to Type xData State
 function requestData() {
     var xComponent = "ha_clade";
-    var yComponent = ["barcode","na_clade","H1","H3","N1","N2","received_date","age_days","weight_pounds","site_state","testing_facility","sequence_specimen","pcr_specimen"];
-        
+    var yComponent = ["barcode","na_clade","H1","H3","N1","N2","received_date","age_days","weight_pounds","site_state","testing_facility","sequence_specimen","pcr_specimen","diag_code"];
+
     getJsonData(xComponent, yComponent, parse, flags="");
 }
 
 var data = {};
+var orders = {};
 
 //Pull out data specific to Type xData State
 function parse(rdata) {
@@ -139,33 +142,66 @@ function parse(rdata) {
     //Create primary structure
     var flu = {};
     var barcode = {};
-    var skipList = ["","-1","USA", undefined];
+    var skipList = ["","-1","USA",[],undefined];
     
     for (var key in rdata) {
-	//Skip certain subsets
 	if(skipList.indexOf(rdata[key][xComponent]) != -1 || skipList.indexOf(rdata[key][yComponent]) != -1)
 		continue;
-
-	//Make sure x axis exists
-	if (!flu.hasOwnProperty(rdata[key][yComponent])){
-		flu[rdata[key][yComponent]] = {};
-		barcode[rdata[key][yComponent]] = {};
-		groups.push(rdata[key][yComponent].toString());
-	}		
-	//Make sure y axis exists
-        if (!flu[rdata[key][yComponent]].hasOwnProperty(rdata[key][xComponent])){
-                flu[rdata[key][yComponent]][rdata[key][xComponent]] = 0;
-		barcode[rdata[key][yComponent]][rdata[key][xComponent]] = "\"";
-		//If unique, add to x axis
-		if(xAxis.indexOf(rdata[key][xComponent]) == -1)
-	                xAxis.push(rdata[key][xComponent]);
-        }
-	flu[rdata[key][yComponent]][rdata[key][xComponent]]++;
-
-	//Add barcode to list
-	if(skipList.indexOf(rdata[key]["accession_id"]) == -1){
-		barcode[rdata[key][yComponent]][rdata[key][xComponent]]+= rdata[key]["accession_id"] + ",";;
+	var xData = [];
+	var yData = [];
+	if (rdata[key][xComponent].constructor.name != 'Array') {
+		if (rdata[key][xComponent].includes(","))
+		{
+			xData = rdata[key][xComponent].split(",");
+		} else {
+			xData.push(rdata[key][xComponent]);
+		}
+	} else {
+		xData = rdata[key][xComponent]; 
 	}
+
+        if (rdata[key][yComponent].constructor.name != 'Array') {
+		if (rdata[key][yComponent].includes(","))
+		{
+			yData = rdata[key][yComponent].split(",");
+		} else {
+			yData.push(rdata[key][yComponent]);
+		}
+        } else {
+                yData = rdata[key][yComponent];
+        }
+
+
+	for (var j in yData) {
+		if(skipList.indexOf(yData[j]) != -1)
+                	continue;
+                if (!flu.hasOwnProperty(yData[j])) {
+                	flu[yData[j]] = {};
+                        barcode[yData[j]] = {};
+                        groups.push(yData[j].toString());
+		}
+                for (var i in xData) {
+                	//Skip certain subsets
+                        if(skipList.indexOf(xData[i]) != -1)
+                        	continue;
+
+                        //Make sure y axis exists
+                        if (!flu[yData[j]].hasOwnProperty(xData[i])) {
+                        	flu[yData[j]][xData[i]] = 0;
+                                barcode[yData[j]][xData[i]] = "\"";
+                                //If unique, add to x axis
+                                if (xAxis.indexOf(xData[i]) == -1)
+                                	xAxis.push(xData[i]);
+                        }
+                        flu[yData[j]][xData[i]]++;
+
+                        //Add barcode to list
+                        if(skipList.indexOf(rdata[key]["accession_id"]) == -1){
+                        	barcode[yData[j]][xData[i]]+= rdata[key]["accession_id"] + ",";
+                        }
+                }
+	}
+
     }
 
     //Correctly sort per data type (numerical | lexigraphical | colloquial )
@@ -177,10 +213,13 @@ function parse(rdata) {
 	    xAxis.sort(sortAge);
     if (xComponent == "weight_pounds")
 	    xAxis.sort(sortWeight);
-    if (xComponent == "h1_clade" || xComponent == "h3_clade" || xComponent == "ha_clade" || xComponent == "na_clade")
-	    xAxis.sort(sortClade);
+    if (xComponent == "h1_clade" || xComponent == "h3_clade" || xComponent == "ha_clade")
+	    xAxis.sort(sortHaClade);
+    if (xComponent == "na_clade")
+            xAxis.sort(sortNaClade);
+    if (xComponent == "diag_code")
+	    xAxis.sort(sortDiag);
 
-    var testSum = [];
     //Turn off groups if unchecked
     if (normalize == true) {
         //Collapse the structure into data for c3 charts
@@ -205,7 +244,7 @@ function parse(rdata) {
 
             for (var i in xAxis) {
                 if (obj[xAxis[i]] != null)
-                    tempData.push((obj[xAxis[i]] / xScore[xAxis[i]]).toFixed(3));
+                    tempData.push((obj[xAxis[i]] * 100 / xScore[xAxis[i]]).toFixed(3));
                 else
                     tempData.push(null);
             }
