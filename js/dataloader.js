@@ -42,6 +42,7 @@ function getAccessions(callback){
 //Query for the data
 function getJsonData(xComponent, yComponent, callback) {
 	//Check if yComponents is array
+	var fields;
 	if(yComponent.constructor === Array) {
 		fields = yComponent.join(",");
 	} else {
@@ -78,10 +79,12 @@ function getJsonData(xComponent, yComponent, callback) {
 
 function preProcess(xComponent, yComponent, data, callback, flags = "") {
         //Init array
-        flu = {};
-        xAxis = [];
-        groups = [];
-	//if(xComponent == "ha_clade") {
+        var flu = {};
+        var xAxis = [];
+        var groups = [];
+	var yData;
+	var xData;
+
         if(yComponent.constructor === Array) {
 		for (var i = 0; i < data.length; i++) {
 			for (var j = 0; j < yComponent.length; j++)
@@ -121,7 +124,7 @@ function preProcess(xComponent, yComponent, data, callback, flags = "") {
 			xData = data[i][xComponent];
 
 			//Throw out unlabeled
-	           	if (yData == null | yData == '')
+	           	if (yData == null || yData == '')
         	        	continue;
 
             		//Create a complex structure
@@ -175,9 +178,10 @@ function ConvertToCSV(objArray) {
 
         for (var i = 0; i < array.length; i++) {
         	var line = '';
-                for (var index in array[i]) {
-                	if (line != '') line += ','
-			line += array[i][index];
+                for (var index = 0; index < array[i].length; index ++) {
+                	if (line != '') 
+				line += ',';
+				line += array[i][index];
        		}
         	str += line + '\r\n';
         }

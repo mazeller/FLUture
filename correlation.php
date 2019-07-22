@@ -20,9 +20,9 @@ $theme->drawHeader();
                                     <b>X Axis</b><br>
                                     <select id="axisx">
                                         <option value="age_days">Age</option>
+					<option value="diag_code">Bacterial Codiagnostic</option>
    					<option value="day">Day of Year</option>
 					<option value="testing_facility">Data Source</option> 
-					<option value="diag_code">Diagnostic Code</option>
                                         <!-- <option value="cultureResult">Coinfection</option> -->
 					<option value="ha_clade">HA Clade</option>
 					<option value="h1_clade">H1 Clade</option>
@@ -41,9 +41,9 @@ $theme->drawHeader();
                                     <b>Y Axis</b><br>
                                     <select id="axisy">
                                         <option value="age_days">Age</option>
+					<option value="diag_code">Bacterial Codiagnostic</option>
                                         <option value="day">Day of Year</option>
                                         <option value="testing_facility">Data Source</option>
-					<option value="diag_code">Diagnostic Code</option>
 					<!-- <option value="cultureResult">Coinfection</option> -->
                                         <option value="ha_clade">HA Clade</option>
 					<option value="h1_clade">H1 Clade</option>
@@ -196,8 +196,8 @@ function parse(rdata) {
                         flu[yData[j]][xData[i]]++;
 
                         //Add barcode to list
-                        if(skipList.indexOf(rdata[key]["accession_id"]) == -1){
-                        	barcode[yData[j]][xData[i]]+= rdata[key]["accession_id"] + ",";
+                        if(skipList.indexOf(rdata[key].accession_id) == -1){
+                        	barcode[yData[j]][xData[i]]+= rdata[key].accession_id + ",";
                         }
                 }
 	}
@@ -250,24 +250,6 @@ function parse(rdata) {
             }
             graphData.push(tempData);
         } 
-
-/*        // Problem: the 100% percentage part is incurrect
-        for (var key in flu) {
-            tempData = [];
-            var obj = flu[key];
-            tempData.push(key);
-            for (var i in xAxis) {
-                if (obj[xAxis[i]] != null) {
-                    if (xScore[xAxis[i]] == null)
-                        xScore[xAxis[i]] = 0;
-	             xScore[xAxis[i]] = xScore[xAxis[i]] + obj[xAxis[i]];
-                     tempData.push((obj[xAxis[i]] / xScore[xAxis[i]]).toFixed(3));
-                } else {
-                    tempData.push(null);
-		}
-            }
-            graphData.push(tempData);
-        } */ 
     } else {
         //Collapse the structure into data for c3 charts
         graphData = [];

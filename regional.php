@@ -103,6 +103,40 @@ select {
   	color: black; 
   	border: 2px solid #f44336;
 }
+
+h2 {
+	word-wrap: break-word;
+}
+
+.hoverinfo table {
+    display: table-row-group;
+    vertical-align: middle;
+    margin: 0px 0x 0px 0px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #aaa;
+    font-size: 14px;
+    text-align: left;
+    color: #FFF;
+    //vertical-align: inherit;
+    //font-weight: bold;
+}
+
+table tr td {
+    border-right: 1px dotted #aaa;
+    border-bottom: 1px solid #aaa;
+}
+
+table tr td:last-child {
+    border-right: 0;
+}
+
+table tr:last-child td {
+    border-bottom: 0;
+}
 </style>
 
 <body>
@@ -161,12 +195,6 @@ select {
     			<OPTION></OPTION>
   		</SELECT>
 	</div>
-
-	<div class="btn-bar">
-		<span id="sub"><input type="button" class="btn button1" value="Submit"></span><br />
-		<br>
-		<span id="cancel"><input type="button" class="btn button2" value="Reset"></span>
-	</div>
 	</fieldset>
 </div>
 
@@ -208,30 +236,15 @@ $(document).ready(function() {
         //Bind the date change
         $("#slider").on("valuesChanging", parse);
 
-	$("#add").click(function(){
+	$("#add").bind('click', function(){
   		$("#shown").append( $("#categories option:selected"));
-		labelSort("shown", $('#variables').val());
-	});
+		labelSort("shown", $('#variables').val());})
+		.bind('click', parse);
 
-	$("#remove").click(function(){
+	$("#remove").bind('click', function(){
   		$("#categories").append( $("#shown option:selected"));
-		labelSort("categories", $('#variables').val());
-	});
-
-	$("#sub").click(parse);
-	$("#cancel").click(function(){
-        	// clean the options
-       		document.getElementById('categories').options.length = 0;
-        	document.getElementById('shown').options.length = 0;
-		// reset map
-		map.updateChoropleth(defaultMapData, {reset: true})
-		// reset slider
-		var sliderBounds = $("#slider").dateRangeSlider("values", new Date(2014, 0, 1), new Date());
-		// reset title 
-        	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-		var title = "Incidence of Influenza Positive Cases in Swine Between January 1, 2014 to " + monthNames[sliderBounds.max.getMonth()] + " " + sliderBounds.max.getDate() + ", " + sliderBounds.max.getFullYear();
-        	$("#chartTitle").text(title);
-	});
+		labelSort("categories", $('#variables').val());})
+		.bind('click', parse);
 });
 
 function labelSort(selectorId, variable) {
@@ -266,20 +279,46 @@ var map = new Datamap({
   geographyConfig: {
     highlightBorderColor: '#bada55',
    popupTemplate: function(geography, data) {
-      if (data.freq == undefined) {
-	data.freq = 0;
-	data.percentage = (0).toFixed(2);
+      if (data.freq == undefined || data.freq == 0) {return "";}
+
+      //for_hover_string = "";
+      body_string = "";
+      for_hover = data.hover_table;
+      if (for_hover[""] == undefined) {
+        for (key in for_hover) {
+          if (for_hover[key].freq == 0) 
+            continue;
+	  body_string += '<tr>';
+	  body_string += '<td>' + key + '</td>';
+	  body_string += '<td>' + for_hover[key].freq + '</td>';
+	  body_string += '<td>' + for_hover[key].percentage + '%</td>';
+	  body_string += '</tr>';
+        }
       }
-      return '<div class="hoverinfo"><strong>' + geography.properties.name + '</strong><br>' + 
-'Frequence: ' + data.freq + '<br>' + 
-'Percentage: ' + data.percentage + '%</div>'
+      //Add the Category/Freq/Percentage
+      firstLine = '<tr>';
+      firstLine += '<td>Category</td>';
+      firstLine += '<td>Frequency</td>';
+      firstLine += '<td>Percentage</td>';
+      firstLine += '</tr>';
+
+      //Add the total information
+      lastLine = '<tr>';
+      lastLine += '<td>Total</td>';
+      lastLine += '<td>' + data.freq + '</td>';
+      lastLine += '<td>' + data.percentage + '%</td>';
+      lastLine += '</tr>';
+
+      title = '<thead><tr><th colspan="3"><strong>' + geography.properties.name + firstLine + '</strong></th></tr></thead>';
+      table = '<tbody>' + body_string + lastLine + '</tbody>';
+      hover_text = '<div class="hoverinfo"><table>' + title + table + '</table></div>';  
+      return hover_text;
     },
     highlightBorderWidth: 3
   },
   scope: 'usa',
   width: containerw,
   height: containerh,
-  //responsive: true,
   fills: {
   "color0": "#B7D2CA",
   "color1": "#009999",
@@ -383,13 +422,13 @@ function makeSelect(updated) {
 //Download Data Summaries
 function grabData() {
     //Convert JSON to CSV format (https://stackoverflow.com/questions/11257062/converting-json-object-to-csv-format-in-javascript)
-    var graphCSV = JSON.stringify(tempData);
-
     //Manual Rearrangements
-    graphCSV = graphCSV.replace(/,/g,'\n');
-    graphCSV = graphCSV.replace(/:/g,',');
-    graphCSV = graphCSV.replace('{','');
-    graphCSV = graphCSV.replace('}','');
+    var graphCSV = "State, Frequency, Percentage\n";
+    for (key in tempData) {
+        graphCSV += key + ",";
+	graphCSV += tempData[key].freq + ",";
+	graphCSV += tempData[key].percentage + "\n";
+    }
 
     graphCSV += "\n\n\"If you use data provided by ISU FLUture in your work, please credit in the following format;\"\n\"Zeller, M. A., Anderson, T. K., Walia, R. W., Vincent, A. L., &amp; Gauger, P. C. (2018). ISU FLUture: a veterinary diagnostic laboratory web-based platform to monitor the temporal genetic patterns of Influenza A virus in swine. BMC bioinformatics, 19(1), 397.\"\n\"(data retrieved <?php echo (new DateTime())->format('d M, Y');?>).\"";
 
@@ -436,7 +475,6 @@ function parse(requestData) {
         //Sort by dates
         var sliderBounds = $("#slider").dateRangeSlider("values");
 
-
         for (var i in data)
         {
                 // make sure in the time range
@@ -445,6 +483,7 @@ function parse(requestData) {
                 if(sampleDate > sliderBounds.max) continue;
 
 		var tempFreq = 0;
+		var hover_table = {};
                 if (variable != 'cases') {
                         var levelOne = data[i][variable];
                         if (skipList.indexOf(levelOne) != -1)
@@ -452,26 +491,37 @@ function parse(requestData) {
 			for (op in options) 
 			{ 
 				option = options[op];
+				if (!hover_table.hasOwnProperty(option)) {
+					hover_table[option] = 0;
+				}
 				if (!levelOne.includes(option)) {
 					continue;
 				}
+				hover_table[option] += 1;
 				tempFreq += 1;
 			}
                 } else {
 			tempFreq = 1;
 		}
-		//if (data[i].site_state == 'USA' || data[i].site_state == 'Mexico')
-		//	continue;
                 states = arrayUnique(states.concat(data[i].site_state));
 
                 //Init if property is not present
                 if (!tempData.hasOwnProperty(data[i].site_state)) {
                         tempData[data[i].site_state] = {};
 			tempData[data[i].site_state].freq = 0;
+			tempData[data[i].site_state].hover_table = {};
+			for (op in options) {
+				tempData[data[i].site_state].hover_table[options[op]] = {};	
+				tempData[data[i].site_state].hover_table[options[op]].freq = 0;	
+				tempData[data[i].site_state].hover_table[options[op]].percentage = 0;	
+			}
                 }
                 //Add to Data and count total 
                 tempData[data[i].site_state].freq += tempFreq;
 		total += tempFreq;
+                for (op in options) {
+                	tempData[data[i].site_state].hover_table[options[op]].freq += hover_table[options[op]];
+                }
 
                 //Add to max
                 if (tempData[data[i].site_state].freq > max) {
@@ -499,6 +549,11 @@ function parse(requestData) {
 			tempData[states[state]].fillKey = fillcolor;
 			tempData[states[state]].percentPop = percentPopDecimal;
 			tempData[states[state]].percentage = (isNaN((tempData[states[state]].freq/total*100).toFixed(2))) ? (0).toFixed(2) : (tempData[states[state]].freq/total*100).toFixed(2);
+			// percentage by national total
+			hover_table_editing = tempData[states[state]].hover_table;
+			for (key in hover_table_editing) {
+				hover_table_editing[key].percentage = (isNaN((hover_table_editing[key].freq/total*100).toFixed(2))) ? (0).toFixed(2) : (hover_table_editing[key].freq/total*100).toFixed(2); 
+			}
 	                $("#p1").text("> 0");
                 	$("#p2").text("> " + parseInt(max*0.142));
                 	$("#p3").text("> " + parseInt(max*0.284));

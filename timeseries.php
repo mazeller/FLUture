@@ -30,9 +30,9 @@ $theme->drawHeader();
                                     <b>Y Axis</b><br>
                                     <select id="axisy">
                                         <option value="age_days">Age</option>
+					<option value="diag_code">Bacterial Codiagnostic</option>
 					<!-- <option value="cultureResult">Coinfection</option> -->
                                         <option value="testing_facility">Data Source</option>
-					<option value="diag_code">Diagnostic Code</option>
                                         <option value="ha_clade">HA Clade</option>
 					<option value="h1_clade">H1 Clade</option>
 					<option value="h3_clade">H3 Clade</option>
@@ -138,46 +138,44 @@ function parse(rdata) {
     var barcode = {};
     var skipList = ["","-1","USA",[], undefined, "Unknown"];
     var sliderBounds = $("#slider").dateRangeSlider("values");
-    
+    var lowerBound = sliderBounds.min.getFullYear()+'-'+('0'+(sliderBounds.min.getMonth()+1)).slice(-2)+'-'+('0'+sliderBounds.min.getDate()).slice(-2); 
+    var upperBound = sliderBounds.max.getFullYear()+'-'+('0'+(sliderBounds.max.getMonth()+1)).slice(-2)+'-'+('0'+sliderBounds.max.getDate()).slice(-2);
+ 
     for (var key in rdata) {
 	//Skip certain subsets
-	if(skipList.indexOf(rdata[key][xComponent]) != -1 || skipList.indexOf(rdata[key][yComponent]) != -1)
+	if(skipList.indexOf(rdata[key][yComponent]) != -1 || skipList.indexOf(rdata[key][xComponent]) != -1)
         	continue;
 
 	//Month, clip day
-	useDate = rdata[key][xComponent]
-	caseDate = new Date(useDate);
+	useDate = rdata[key][xComponent];
 
 	//Skip if dates outside range
-	//var sliderBounds = $("#slider").dateRangeSlider("values");
-	if(caseDate < sliderBounds.min) continue;
-        if(caseDate > sliderBounds.max) continue;
+	if(useDate < lowerBound) continue;
+        if(useDate > upperBound) continue;
 
 	var caseYear = rdata[key].year;
 	var caseMonth = rdata[key].month; 
 	if(granularity == "week") {
-		caseDate.setDate(caseDate.getDate() - caseDate.getDay());
-		useDate = caseYear + "-" + caseMonth + "-" + caseDate.getDate();		
+		caseDate = new Date(useDate);
+		newDate = caseDate.getDate() - caseDate.getDay(); 
+		useDate = caseYear + "-" + caseMonth + "-" + newDate;		
 	}
 	else if(granularity == "month")
-		useDate = caseYear + "-" + caseMonth + "-" + "01";
+		useDate = caseYear + "-" + caseMonth + "-01";
 
 	else if(granularity == "year")
-		useDate = caseYear + "-" + "01" + "-" + "01";
+		useDate = caseYear + "-01-01";
 
 	var yData = [];
 
-        if (rdata[key][yComponent].constructor.name != 'Array') {
-		if (rdata[key][yComponent].includes(","))
-		{
-			yData = rdata[key][yComponent].split(",");
-		} else {
-			yData.push(rdata[key][yComponent]);
-		}
-        } else {
-                yData = rdata[key][yComponent];
-        }
 	
+	if (yComponent == 'diag_code')
+	{
+		yData = rdata[key][yComponent].split(",");
+	} else {
+		yData.push(rdata[key][yComponent]);
+	}
+
 	for (var j in yData) {
                 if(skipList.indexOf(yData[j]) != -1)
                         continue;
@@ -197,11 +195,10 @@ function parse(rdata) {
         	}
 		flu[yData[j]][useDate]++;
        		//Add barcode to list
-        	if(skipList.indexOf(rdata[key]["accession_id"]) == -1){
-        		barcode[yData[j]][useDate] += rdata[key]["accession_id"] + ",";
+        	if(skipList.indexOf(rdata[key].accession_id) == -1){
+        		barcode[yData[j]][useDate] += rdata[key].accession_id + ",";
 		}
 	}
-        //}
     }
     //Collapse the structure into data for c3 charts
     graphData = [];
@@ -229,7 +226,7 @@ function parse(rdata) {
 		
 		//Find max
 		total = 0;
-		for (i = 0; i < subsets; i++)
+		for (var i = 0; i < subsets; i++)
 		{
 			total += graphData[i][value];
 		}

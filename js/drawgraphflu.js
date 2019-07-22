@@ -54,6 +54,7 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
     var formatTickXAxis = void 0;
     var rotateTickXAxis = 0;
     var fitTickXAxis = !0;
+    var labelHeight = 0;
     var translateLabelXComponent;
     var translateLabelYComponent;
     var textLabelXAxis;
@@ -65,14 +66,16 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
     var granularity = (paramMap.has("granularity")) ? paramMap.get("granularity") : "";
     var normalize = paramMap.get("normalize");
     var stack = (paramMap.has("stack")) ? paramMap.get("stack") : false;
+    var temp = data.slice();
 
     if (graphType == "timeseries") {
         // sorting the data
         xAxis.unshift("x");
-        var temp = data.slice();
+        //var temp = data.slice();
         temp.unshift(xAxis);
         data = temp;
         // Parameters for plot defined here
+        labelHeight = 80;
         axisType = "timeseries";
         xData = 'x';
         formatTickXAxis = '%Y-%m-%d';
@@ -80,7 +83,7 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
         fitTickXAxis = true;
         if (normalize == true) {
 	    xAxisText = " Percent";
-	    for (tag in groups) {
+	    for (var tag = 0; tag < groups.length; tag ++) {
 	       typesData[groups[tag]] = 'area'; 
 	    }
         }
@@ -94,12 +97,35 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
         textLabelYAxis = translateLabelYComponent + xAxisText;
     } else if (graphType == "correlation") {
         // sorting the data
-        var temp = data.slice();
+        //var temp = data.slice();
         data = temp;
         // Parameters for plot defined here
         axisType = "category";
         typeData = 'bar';
         categoriesXAxis = xAxis;
+	
+	// dynamic space
+	var lengths = categoriesXAxis.map(function(a){return a.length;});
+	var longest = Math.max.apply(Math, lengths);
+        var arrLen = categoriesXAxis.length;
+	var totalLen = longest * arrLen;
+	if (totalLen <= 100) {
+		labelHeight = 40;
+	}
+	else if (totalLen <= 250) {
+		labelHeight = 50;
+	} 
+	else if (totalLen <= 350) {
+		labelHeight = 60;
+	} 
+	else if (totalLen <= 450) {
+		labelHeight = 70;
+	} 
+	else {
+		labelHeight = 80;
+	}
+
+
         linesYGrid = [{value: 0}];
         if (normalize == true) {
             xAxisText = " Percent";
@@ -151,18 +177,20 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
                     format: formatTickXAxis,
                     rotate: rotateTickXAxis,
                     fit: fitTickXAxis
-                }
+                },
+		height: labelHeight
             },
             y: {
                 label: {
                         text: textLabelYAxis,
                         position: 'middle'
-                }
+                },
+		padding: {top:0, bottom:60}	
             }
         },
         grid: {
             y: {
-                lines: linesYGrid
+                lines: linesYGrid,
             }
         },
         color: {
@@ -197,8 +225,12 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
                 }
 		return text + "</table>";
 	    }
-	}
-
+	},
+	/*onrendered: function () {
+                d3.select(this.config.bindto).select("svg").attr("height", "550");
+                d3.select(this.config.bindto).select(".c3-axis-x-label").attr("dy", "50px");
+		d3.select(this.config.bindto).selectAll(".c3-legend-item").attr("transform", "translate(0,15)");
+        },*/
     });
 
     //Update Title
@@ -208,6 +240,7 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
 // This function translates the x and y components into meaningful labels
 function translateLabel(label)
 {
+	var transLabel;
         switch (label) {
 		case "age_days":
 	                transLabel = "Age Group";
@@ -282,7 +315,7 @@ function sortAge(a,b) {
         return aVal - bVal;
 }
 
-//Weight sorting. Author: Siying Lyu
+//Weight sorting
 function sortWeight(a,b) {
 	if (a instanceof Array) {
 		a = a[0];
@@ -336,105 +369,10 @@ function sortDiag(a,b) {
 }
 
 
-// This function converts the clade string to a corresponding number that is used to sort the labels as per the Latin symbol order
-/*function cladeToNumber(cladeString) {
-        switch (cladeString) {
-	        case "alpha":
-	                clade = 0;
-			break;
-	        case "beta":
-	                clade = 1;
-			break;
-	        case "gamma":
-	                clade = 2;
-			break;
-	        case "gamma2":
-	                clade = 3;
-			break;
-	        case "gamma-like":
-	                clade = 4;
-			break;
-                case "gamma-npdm-like":
-                        clade = 5;
-                        break;
-	        case "gamma2-beta-like":
-	                clade = 6;
-			break;
-	        case "delta1":
-			clade = 7;
-			break;
-        	case "delta1a":
-        	        clade = 8;
-			break;
-        	case "delta1b":
-        	        clade = 9;
-			break;
-        	case "delta2":
-        	        clade = 10;
-			break;
-        	case "delta-like":
-        	        clade = 11;
-			break;
-        	case "pdmH1":
-        	        clade = 12;
-			break;
-                case "Other":
-                        clade = 13;
-                        break;
-                case "cluster_I":
-                        clade = 14;
-                        break;
-        	case "cluster_IV":
-			clade = 15;
-			break;
-        	case "cluster_IVA":
-        	        clade = 16;
-			break;
-	        case "cluster_IVB":
-	                clade = 17;
-			break;
-	        case "cluster_IVC":
-	                clade = 18;
-			break;
-	        case "cluster_IVD":
-	                clade = 19;
-			break;
-	        case "cluster_IVE":
-	                clade = 20;
-			break;
-	        case "cluster_IVF":
-	                clade = 21;
-			break;
-	        case "2010.1":
-	                clade = 22;
-			break;
-	        case "2010.2":
-	                clade = 23;
-			break;
-                case "human-to-swine-2013":
-                        clade = 24;
-                        break;
-	        case "human-to-swine-2016":
-	                clade = 25;
-			break;
-	        case "human-to-swine-2017":
-	                clade = 26;
-			break;
-                case "human-to-swine-2018":
-                        clade = 27;
-                        break;
-                case "H4":
-                        clade = 28;
-                        break;
-		default:
-			clade = -1;
-	}
-	clade = orders["ha_clade"].indexOf(cladeString);
-        return clade;
-}*/
 
 // This function converts the swine age label to corresponding number
 function ageToNumber(ageString) {
+	var age;
         switch (ageString) {
 		case "neonate":
                 	age = 0;
@@ -459,8 +397,9 @@ function ageToNumber(ageString) {
 
 // This function converts the swine weight label to corresponding number. Author: Siying Lyu
 function weightToNumber(weightString) {
+	var weight;
         switch (weightString) {
-                case "Under\t50":
+                case "Under 50":
                         weight = 0;
                         break;
                 case "50\-100":
@@ -490,7 +429,7 @@ function weightToNumber(weightString) {
                 case "450\-500":
                         weight = 9;
                         break;
-                case "Above\t500":
+                case "Above 500":
                         weight = 10;
                         break;
                 default:
@@ -511,16 +450,16 @@ function uniqueValues(dataObject, field)
 }
 //Get orders
 function extractOrders(rOrders) {
-	orders["ha_clade"] = rOrders["ha_clade"];
-	orders["na_clade"] = rOrders["na_clade"];
-        orders["diag_code"] = [];
+        orders.ha_clade = rOrders.ha_clade;
+        orders.na_clade = rOrders.na_clade;
+        orders.diag_code = [];
 
-	if(rOrders.hasOwnProperty("diag_info")) {
-		var keys = Object.keys(rOrders.diag_info);
-		keys.forEach(function(key) {
-			diag_map[rOrders.diag_info[key].diag_code] = rOrders.diag_info[key].diag_text;	
-			orders["diag_code"].push(rOrders.diag_info[key].diag_code);
-		});
-	}
+        if(rOrders.hasOwnProperty("diag_info")) {
+                var keys = Object.keys(rOrders.diag_info);
+                keys.forEach(function(key) {
+                        diag_map[rOrders.diag_info[key].diag_code] = rOrders.diag_info[key].diag_text;
+                        orders.diag_code.push(rOrders.diag_info[key].diag_code);
+                });
+        }
 
 }

@@ -36,6 +36,10 @@ class Theme extends \IastateTheme\Theme
                     'label' => 'HA Identity Tool',
                     'uri' => '/identity.php',
               	),
+                /*array(
+                    'label' => 'Tree Tool',
+                    'uri' => '/tree.php',
+              	),*/
                 array(
                     'label' => 'About',
                     'uri' => '/about.php',
