@@ -3,15 +3,18 @@ require 'autoload.php';
 $theme = new Sample\Theme('');
 $scripts = $theme->getOption('head_script');
 $scripts["file"] = array("/js/jquery.min.js","/js/jquery-ui.min.js","/js/c3.min.js","/js/d3.v3.min.js","/js/phylotree.js","//netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js","https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js");
+//$scripts["file"] = array("/js/jquery.min.js","/js/jquery-ui.min.js","/js/c3.min.js","/js/phylotree.js","//netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js","https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js");
 $theme->setOption('head_script',$scripts,true);
 $theme->addStyle('{{asset_path}}/css/jquery-ui.css');
 $theme->addStyle('{{asset_path}}/css/phylotree.css');
 $theme->addStyle("/css/bootstrap.min.css");
-#$theme->addStyle("//netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css");
-#$theme->addStyle("//netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css");
 $theme->drawHeader();
 ?>
 
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src = "https://d3js.org/d3-scale.v1.min.js"></script>
 
 <style>
   .date-text {
@@ -50,6 +53,7 @@ $theme->drawHeader();
 
 <script>
 // Data Source
+//var URL = "flu_test.nwk";
 var URL = "large_flu_tree.nwk";
 $(document).ready(function() {
   // load graph
@@ -68,19 +72,19 @@ var date_in = d3.time.format("%Y-%m-%d");
 var date_year = d3.time.format("%Y");
 
 // default scheme to color 
-var coloring_scheme = d3.scale.category10();
-//var coloring_scheme = d3.interpolateRainbow([0,20]);
+//var coloring_scheme = d3.scale.category10();
+var coloring_scheme = d3.scaleSequential(d3.interpolateRainbow).domain([1,14]);
 
 // global tree object
 var tree;
 
 // bubble size scale
-var size_scale = d3.scale.pow().exponent(0.5).range([1, 10]).clamp(false).domain([0, 1]);
+var size_scale = d3.scale.pow().exponent(1.0).range([1, 10]).clamp(false).domain([0, 1]);
 
 // determines the size of a node "bubble"
 function bubbleSize(node) {
   if (node && node.compartment) {
-    return size_scale(400);
+    return size_scale(200);
   }
   return 1;
 }
@@ -108,7 +112,9 @@ function handleMouseOver() {
     //test.text("Hello world");
 }*/
 
+var tempColorSet = [];
 function nodeStyler(container, node) {
+  coloring_scheme = d3.scaleSequential(d3.interpolateRainbow).domain([1,14]);
   if (d3.layout.phylotree.is_leafnode(node)) {
     var existing_circle = container.selectAll("circle");
     if (existing_circle.size() == 1) {
@@ -124,21 +130,17 @@ function nodeStyler(container, node) {
         return d3.svg.symbol().type("circle").size(bubble_size * bubble_size)();
       }).selectAll("title").data([node.compartment]);
       label.enter().append("title").text(node.compartment+"|"+node.date+"|"+node.state);
-      // create table
-      //label.enter().append("title").classed("table", true).append("table").append("tr").append("th").text(node.name);
-      //label.enter().append("title").classed("table", true).append("table").append("tr").append("th").text("World");
-      /*table_part = label.select("div").select("table"); 
-      table_part.append("tr").select("tr").append("th").text("Hello");
-      table_part.append("tr").select("tr").append("th").text("World");
-      table_part.append("tr").select("tr").append("th").text("You");
-      */
       //circle line style
       existing_circle.style("stroke-width", "0.5px").style("stroke", "white");
     }
   }
   if (node.compartment) {
+    if (tempColorSet.indexOf(node.compartment) == -1) {
+	tempColorSet.push(node.compartment);
+    }
     // set the label color
-    var node_color = coloring_scheme(node.compartment);
+    //var node_color = coloring_scheme(node.compartment);
+    var node_color = coloring_scheme(tempColorSet.indexOf(node.compartment));
     container.selectAll("circle").style("fill", node_color);
     container.selectAll("path").style("fill", node_color);
     container.style("fill", node_color);
@@ -146,7 +148,8 @@ function nodeStyler(container, node) {
 }
 
 function edgeStyler(container, edge) {
-    container.style("stroke", "cluster" in edge.target ? coloring_scheme(edge.target.cluster) : null);
+    container.style("stroke", "cluster" in edge.target ? coloring_scheme(tempColorSet.indexOf(edge.target.cluster)) : null);
+    //container.style("stroke", "cluster" in edge.target ? coloring_scheme(edge.target.cluster) : null);
 }
 function drawATree(newick, cluster_name) {
   tree = d3.layout.phylotree()
@@ -161,6 +164,7 @@ function drawATree(newick, cluster_name) {
       'draw-size-bubbles': true,
       // draw node size bubbles
       'show-scale': true,
+      //zoom: true,
       'left-right-spacing': 'fit-to-size',
       'top-bottom-spacing': 'fit-to-size'
     })
@@ -169,10 +173,10 @@ function drawATree(newick, cluster_name) {
     .style_nodes(nodeStyler)
     .style_edges(edgeStyler)
     .node_circle_size(0) // do not draw clickable circles for internal nodes
-    .branch_name(function() {
+    /*.branch_name(function() {
       return ""
     }) // no leaf names
-    
+    */
   ;
   /* the next call creates the tree object, and tree nodes */
   tree(d3.layout.newick_parser(newick));
@@ -215,9 +219,9 @@ function drawATree(newick, cluster_name) {
 
   tree.reroot(reroot_node)
 
-  clusters["state"] = state_cluster;
-  clusters["clade"] = clade_cluster;
-  clusters["year"] = year_cluster;
+  clusters.state = state_cluster;
+  clusters.clade = clade_cluster;
+  clusters.year = year_cluster;
   tree.spacing_x(15).spacing_y(20);
 
   size_scale.domain([100, 0]);

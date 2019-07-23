@@ -31,9 +31,9 @@ stroke-width: 0.5px;
 font: 10px sans-serif;
 }
 
-g > path:hover {
-transform: scale(1.5);
-}
+//g > path:hover {
+//transform: scale(1.5);
+//}
 
 .node-selected {
 fill: #f00 !important;     
@@ -84,7 +84,7 @@ stroke-width: 3px;
 }
 
 .branch:hover {
-stroke-width: 10px;
+stroke-width: 8px;
 }
 
 .internal-node circle:hover, .internal-node ellipse:hover, .internal-node rect:hover {
@@ -99,7 +99,8 @@ g > text {
 opacity: 1 !important;     
 }
 
-g > text:hover {
+/*g > text:hover {
 font-size: 14px !important;
 font-weight: bolder !important;     
-}
+}*/
+
