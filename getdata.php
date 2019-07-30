@@ -82,39 +82,3 @@ else
 	return;
         #send data back to requester
 }
-
-
-
-
-        //Sanitize
-        //var_dump(mysqli_real_escape_string($columns));
-
-	/*//Eliminate the diag_code from $colums
-	if (strpos($columns, "diag_code") !== false) {
-	    $columns = substr($columns, 0, -10);
-        }
-
-	//Get all the diagnostic_code
-	$diagCols = db_select("select GROUP_CONCAT(DISTINCT COLUMN_NAME) as cols FROM information_schema.columns WHERE table_name='flu' AND TABLE_SCHEMA = 'influenza4' AND COLUMN_NAME LIKE 'Diag_%';");
-	$diagArr = explode (",", $diagCols[0]['cols']);  
-	
-	$tempCols = "`".$diagArr[0]."`";
-	$length = sizeof($diagArr);
-	for ($i=1; $i<$length; $i++) {
-		$tempCols = $tempCols.","."`".$diagArr[$i]."`";
-	} 
-	*/
-
-        //$flurows = db_select("SELECT $columns, " . "$tempCols FROM `flu` " . $whereClause . ";"); 
-	//$harows = db_select("SELECT us_clade as clade FROM `ha_clade` where subtype != '' order by sort;");
-        //$h1rows  = db_select("SELECT us_clade as clade FROM `ha_clade` where subtype = 'H1' order by sort;");
-        //$h3rows  = db_select("SELECT us_clade as clade FROM `ha_clade` where subtype = 'H3' order by sort;");
-	
-        //$flurows = db_select("SELECT $columns FROM `flu` " . $whereClause . ";"); 
-        //$rows["fludata"] = $flurows;
-        //$rows["h1clade"] = $h1rows;
-        //$rows["h3clade"] = $h3rows;
-	//$rows["haclade"] = $harows;
-	//$rows["diagcols"] = $diagCols;
-	
-

@@ -158,6 +158,7 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
 
     // Generate C3 Plot    
     var chat = c3.generate({
+	bindto: "#chart",
         data: {
             x: xData,
             columns: data,
@@ -178,6 +179,7 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
                     rotate: rotateTickXAxis,
                     fit: fitTickXAxis
                 },
+		//height: function() {return 80;}
 		height: labelHeight
             },
             y: {
