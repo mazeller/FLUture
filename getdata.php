@@ -6,6 +6,7 @@ $connection = db_connect();
 
 //Get the fields
 $columns = $_POST['col'];
+
 if($columns == NULL)
 	exit;
 else if($columns == "counts,counts")
@@ -20,13 +21,14 @@ else if($columns == "lastrecord")
 	echo json_encode($rows);
         return;
 }
-elseif($columns == "accessions")
+else if($columns == "accessions")
 {
 	$rows = db_select("SELECT accession_id from `flu` WHERE accession_id != '' AND LEFT(accession_id,2) = 'A0';");	#Adding the conditional AND to ensure USDA barcode
 
 	//flatten results
-	$accessionList = "";	
-	for($i == 0; $i <= count($rows); $i++)
+	$accessionList = "";
+        $size = count($rows);
+	for($i = 0; $i < $size; $i++)
 	{
 		$accessionList .= $rows[$i]['accession_id'] . ",\n";
 	}
@@ -37,20 +39,46 @@ elseif($columns == "accessions")
 	ob_end_flush();
 	return;
 }
+else if ($columns == "orders") 
+{
+        ob_start('ob_gzhandler');
+	include('js/orders.json');
+        ob_end_flush();
+	return;
+	// make it only two queries
+	$harows = db_select("SELECT us_clade as clade FROM `ha_clade` where subtype != '' order by sort;");
+	$narows = db_select("SELECT us_clade as clade FROM `na_clade` where subtype != '' order by sort;");
+	$diagInfo = db_select("SELECT diagnostic_code as diag_code, diagnostic_text as diag_text FROM `diagnostic_code` order by diag_code;");
+	$orders["ha_clade"] = $harows;
+	$orders["na_clade"] = $narows;
+	$orders["diag_info"] = $diagInfo; 
+        ob_start('ob_gzhandler');
+        echo json_encode($orders);
+        ob_end_flush();
 
-//Check Flags
-$whereClause = "WHERE research=0 ";
-if($_POST['flags'] == "nu")
-	$whereClause .= "AND NOT site_state = 'USA'";
-if($_POST['flags'] == "hc")
-	$whereClause .= "AND ha_clade != \"\" AND na_clade != \"\"";
-//Sanitize
-//var_dump(mysqli_real_escape_string($columns));
+	return;
 
-$rows = db_select("SELECT $columns FROM `flu` " . $whereClause . ";"); 
+}
+else
+{
 
-//Compression
-ob_start('ob_gzhandler');
-echo json_encode($rows);
-ob_end_flush();
-#send data back to requester
+        //ob_start('ob_gzhandler');
+	//include('getdata_txt.php');
+        //ob_end_flush();
+	//return;
+        //Check Flags
+        $whereClause = "WHERE research=0 ";
+        if($_POST['flags'] == "nu")
+	    $whereClause .= "AND NOT site_state = 'USA' AND NOT site_state = 'Mexico'";
+        if($_POST['flags'] == "hc")
+	    $whereClause .= "AND ha_clade != \"\" AND na_clade != \"\"";
+
+        $flurows = db_select("SELECT $columns FROM `flu` " . $whereClause . ";"); 
+
+        //Compression
+        ob_start('ob_gzhandler');
+        echo json_encode($flurows);
+        ob_end_flush();
+	return;
+        #send data back to requester
+}

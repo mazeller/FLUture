@@ -110,7 +110,7 @@ if (substr($blastHits[0],0,2) != "ha")
 	{
 		echo "<h2>This sequence has the best BLAST match to the <span style='color:red'>" . $hit[5] . "</span> gene.</h2>";
 	}
-	echo "<p>This result can be validated using either the <a href=\"https://www.fludb.org/brc/blast.spg?method=ShowCleanInputPage&decorator=influenza\" target=\"_blank\">IRD BLAST Tool</a> or the <a href = \"https://www.fludb.org/brc/influenza_batch_submission.spg?method=NewAnnotation&decorator=influenza\" target=\"_blank\">IRD Annotate Nucleotide Sequence Tool</a>.</p>";
+	echo "<p>This result can be validated using either the <a href='https://www.fludb.org/brc/blast.spg?method=ShowCleanInputPage&decorator=influenza'>IRD BLAST Tool</a> or the <a rhef = 'https://www.fludb.org/brc/influenza_batch_submission.spg?method=NewAnnotation&decorator=influenza'>IRD Annotate Nucleotide Sequence Tool</a>.</p>";
 	return;
 }
 
@@ -174,15 +174,18 @@ $table .= "</table>";
 
 //Process percentages
 $stateProp = array_count_values($state);
-$haClade = array_count_values($haClade);
+//$haClade = array_count_values($haClade);
 $naProp = array_count_values($naClade);
-$subtype = array_count_values($subtype);
+//$subtype = array_count_values($subtype);
 $stateCode = generatePieChart($stateProp,"stateChart");
 $naCode = generatePieChart($naProp,"naChart");
 
 //Get most populous item from array
-$topClade = array_search(max($haClade),$haClade);
-$topSubtype = array_search(max($subtype),$subtype);
+//$topClade = array_search(max($haClade),$haClade);
+//$topSubtype = array_search(max($subtype),$subtype);
+//logic needs to be more clear 
+$topClade = $haClade[0];
+$topSubtype = $subtype[0];
 
 //Heuristic; check if left char is an H, if so take 2 chars, else take none
 if($topSubtype[0] == "H")

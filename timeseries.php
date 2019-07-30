@@ -30,6 +30,7 @@ $theme->drawHeader();
                                     <b>Y Axis</b><br>
                                     <select id="axisy">
                                         <option value="age_days">Age</option>
+					<option value="diag_code">Bacterial Codiagnostic</option>
 					<!-- <option value="cultureResult">Coinfection</option> -->
                                         <option value="testing_facility">Data Source</option>
                                         <option value="ha_clade">HA Clade</option>
@@ -108,7 +109,7 @@ function grabBarcode() {
 //Pull out data specific to Type xData State
 function requestData() {
     var xComponent = "ha_clade";
-    var yComponent = ["barcode","na_clade","H1","H3","N1","N2","received_date","age_days","site_state","testing_facility","sequence_specimen","pcr_specimen"];
+    var yComponent = ["barcode","na_clade","H1","H3","N1","N2","received_date","age_days","site_state","testing_facility","sequence_specimen","pcr_specimen","diag_code"];
         
     getJsonData(xComponent, yComponent, parse, flags="");
 }
@@ -117,6 +118,7 @@ var data = {};
 
 //Pull out data specific to Type xData State
 function parse(rdata) {
+    var startTime = performance.now();
     //Store data so only hit db once
     if(rdata.constructor.name != 'Array')
             rdata = data;
@@ -134,51 +136,69 @@ function parse(rdata) {
     //Create primary structure
     var flu = {};
     var barcode = {};
-    var skipList = ["","-1","USA", undefined];
-    
+    var skipList = ["","-1","USA",[], undefined, "Unknown"];
+    var sliderBounds = $("#slider").dateRangeSlider("values");
+    var lowerBound = sliderBounds.min.getFullYear()+'-'+('0'+(sliderBounds.min.getMonth()+1)).slice(-2)+'-'+('0'+sliderBounds.min.getDate()).slice(-2); 
+    var upperBound = sliderBounds.max.getFullYear()+'-'+('0'+(sliderBounds.max.getMonth()+1)).slice(-2)+'-'+('0'+sliderBounds.max.getDate()).slice(-2);
+ 
     for (var key in rdata) {
 	//Skip certain subsets
-	if(skipList.indexOf(rdata[key][xComponent]) != -1 || skipList.indexOf(rdata[key][yComponent]) != -1)
-		continue;
+	if(skipList.indexOf(rdata[key][yComponent]) != -1 || skipList.indexOf(rdata[key][xComponent]) != -1)
+        	continue;
 
 	//Month, clip day
-	useDate = rdata[key][xComponent]
-	caseDate = new Date(useDate);
+	useDate = rdata[key][xComponent];
 
 	//Skip if dates outside range
-	var sliderBounds = $("#slider").dateRangeSlider("values");
-	if(caseDate < sliderBounds.min) continue;
-        if(caseDate > sliderBounds.max) continue;
+	if(useDate < lowerBound) continue;
+        if(useDate > upperBound) continue;
 
+	var caseYear = rdata[key].year;
+	var caseMonth = rdata[key].month; 
 	if(granularity == "week") {
-		caseDate.setDate(caseDate.getDate() - caseDate.getDay());
-		useDate = caseDate.getFullYear() + "-" + (caseDate.getMonth() + 1) + "-" + caseDate.getDate();		
+		caseDate = new Date(useDate);
+		newDate = caseDate.getDate() - caseDate.getDay(); 
+		useDate = caseYear + "-" + caseMonth + "-" + newDate;		
 	}
-	if(granularity == "month")
-		useDate = caseDate.getFullYear() + "-" + (caseDate.getMonth() + 1) + "-" + "01";
-	if(granularity == "year")
-		useDate = caseDate.getFullYear() + "-" + "01" + "-" + "01";
+	else if(granularity == "month")
+		useDate = caseYear + "-" + caseMonth + "-01";
 
+	else if(granularity == "year")
+		useDate = caseYear + "-01-01";
 
-	//Make sure x axis exists
-	if (!flu.hasOwnProperty(rdata[key][yComponent])){
-		flu[rdata[key][yComponent]] = {};
-		barcode[rdata[key][yComponent]] = {};
-		groups.push(rdata[key][yComponent]);
-	}		
-	//Make sure y axis exists
-        if (!flu[rdata[key][yComponent]].hasOwnProperty(useDate)){
-                flu[rdata[key][yComponent]][useDate] = 0;
-                barcode[rdata[key][yComponent]][useDate] = "";
-		//If unique, add to x axis
-		if(xAxis.indexOf(useDate) == -1)
-	               xAxis.push(useDate);
-        }
-	flu[rdata[key][yComponent]][useDate]++;
-        //Add barcode to list
-        if(skipList.indexOf(rdata[key]["accession_id"]) == -1){
-        	barcode[rdata[key][yComponent]][useDate] += rdata[key]["accession_id"] + ",";
-        }
+	var yData = [];
+
+	
+	if (yComponent == 'diag_code')
+	{
+		yData = rdata[key][yComponent].split(",");
+	} else {
+		yData.push(rdata[key][yComponent]);
+	}
+
+	for (var j in yData) {
+                if(skipList.indexOf(yData[j]) != -1)
+                        continue;
+		//Make sure x axis exists
+		if (!flu.hasOwnProperty(yData[j])){
+			flu[yData[j]] = {};
+			barcode[yData[j]] = {};
+			groups.push(yData[j].toString());
+		}		
+		//Make sure y axis exists
+       		if (!flu[yData[j]].hasOwnProperty(useDate)){
+			flu[yData[j]][useDate] = 0;
+                	barcode[yData[j]][useDate] = "";
+			//If unique, add to x axis
+			if(xAxis.indexOf(useDate) == -1)
+	        		xAxis.push(useDate);
+        	}
+		flu[yData[j]][useDate]++;
+       		//Add barcode to list
+        	if(skipList.indexOf(rdata[key].accession_id) == -1){
+        		barcode[yData[j]][useDate] += rdata[key].accession_id + ",";
+		}
+	}
     }
     //Collapse the structure into data for c3 charts
     graphData = [];
@@ -206,7 +226,7 @@ function parse(rdata) {
 		
 		//Find max
 		total = 0;
-		for (i = 0; i < subsets; i++)
+		for (var i = 0; i < subsets; i++)
 		{
 			total += graphData[i][value];
 		}
@@ -214,7 +234,7 @@ function parse(rdata) {
 		//Regenerate numbers as percents
                 for (i = 0; i < subsets; i++)
                 {
-                        graphData[i][value] = (graphData[i][value] / total).toFixed(3);
+                        graphData[i][value] = (graphData[i][value] * 100 / total).toFixed(3);
                 }
 	}
     }
