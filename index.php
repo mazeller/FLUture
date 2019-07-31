@@ -9,9 +9,9 @@ $theme->addStyle('{{asset_path}}/css/jquery-ui.css');
 $theme->drawHeader();
 ?>
 
-<!-- <p class="wd-Alert--error">
-<strong>Warning:</strong> This website is currently under construction. Webpages and text may change between viewings. If you find a part of the site not working or information missing from this site, you may contact the developer through the Contact Us link.
-</p> -->
+<p class="wd-Alert--error">
+<strong>Notice:</strong> This website is currently undergoing testing following updates. Webpages and text may change between viewings. If you find a part of the site not working or information missing from this site, you may contact the developer through the Contact Us link.
+</p>
 
 <h2 id="chartTitle">Influenza PCR positive submissions per year</h2>
 <div id="chart" style="height:300px"></div>
