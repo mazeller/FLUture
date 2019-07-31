@@ -14,7 +14,7 @@ $theme->drawHeader();
 <div id="slider"></div>
 	<div>
                         <fieldset>
-                            <legend>Options</legend>
+                            <legend>Co-infection</legend>
                             <!-- Start Date: <input type="text" id="dateStart">
                                 End Date: <input type="text" id="dateEnd"> -->
 				    <a href="/#variables">Description of Variables</a>
