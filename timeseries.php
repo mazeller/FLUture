@@ -14,7 +14,7 @@ $theme->drawHeader();
 <div id="slider"></div>
 	<div>
                         <fieldset>
-                            <legend>Co-infection</legend>
+                            <legend>Options</legend>
                             <!-- Start Date: <input type="text" id="dateStart">
                                 End Date: <input type="text" id="dateEnd"> -->
 				    <a href="/#variables">Description of Variables</a>
@@ -30,7 +30,7 @@ $theme->drawHeader();
                                     <b>Y Axis</b><br>
                                     <select id="axisy">
                                         <option value="age_days">Age</option>
-					<option value="diag_code">Bacterial Codiagnostic</option>
+					<option value="diag_code">Bacterial Coinfection</option>
 					<!-- <option value="cultureResult">Coinfection</option> -->
                                         <option value="testing_facility">Data Source</option>
                                         <option value="ha_clade">HA Clade</option>

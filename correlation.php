@@ -12,7 +12,7 @@ $theme->drawHeader();
 <div id="chart" style="height:500px"></div>
 	<div>
                         <fieldset>
-                            <legend>Co-infection</legend>
+                            <legend>Options</legend>
                             <!-- Start Date: <input type="text" id="dateStart">
                                 End Date: <input type="text" id="dateEnd"> -->
 				    <a href="/#variables">Description of Variables</a>
@@ -20,7 +20,7 @@ $theme->drawHeader();
                                     <b>X Axis</b><br>
                                     <select id="axisx">
                                         <option value="age_days">Age</option>
-					<option value="diag_code">Bacterial Codiagnostic</option>
+					<option value="diag_code">Bacterial Coinfection</option>
    					<option value="day">Day of Year</option>
 					<option value="testing_facility">Data Source</option> 
                                         <!-- <option value="cultureResult">Coinfection</option> -->
@@ -41,7 +41,7 @@ $theme->drawHeader();
                                     <b>Y Axis</b><br>
                                     <select id="axisy">
                                         <option value="age_days">Age</option>
-					<option value="diag_code">Bacterial Codiagnostic</option>
+					<option value="diag_code">Bacterial Coinfection</option>
                                         <option value="day">Day of Year</option>
                                         <option value="testing_facility">Data Source</option>
 					<!-- <option value="cultureResult">Coinfection</option> -->
@@ -150,7 +150,7 @@ function parse(rdata) {
 	var xData = [];
 	var yData = [];
 	if (rdata[key][xComponent].constructor.name != 'Array') {
-		if (rdata[key][xComponent].includes(","))
+		if (rdata[key][xComponent].indexOf(",") != -1)
 		{
 			xData = rdata[key][xComponent].split(",");
 		} else {
