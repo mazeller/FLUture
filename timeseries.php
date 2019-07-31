@@ -211,7 +211,7 @@ function parse(rdata) {
             if (obj[xAxis[i]] != null)
                 tempData.push(obj[xAxis[i]]);
             else
-                tempData.push(null);
+                tempData.push(0);
     	}
         graphData.push(tempData);
     }
@@ -234,7 +234,14 @@ function parse(rdata) {
 		//Regenerate numbers as percents
                 for (i = 0; i < subsets; i++)
                 {
-                        graphData[i][value] = (graphData[i][value] * 100 / total).toFixed(3);
+                        if (graphData[i][value] != 0)
+                        {
+                                graphData[i][value] = (graphData[i][value] * 100 / total).toFixed(3);
+                        }
+                        //else
+                        //{
+                        //        graphData[i][value] = null;
+                        //}
                 }
 	}
     }
@@ -253,7 +260,7 @@ function parse(rdata) {
                     tempData.push(obj[xAxis[i]]);
 		}
                 else
-                    tempData.push(null);
+                    tempData.push(0);
                 }
             barcodeData.push(tempData);
     }
