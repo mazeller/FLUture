@@ -45,43 +45,64 @@ Demonstrates the distribution of the hemagglutinin and neuraminidase subtype com
 The ISU <em>FLU</em>ture database curates information related to the individual swine cases. An explanation of each of the variables that ISU <em>FLU</em>ture allows searching for can be found below.<br/><br/>
 
 <strong>Age</strong><br/>
-The age of the pig at the time the flu positive sample was taken.<br/>
+The age of the pig at the time the flu positive sample was collected.
+<table style="position: relative; left: 20px;">
+	<tbody>
+		<tr><td>Neonate: 0-5 days</td></tr>
+		<tr><td>Suckling: 5-21 days</td></tr>
+		<tr><td>Nursery: 3 – 10/11 weeks</td></tr>
+		<tr><td>Grow/Finish: 10/11 – 26 weeks</td></tr>
+		<tr><td>Adult: > 26 weeks</td></tr>
+	</tbody>
+</table>
 
 <strong>Data Source</strong><br/>
-The stream that handeled the sequencing of the sample. Samples with cycle threshold (CT) values less then or equal to 25 are handled by the USDA stream, while samples with CT values less then or equal to 38 are processed by the ISU VDL stream. Samples with CT values above 38 are not sequenced.<br/>
+The stream that handled sequencing of the sample. Samples with cycle threshold (CT) values <span>&#8804;</span> 25 for lung and nasal swab and <span>&#8804;</span> 20 for oral fluid are routed through the USDA traceable or anonymous stream. Samples with CT values <span>&#8804;</span> 38 are processed by the ISU VDL stream. Samples with CT values above 38 are considered negative.
+<br/>
 
 <strong>Day</strong><br/>
-The day of the year that the flu positive sample was taken.<br/>
+The day of the year that the flu positive sample was collected.
+<br/>
 
 <strong>HA Clade</strong><br/>
-The phylogenetic clade that a flu positive sample is part of, based on the hemagglutinin sequence. Currently the ISU <em>FLU</em>ture database tracks only H1 and H3 subtype hemagglutinin, thus clades will be derived from one of these subtypes.<br/>
+The phylogenetic clade of a corresponding hemagglutinin sequence. Currently, the ISU <em>FLU</em>ture database tracks only H1 and H3 subtype hemagglutinin, thus clades will be derived from one of these subtypes.
+<br/>
 
 <strong>HA Sequence</strong><br/>
-The genetic sequence of the hemagglutinin of a specific influenza virus case. Sequencing is only attempted for sample with cycle threshold (CT) values less then or equal to 38.<br/>
+The genetic sequence of the hemagglutinin gene of a specific influenza virus by case. Sequencing restricted to samples with cycle threshold (CT) values <span>&#8804;</span> 38.
+<br/>
 
 <strong>Month</strong><br/>
-The month of the year that the flu positive sample was taken.<br/>
+The month of the year that the flu positive sample was collected.
+<br/>
 
 <strong>NA Clade</strong><br/>
-The phylogenetic clade that a flu positive sample is part of, based on neuraminidase. Currently the ISU <em>FLU</em>ture database tracks only N1 and N2 subtype neuraminidase, thus clades will be derived from one of these subtypes. Only samples with cycle threshold (CT) values less then or equal to 25 are sequenced, and are applicable for this type of data.<br/>
+The phylogenetic clade of a corresponding neuraminidase. Currently, the ISU <em>FLU</em>ture database tracks only N1 and N2 subtype neuraminidase, thus clades will be derived from one of these subtypes. Only samples with cycle threshold (CT) values <span>&#8804;</span> 25 are sequenced, and applicable for this type of data.
+<br/>
 
 <strong>PCR Specimen</strong><br/>
-The specimen from which the subtyping RT-PCR was derived from.<br/>
+The specimen from which the subtyping RT-PCR was derived.
+<br/>
 
 <strong>Sequence Specimen</strong><br/>
-The specimen that was used for attempting sequencing.<br/>
+The specimen used to attempt sequencing.
+<br/>
 
 <strong>Site State</strong><br/>
-The state that the pig was located in when the sample was taken for submission to the veterinary diagnostic laboratory.<br/>
+The state that the pig was located when the sample was collected for submission to the veterinary diagnostic laboratory.
+<br/>
 
 <strong>Subtype</strong><br/>
-The subtype of the influenza virus, based on PCR identificatin of the hemagglutinin and neuraminidase proteins.<br/>
+The subtype of the influenza virus, based on PCR detection of the hemagglutinin and neuraminidase proteins.
+<br/>
 
 <strong>Week</strong><br/>
-The week of the year that the flu positive sample was taken.<br/>
+The week of the year that the flu positive sample was collected.
+<br/>
 
 <strong>Year</strong><br/>
-The year that the flu positive sample was taken.<br/>
+The year that the flu positive sample was collected.
+<br/>
 </p>
 
 <script>
