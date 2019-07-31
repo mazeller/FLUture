@@ -211,7 +211,7 @@ function parse(rdata) {
             if (obj[xAxis[i]] != null)
                 tempData.push(obj[xAxis[i]]);
             else
-                tempData.push(0);
+                tempData.push(null);
     	}
         graphData.push(tempData);
     }
