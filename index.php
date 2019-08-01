@@ -10,7 +10,7 @@ $theme->drawHeader();
 ?>
 
 <p class="wd-Alert--warning">
-<strong>Update Information August 1, 2019:</strong> ISU FLUture has undergone a number of updates detailed below.<br/>
+<strong>Update Information August 1, 2019:</strong> ISU <em>FLU</em>ture has undergone a number of updates detailed below.<br/>
 *Regional tool functionality has been expanded. Selected metadata can be plotted on a regional basis.<br/>
 *Bacterial coinfection case metadata has been added as a variable for viewing in the correlation, time series, and regional tools.<br/>
 *HA identity tool will return any matched segment name if submitted sequence is not HA and is 96% similair.<br/>
