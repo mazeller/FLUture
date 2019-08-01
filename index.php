@@ -46,15 +46,13 @@ The ISU <em>FLU</em>ture database curates information related to the individual 
 
 <strong>Age</strong><br/>
 The age of the pig at the time the flu positive sample was collected.
-<table style="position: relative; left: 20px;">
-	<tbody>
-		<tr><td>Neonate: 0-5 days</td></tr>
-		<tr><td>Suckling: 5-21 days</td></tr>
-		<tr><td>Nursery: 3 – 10/11 weeks</td></tr>
-		<tr><td>Grow/Finish: 10/11 – 26 weeks</td></tr>
-		<tr><td>Adult: > 26 weeks</td></tr>
-	</tbody>
-</table>
+<ol class="wd-u-ListUnstyled" style="position: relative; left: 20px;">
+	<li>Neonate: 0-5 days</li>
+	<li>Suckling: 5-21 days</li>
+	<li>Nursery: 3 – 10/11 weeks</li>
+	<li>Grow/Finish: 10/11 – 26 weeks</li>
+	<li>Adult: > 26 weeks</li>
+</ol>
 
 <strong>Data Source</strong><br/>
 The stream that handled sequencing of the sample. Samples with cycle threshold (CT) values <span>&#8804;</span> 25 for lung and nasal swab and <span>&#8804;</span> 20 for oral fluid are routed through the USDA traceable or anonymous stream. Samples with CT values <span>&#8804;</span> 38 are processed by the ISU VDL stream. Samples with CT values above 38 are considered negative.
