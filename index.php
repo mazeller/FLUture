@@ -9,8 +9,12 @@ $theme->addStyle('{{asset_path}}/css/jquery-ui.css');
 $theme->drawHeader();
 ?>
 
-<p class="wd-Alert--error">
-<strong>Notice:</strong> This website is currently undergoing testing following updates. Webpages and text may change between viewings. If you find a part of the site not working or information missing from this site, you may contact the developer through the Contact Us link.
+<p class="wd-Alert--warning">
+<strong>Update Information August 1, 2019:</strong> ISU FLUture has undergone a number of updates detailed below.<br/>
+*Regional tool functionality has been expanded. Selected metadata can be plotted on a regional basis.<br/>
+*Bacterial coinfection case metadata has been added as a variable for viewing in the correlation, time series, and regional tools.<br/>
+*HA identity tool will return any matched segment name if submitted sequence is not HA and is 96% similair.<br/>
+*Additional colors have been added to make identification of data easier.
 </p>
 
 <h2 id="chartTitle">Influenza PCR positive submissions per year</h2>
@@ -35,9 +39,11 @@ Over 100 unique correlation graphs can be generated to search for trends from va
 <strong>Time Series</strong><br>
 The incidence of the variables in the database can be viewed over a period of time<br>
 <strong>Regional</strong><br>
-The incidence of flu positive cases that have been processed by the USDA/ISU-VDL can be viewed by geographic location, over a specified period of time.<br>
+The incidence of of variables for flu positive cases that have been processed by the USDA/ISU-VDL can be viewed by geographic location, over a specified period of time.<br>
 <strong>Heat Map</strong><br>
 Demonstrates the distribution of the hemagglutinin and neuraminidase subtype combinations over a period of time.<br>
+<strong>HA Identity Tool</strong><br>
+Allows user to input swine influenza HA sequences, and will return the closest matched HA clade, using NCBI BLAST.<br>
 </p>
 
 <a name="variables"><h2>Variables</h2></a>
@@ -53,6 +59,10 @@ The age of the pig at the time the flu positive sample was collected.
 	<li>Grow/Finish: 10/11 – 26 weeks</li>
 	<li>Adult: > 26 weeks</li>
 </ol>
+
+<strong>Bacterial Coinfection</strong><br/>
+Bacterial culture results from submitted samples of influenza positive cases. Majority of samples are lung tissue.
+<br/>
 
 <strong>Data Source</strong><br/>
 The stream that handled sequencing of the sample. Samples with cycle threshold (CT) values <span>&#8804;</span> 25 for lung and nasal swab and <span>&#8804;</span> 20 for oral fluid are routed through the USDA traceable or anonymous stream. Samples with CT values <span>&#8804;</span> 38 are processed by the ISU VDL stream. Samples with CT values above 38 are considered negative.

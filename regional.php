@@ -166,8 +166,8 @@ table tr:last-child td {
                 <select id='variables' size="5">
                         <option value="cases">Positive Cases</option>
                         <option value="age_days">Age</option>
+                        <option value="diag_code">Bacterial Coinfection</option>
                         <option value="testing_facility">Data Source</option>
-                        <option value="diag_code">Diagnostic Code</option>
                         <option value="ha_clade">HA Clade</option>
                         <option value="h1_clade">H1 Clade</option>
                         <option value="h3_clade">H3 Clade</option>
