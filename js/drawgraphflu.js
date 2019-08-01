@@ -290,7 +290,7 @@ function translateLabel(label)
                         transLabel = "Weight(lbs)";
                         break;
 		case "diag_code":
-			transLabel = "Diagnostic Code";
+			transLabel = "Bacterial Coinfection";
 			break;
 		default:
 			transLabel = label;
