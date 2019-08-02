@@ -60,6 +60,7 @@ Please wait, BLAST in progress...
 <ol>
 <li>Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.</li>
 <li>Zhang Z., Schwartz S., Wagner L., & Miller W. (2000), "A greedy algorithm for aligning DNA sequences" J Comput Biol 2000; 7(1-2):203-14.</li>
+<li>Chang, J., Anderson, T.K., Zeller, M.A., Gauger, P.C., and Vincent, A.L. (2019). “octoFLU: Automated classification to evolutionary origin of influenza A virus gene sequences detected in U.S. swine” Microbiology Resource Announcements XX:XX. <a href="https://github.com/flu-crew/octoFLU">Github repo.</a></li>
 </ol>
 </small>
 </div>
