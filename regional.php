@@ -159,7 +159,7 @@ table tr:last-child td {
         <fieldset>
         <legend style="font-size: 14px;">Options</legend>
 	<div style="font-size: 14px;">
-        	<a href="/#variables">Description of Variables</a>
+        	<a href="about.php#variable-info">Description of Variables</a>
 	</div>
 	<div class="select-bar" style="width: 200px;">
                 <b>Variables</b><br>
