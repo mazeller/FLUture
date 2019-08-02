@@ -10,11 +10,10 @@ $theme->drawHeader();
 ?>
 
 <p class="wd-Alert--warning">
-<strong>Update Information August 1, 2019:</strong> ISU <em>FLU</em>ture has undergone a number of updates detailed below.<br/>
-*Regional tool functionality has been expanded. Selected metadata can be plotted on a regional basis.<br/>
-*Bacterial coinfection case metadata has been added as a variable for viewing in the correlation, time series, and regional tools.<br/>
-*HA identity tool will return any matched segment name if submitted sequence is not HA and is 96% similair.<br/>
-*Additional colors have been added to make identification of data easier.
+<strong>What's new at ISU <i>FLU</i>ture August 1, 2019:</strong> ISU <em>FLU</em>ture has undergone a number of updates detailed below.<br/>
+*<a href="/regional.php">Regional tool</a> functionality has been expanded. Selected metadata can be plotted on a regional basis.<br/>
+*Bacterial coinfection. IAV cases that have an associated bacterial coinfection data may be viewed in the <a href="/correlation.php">correlation</a>, <a href="/timeseries.php">time series</a>, and <a href="/regional.php">regional tools</a>.<br/>
+*<a href="/identity.php">HA identity tool</a> will return any matched segment name if submitted sequence is not HA and is 96% similiar.<br/>
 </p>
 
 <h2 id="chartTitle">Influenza PCR positive submissions per year</h2>
@@ -39,11 +38,11 @@ Over 100 unique correlation graphs can be generated to search for trends from va
 <strong>Time Series</strong><br>
 The incidence of the variables in the database can be viewed over a period of time<br>
 <strong>Regional</strong><br>
-The incidence of of variables for flu positive cases that have been processed by the USDA/ISU-VDL can be viewed by geographic location, over a specified period of time.<br>
+Case metadata may be plotted and explored by region and state.<br>
 <strong>Heat Map</strong><br>
 Demonstrates the distribution of the hemagglutinin and neuraminidase subtype combinations over a period of time.<br>
 <strong>HA Identity Tool</strong><br>
-Allows user to input swine influenza HA sequences, and will return the closest matched HA clade, using NCBI BLAST.<br>
+Submitted sequences will be identified to HA genetic clade, matched gene segment, and similar sequences in FLUture are presented.<br>
 </p>
 
 <a name="variables"><h2>Variables</h2></a>
