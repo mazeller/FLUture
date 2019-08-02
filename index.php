@@ -33,15 +33,15 @@ ISU <em>FLU</em>ture is an interactive web-based tool developed to provide  diag
 
 <h2>Suite of Tools</h2>
 <p>
-<strong>Correlations</strong><br>
+<a href='correlation.php'><strong>Correlations</strong></a><br>
 Over 100 unique correlation graphs can be generated to search for trends from variables stored in the database.<br>
-<strong>Time Series</strong><br>
+<a href='timeseries.php'><strong>Time Series</strong></a><br>
 The incidence of the variables in the database can be viewed over a period of time<br>
-<strong>Regional</strong><br>
+<a href='regional.php'><strong>Regional</strong></a><br>
 Case metadata may be plotted and explored by region and state.<br>
-<strong>Heat Map</strong><br>
+<a href='heatmap.php'><strong>Heat Map</strong></a><br>
 Demonstrates the distribution of the hemagglutinin and neuraminidase subtype combinations over a period of time.<br>
-<strong>HA Identity Tool</strong><br>
+<a href='identity.php'><strong>HA Identity Tool</strong></a><br>
 Submitted sequences will be identified to HA genetic clade, matched gene segment, and similar sequences in FLUture are presented.<br>
 </p>
 
