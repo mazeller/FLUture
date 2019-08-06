@@ -60,6 +60,18 @@ fclose($temp); // this removes the file
 //Set up table
 $table =  "<table class=\"wd-Table--striped wd-Table--hover\">";
 $table .= "<thead><th>USDA Barcode</th><th>Received date</th><th>State</th><th>Subtype</th><th>HA clade</th><th>NA clade</th><th>% identity</th></thead>";
+
+//Get the full name of clades
+$result = str_replace("_ICPM","Incomplete",$result);
+$result = str_replace("_EAL","Eurasian_avian-like",$result);
+$result = str_replace("_HTS2010","human-to-swine-2010",$result);
+$result = str_replace("_HTS2013","human-to-swine-2013",$result);
+$result = str_replace("_HTS2016","human-to-swine-2016",$result);
+$result = str_replace("_HTS2017","human-to-swine-2017",$result);
+$result = str_replace("_HTS2018","human-to-swine-2018",$result);
+$result = str_replace("_G2BL","gamma2-beta-like",$result);
+$result = str_replace("_GNL","gamma-npdm-like",$result);
+
 //Explode into expected
 $result = str_replace("\t","+",$result);
 $blastHits = explode("\n", $result);
