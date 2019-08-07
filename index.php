@@ -45,7 +45,7 @@ Demonstrates the distribution of the hemagglutinin and neuraminidase subtype com
 Submitted sequences will be identified to HA genetic clade, matched gene segment, and similar sequences in FLUture are presented.<br>
 </p>
 
-<a name="variables"><h2>Variables</h2></a>
+<!--<a name="variables"><h2>Variables</h2></a>
 <p>
 The ISU <em>FLU</em>ture database curates information related to the individual swine cases. An explanation of each of the variables that ISU <em>FLU</em>ture allows searching for can be found below.<br/><br/>
 
@@ -111,6 +111,7 @@ The week of the year that the flu positive sample was collected.
 The year that the flu positive sample was collected.
 <br/>
 </p>
+-->
 
 <script>
 

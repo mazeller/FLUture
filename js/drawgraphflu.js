@@ -3,27 +3,15 @@
  * @author Anugrah Saxena
  */
 
-/**
- * Summary: This function draws the graph for the attributes passed by the tools.
- *
- * The drawGraphFlu function takes in the attributes passed by the timeseries and correlation PHP files, and the form's id values from the webpage.
- * Then based on the tool type it assigns the values to the variables. Next, it sorts the data to show them with proper order of labels.
- * Finally, it generates the the c3 graph.
- *
- * @param {matrix} data - Matrix of data for each group consisting of clade frequency of detection corresponding to the xAxis.
- * @param {array} xAxis - Array of values against which data is to be plotted.
- * @param {array} groups - The array of hemagglutinin lineage names or clusters for which the data exists.
- * @param {string} xComponent - The component corresponding to the x-axis values.
- * @param {string} yComponent - The component corresponding to the y-axis values.
- * @param {map} paramMap - This parameter consists of a map of key: value pairs of graph type, normalize, stack and granularity variables
- */
-
 // orders extracted from database for sorting
 // Diag mapping info
 var orders = {};
 var diag_map = {};
 
-// request orders data
+/**
+ *  Summary: This function request orders data
+ *  The getOrder function makes an ajax call to get orders data for sorting the c3 graph labels and data.
+ */
 function getOrder(callback) {
 	$.ajax({
                 url: '/getdata.php',
@@ -39,7 +27,20 @@ function getOrder(callback) {
                 }
         });
 }
-
+/**
+ * Summary: This function draws the graph for the attributes passed by the tools.
+ * 
+ * The drawGraphFlu function takes in the attributes passed by the timeseries and correlation PHP files, and the form's id values from the webpage.
+ * Then based on the tool type it assigns the values to the variables. Next, it sorts the data to show them with proper order of labels.
+ * Finally, it generates the the c3 graph.
+ * 
+ * @param {matrix} data - Matrix of data for each group consisting of clade frequency of detection corresponding to the xAxis.
+ * @param {array} xAxis - Array of values against which data is to be plotted.
+ * @param {array} groups - The array of hemagglutinin lineage names or clusters for which the data exists.
+ * @param {string} xComponent - The component corresponding to the x-axis values.
+ * @param {string} yComponent - The component corresponding to the y-axis values.
+ * @param {map} paramMap - This parameter consists of a map of key: value pairs of graph type, normalize, stack and granularity variables
+ */
 function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
     // Get the orders from databass if orders are not ready
     if (Object.getOwnPropertyNames(orders).length === 0)
@@ -59,6 +60,9 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
     var translateLabelYComponent;
     var textLabelXAxis;
     var textLabelYAxis;
+    var axisYMin = 0;
+    var axisYMax = undefined;
+    var axisYPadding = {top:0, bottom:0};
     var linesYGrid = [];
     var patternColor = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf', '#ffbb78', '#9edae5', '#98df8a', '#aec7e8', '#ff9896', '#c5b0d5', '#c49c94', '#f7b6d2', '#c7c7c7', '#dbdb8d'];
 
@@ -83,6 +87,7 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
         fitTickXAxis = true;
         if (normalize == true) {
 	    xAxisText = " Percent";
+            axisYMax = 100;
 	    for (var tag = 0; tag < groups.length; tag ++) {
 	       typesData[groups[tag]] = 'area'; 
 	    }
@@ -129,6 +134,7 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
         linesYGrid = [{value: 0}];
         if (normalize == true) {
             xAxisText = " Percent";
+            axisYMax = 100;
         } else {
             xAxisText = " Count";
         }
@@ -183,11 +189,13 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
 		height: labelHeight
             },
             y: {
+                mix: axisYMin,
+                max: axisYMax,
                 label: {
                         text: textLabelYAxis,
                         position: 'middle'
                 },
-		padding: {top:0, bottom:60}	
+		padding: axisYPadding
             }
         },
         grid: {
