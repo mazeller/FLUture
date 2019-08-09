@@ -189,7 +189,7 @@ function drawGraphFlu(data, xAxis, groups, xComponent, yComponent, paramMap) {
 		height: labelHeight
             },
             y: {
-                mix: axisYMin,
+                min: axisYMin,
                 max: axisYMax,
                 label: {
                         text: textLabelYAxis,
