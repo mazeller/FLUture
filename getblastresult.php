@@ -63,14 +63,24 @@ $table .= "<thead><th>USDA Barcode</th><th>Received date</th><th>State</th><th>S
 
 //Get the full name of clades
 $result = str_replace("_ICPM","Incomplete",$result);
+$result = str_replace("_I","cluster_I",$result);
+$result = str_replace("_IV","cluster_IV",$result);
+$result = str_replace("_IVA","cluster_IVA",$result);
+$result = str_replace("_IVB","cluster_IVB",$result);
+$result = str_replace("_IVC","cluster_IVC",$result);
+$result = str_replace("_IVD","cluster_IVD",$result);
+$result = str_replace("_IVE","cluster_IVE",$result);
+$result = str_replace("_IVF","cluster_IVF",$result);
 $result = str_replace("_EAL","Eurasian_avian-like",$result);
-$result = str_replace("_HTS2010","human-to-swine-2010",$result);
-$result = str_replace("_HTS2013","human-to-swine-2013",$result);
-$result = str_replace("_HTS2016","human-to-swine-2016",$result);
-$result = str_replace("_HTS2017","human-to-swine-2017",$result);
-$result = str_replace("_HTS2018","human-to-swine-2018",$result);
+$result = str_replace("_HTS10","human-to-swine-2010",$result);
+$result = str_replace("_HTS13","human-to-swine-2013",$result);
+$result = str_replace("_HTS16","human-to-swine-2016",$result);
+$result = str_replace("_HTS17","human-to-swine-2017",$result);
+$result = str_replace("_HTS18","human-to-swine-2018",$result);
 $result = str_replace("_G2BL","gamma2-beta-like",$result);
 $result = str_replace("_GNL","gamma-npdm-like",$result);
+$result = str_replace("_cls","classical",$result);
+$result = str_replace("_pan","pandemic",$result);
 
 //Explode into expected
 $result = str_replace("\t","+",$result);
