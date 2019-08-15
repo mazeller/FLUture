@@ -32,6 +32,9 @@ EOF;
 	return $jsCode;
 }
 
+// clade subtype array
+$cladeArray = json_decode(file_get_contents("./js/orders.json"), true);
+
 //Get sequence data in question
 $seq_input = $_POST['seq'];
 $blast_type = $_POST['blast'];
@@ -51,7 +54,7 @@ if($blast_type == "aa")
 }
 else
 {
-	$result = shell_exec("/opt/ncbi-blast-2.9.0+/bin/blastn -query " . $path . " -db /var/www/BLASTdb/vdl_flu_nt -outfmt \"6 sseqid pident\" -perc_identity 96 -num_alignments=100 2>&1");
+	$result = shell_exec("/opt/ncbi-blast-2.9.0+/bin/blastn -query " . $path . " -db /var/www/BLASTdb/vdl_flu_nt -outfmt \"6 sseqid qcovs pident\" -perc_identity 96 -num_alignments=100 2>&1");
 }
 
 //Delete temp
@@ -60,27 +63,6 @@ fclose($temp); // this removes the file
 //Set up table
 $table =  "<table class=\"wd-Table--striped wd-Table--hover\">";
 $table .= "<thead><th>USDA Barcode</th><th>Received date</th><th>State</th><th>Subtype</th><th>HA clade</th><th>NA clade</th><th>% identity</th></thead>";
-
-//Get the full name of clades
-$result = str_replace("_ICPM","Incomplete",$result);
-$result = str_replace("_I","cluster_I",$result);
-$result = str_replace("_IV","cluster_IV",$result);
-$result = str_replace("_IVA","cluster_IVA",$result);
-$result = str_replace("_IVB","cluster_IVB",$result);
-$result = str_replace("_IVC","cluster_IVC",$result);
-$result = str_replace("_IVD","cluster_IVD",$result);
-$result = str_replace("_IVE","cluster_IVE",$result);
-$result = str_replace("_IVF","cluster_IVF",$result);
-$result = str_replace("_EAL","Eurasian_avian-like",$result);
-$result = str_replace("_HTS10","human-to-swine-2010",$result);
-$result = str_replace("_HTS13","human-to-swine-2013",$result);
-$result = str_replace("_HTS16","human-to-swine-2016",$result);
-$result = str_replace("_HTS17","human-to-swine-2017",$result);
-$result = str_replace("_HTS18","human-to-swine-2018",$result);
-$result = str_replace("_G2BL","gamma2-beta-like",$result);
-$result = str_replace("_GNL","gamma-npdm-like",$result);
-$result = str_replace("_cls","classical",$result);
-$result = str_replace("_pan","pandemic",$result);
 
 //Explode into expected
 $result = str_replace("\t","+",$result);
@@ -207,15 +189,27 @@ $naCode = generatePieChart($naProp,"naChart");
 //$topSubtype = array_search(max($subtype),$subtype);
 //logic needs to be more clear 
 $topClade = $haClade[0];
-$topSubtype = $subtype[0];
+#$topSubtype = $subtype[0];
+$topSubtype = "";
+
+#Assign subtype based on the top clade
+if(in_array($topClade, $cladeArray["h1_clade"]))
+        $topSubtype = "H1";
+if(in_array($topClade, $cladeArray["h3_clade"]))
+        $topSubtype = "H3";
+if(in_array($topClade, $cladeArray["n1_clade"]))
+        $topSubtype = "N1";
+if(in_array($topClade, $cladeArray["n2_clade"]))
+        $topSubtype = "N2";
 
 //Heuristic; check if left char is an H, if so take 2 chars, else take none
-if($topSubtype[0] == "H")
+/*if($topSubtype[0] == "H")
 {
 	$topSubtype = substr($topSubtype,0,2);
 }
 else
 	$topSubtype = "";
+*/
 
 //Send back to server
 echo "<br/><h2>This sequence has the best BLAST match to: <spani style='color:red'>" . $topSubtype . " " . $topClade . "</span></h2><br/>";
