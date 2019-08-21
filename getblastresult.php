@@ -43,11 +43,11 @@ $blast_type = $_POST['blast'];
 $seq_input = str_replace("-","", $seq_input);
 
 #Verify sequence input
-if(!preg_match('/^[atgcrykmswbdhvn]+$/' , strtolower($seq_input)) && !preg_match('/^[knimrst*ylfcwedvgaqhp]+$/' , strtolower($seq_input)))
-{
-        echo "<p>The input sequence consists of invalid characters.</p>";
-        return;
-}
+#if(!preg_match('/^[atgcrykmswbdhvn]+$/' , strtolower($seq_input)) && !preg_match('/^[knimrst*ylfcwedvgaqhp]+$/' , strtolower($seq_input)))
+#{
+#        echo "<p>The input sequence consists of invalid characters.</p>";
+#        return;
+#}
 
 $temp = tmpfile();
 fwrite($temp, $seq_input);
