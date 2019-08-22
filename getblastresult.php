@@ -40,7 +40,7 @@ $seq_input = $_POST['seq'];
 $blast_type = $_POST['blast'];
 
 #Remove ndels if present in the sequence input
-$seq_input = str_replace("-","", $seq_input);
+#$seq_input = str_replace("-","", $seq_input);
 
 #Verify sequence input
 #if(!preg_match('/^[atgcrykmswbdhvn]+$/' , strtolower($seq_input)) && !preg_match('/^[knimrst*ylfcwedvgaqhp]+$/' , strtolower($seq_input)))
