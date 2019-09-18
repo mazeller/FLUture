@@ -9,13 +9,6 @@ $theme->addStyle('{{asset_path}}/css/jquery-ui.css');
 $theme->drawHeader();
 ?>
 
-<p class="wd-Alert--warning">
-<strong>What's new at ISU <i>FLU</i>ture August 1, 2019:</strong> ISU <em>FLU</em>ture has undergone a number of updates detailed below.<br/>
-*<a href="/regional.php">Regional tool</a> functionality has been expanded. Selected metadata can be plotted on a regional basis.<br/>
-*Bacterial coinfection. IAV cases that have an associated bacterial coinfection data may be viewed in the <a href="/correlation.php">correlation</a>, <a href="/timeseries.php">time series</a>, and <a href="/regional.php">regional tools</a>.<br/>
-*<a href="/identity.php">HA identity tool</a> will return any matched segment name if submitted sequence is not HA and is 96% similiar.<br/>
-</p>
-
 <h2 id="chartTitle">Influenza PCR positive submissions per year</h2>
 <div id="chart" style="height:300px"></div>
 <h6 style="text-align:center;">(Last Record from <span id="lr"></span>)</h6>
