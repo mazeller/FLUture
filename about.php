@@ -17,6 +17,7 @@ $theme->drawHeader();
 <div class="toolbar">
 	<a class='button' href="#cite-info">Citation</a>
 	<a class='button' href="#contact-info">Contact</a>
+	<a class='button' href="#changelog-info">Changelog</a>
 	<a class='button' href="#variable-info">Variables</a>
 	<a class='button' href="#conference-info">Training Workshops</a>
 </div>
@@ -45,6 +46,11 @@ Zeller, M. A., Anderson, T. K., Walia, R. R., Vincent, A. L., &amp; Gauger, P. C
                                         1850 Christensen Dr<br>
                                         Ames, IA 50011-1134</p>
 
+</div>
+
+<div id='changelog-info'>
+<h1 class='wd-u-Heading'>Changelog</h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut   aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui   officia deserunt mollit anim id est laborum.</p>
 </div>
 
 <a id='variable-info' style="text-decoration:none"><h1 class="wd-u-Heading">Variables</h1></a>

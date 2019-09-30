@@ -176,7 +176,7 @@ function parse(requestData) {
 		//Add in H1 counts
 		if(fluCase.H1 == "1") {
 			//Remove specific  clades
-			if(fluCase.ha_clade != "cluster_IVA" & fluCase.ha_clade != "cluster_IVE" & fluCase.ha_clade != "2010.1"  & fluCase.ha_clade != "2010.2" & fluCase.ha_clade != "cluster_IV" & fluCase.ha_clade != "cluster_IVB") {
+			if(fluCase.ha_clade != "cluster_IVA" & fluCase.ha_clade != "cluster_IVE" & fluCase.ha_clade != "2010.1"  & fluCase.ha_clade != "2010.2" & fluCase.ha_clade != "cluster_IV" & fluCase.ha_clade != "cluster_IVB" & fluCase.ha_clade != "H4") {
 
 				//Capture H1 Clades
 				if(h1clade.indexOf(fluCase.ha_clade) < 0)
