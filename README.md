@@ -12,9 +12,10 @@ A C3 timeseries chart used to show any variable in the database plotted against 
 An implementation of the US-map library that relies on raphael to show where case data originated from over time. There are future plans for this functionality to be extended to plot other variables geographically.
 <h3>heatmap.php</h3>
 A script that renders tables based on count data for ha clades and na clades where where applicable.
+<h3>identity.php</h3>
+A script that identifies HA genetic clade, matched gene segment, and presents similar sequences from the database using BLAST Tool.
 <h3>3dview.php</h3>
 An unreleased component that uses PV protein viewer to render HA for visual structural analysis.
-
 
 <h2>JavaScript Libraries</h2>
 <h3>bio-pv</h3>
