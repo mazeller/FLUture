@@ -197,8 +197,16 @@ $naCode = generatePieChart($naProp,"naChart");
 //Get most populous item from array
 //$topClade = array_search(max($haClade),$haClade);
 //$topSubtype = array_search(max($subtype),$subtype);
-//logic needs to be more clear 
-$topClade = $haClade[0];
+
+// find the first non-empty clade value
+$topClade = "";
+foreach($haClade as &$val) {
+        if($val) {
+                $topClade = $val;
+                break;
+        }
+}
+//$topClade = $haClade[0];
 #$topSubtype = $subtype[0];
 $topSubtype = "";
 
