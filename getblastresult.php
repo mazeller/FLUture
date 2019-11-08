@@ -64,7 +64,7 @@ if($blast_type == "aa")
 }
 else
 {
-	$result = shell_exec("/opt/ncbi-blast-2.9.0+/bin/blastn -query " . $path . " -db /var/www/BLASTdb/vdl_flu_nt -outfmt \"6 sseqid qcovs pident\" -perc_identity 96 -num_alignments=100 2>&1");
+	$result = shell_exec("/opt/ncbi-blast-2.9.0+/bin/blastn -query " . $path . " -db /var/www/BLASTdb/vdl_flu_nt -outfmt \"6 sseqid pident\" -perc_identity 96 -num_alignments=100 2>&1");
 }
 
 //Delete temp
