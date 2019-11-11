@@ -201,7 +201,7 @@ $naCode = generatePieChart($naProp,"naChart");
 // find the first non-empty clade value
 $topClade = "";
 foreach($haClade as &$val) {
-        if($val) {
+        if($val != "" and $val != "Not Tested") {
                 $topClade = $val;
                 break;
         }
