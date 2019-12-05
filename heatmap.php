@@ -47,6 +47,7 @@ $theme->drawHeader();
 <script>
 //Global access to data
 var data;
+var order;
 
 //Page load
 $(document).ready(function() {
@@ -136,30 +137,19 @@ function tabulateData(haclade, naclade, haData) {
 
 //Pull out data specific to Type xData State
 function requestData() {
-    var xComponent = "ha_clade";
-    var yComponent = ["barcode","na_clade","H1","H3","N1","N2","received_date"];
-	
-    getJsonData(xComponent, yComponent, getCladeOrder, flags="hc");
+    getCladeOrder(fetchData);
 }
 
-function getCladeOrder(requestData) {
-        $.ajax({
-                url: '/getdata.php',
-                type: 'post',
-                dataType: 'json',
-                data: {'col': "orders"},
-                success: function(data, status) {
-                        parse(data, requestData);
-                },
-                error: function(xhr, desc, err) {
-                        console.log(xhr);
-                        console.log("Details: " + desc + "\nError:" + err);
-                }
-        });
+function fetchData(orderData) {
+    order = orderData;
+
+    var xComponent = "ha_clade";
+    var yComponent = ["barcode","na_clade","H1","H3","N1","N2","received_date"];
+    getJsonData(xComponent, yComponent, parse, flags="hc");
 }
 
 //Structure data for drawing
-function parse(order, requestData) {
+function parse(requestData) {
 	//Store data so only hit db once
 	if(requestData[0] == null)
 		requestData = flu;

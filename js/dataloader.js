@@ -4,6 +4,23 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
+//Get Clades
+function getCladeOrder(callback) {
+        $.ajax({
+                url: '/getdata.php',
+                type: 'post',
+                dataType: 'json',
+                data: {'col': "orders"},
+                success: function(data, status) {
+                        callback(data);
+                },
+                error: function(xhr, desc, err) {
+                        console.log(xhr);
+                        console.log("Details: " + desc + "\nError:" + err);
+                }
+        });
+}
+
 //Get LR
 function getLastRecord(callback){
 	//Request Data
