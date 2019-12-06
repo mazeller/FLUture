@@ -249,7 +249,7 @@ function parse(requestData) {
 
 	//Put barcodes in correct format
 	h1barcodeData = [];
-console.log(h1Barcode);
+
 	for (var key in h1Barcode) {
         	tempData = [];
         	if (h1Barcode.hasOwnProperty(key)) {
