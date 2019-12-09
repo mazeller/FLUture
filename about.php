@@ -43,8 +43,8 @@ function toggleVisibility(id) {
 	<a class='button' href="#contact-info">Contact</a>
 	<!--<a class='button' href="#changelog-info">Changelog</a>-->
         <span class='button-group'>
-                <a id='recentCL' class="button active" href="#changelog-recent-info" onclick="toggleVisibility(0)">Latest Changelog</a>
-                <a id='completeCL' class="button" href="#changelog-complete-info" onclick="toggleVisibility(1)">Complete Changelog</a>
+                <a id='recentCL' class="button active" href="#changelog-info" onclick="toggleVisibility(0)">Latest Changelog</a>
+                <a id='completeCL' class="button" href="#changelog-info" onclick="toggleVisibility(1)">Complete Changelog</a>
         </span>
 	<a class='button' href="#variable-info">Variables</a>
 	<a class='button' href="#conference-info">Training Workshops</a>
