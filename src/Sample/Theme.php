@@ -41,12 +41,22 @@ class Theme extends \IastateTheme\Theme
                     'uri' => '/tree.php',
               	),*/
                 array(
-                    'label' => 'About',
+                    'label' => 'General Information',
                     'uri' => '/about.php',
-                ),
-		array(
-                    'label' => 'General Influenza Information',
-                    'uri' => 'https://library.pork.org/media/?mediaId=01DDE7D8-BA0E-4253-9A39D06E90FE17EA',
+		    'pages' => array (
+			array(
+				'label' => 'Swine Clade Description',
+				'uri' => '/clades.php'
+			    ),
+			array( 
+				'label' => 'Influenza: Pigs, People, and Public Health',
+                    		'uri' => 'https://www.aphis.usda.gov/animal_health/downloads/animal_diseases/swine/npbfs-influenza-pigs-people.pdf'
+			    ),
+			array(
+				'label' => 'G4 EA H1N1 Virus',
+				'uri' => 'https://www.aasv.org/news/story.php?id=12853'
+			   ),
+		    ),
                 ),
                 /*array(
                     'label' => '3D View',
