@@ -40,6 +40,11 @@ class Theme extends \IastateTheme\Theme
                     'label' => 'Tree Tool',
                     'uri' => '/tree.php',
               	),*/
+		/*array(
+		    'label' => 'H3 Antigenic Motif',
+		    'uri' => '/antigenic.php',
+		),*/
+
                 array(
                     'label' => 'General Information',
                     'uri' => '/about.php',
@@ -55,7 +60,11 @@ class Theme extends \IastateTheme\Theme
 			array(
 				'label' => 'G4 EA H1N1 Virus',
 				'uri' => 'https://www.aasv.org/news/story.php?id=12853'
-			   ),
+			   ),		
+			array(
+		    		'label' => 'Domestic Swine Disease Modeling System',
+		    		'uri' => 'https://fieldepi.research.cvm.iastate.edu/domestic-swine-disease-monitoring-program/',
+			),
 		    ),
                 ),
                 /*array(
