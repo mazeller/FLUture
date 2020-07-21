@@ -61,10 +61,10 @@ class Theme extends \IastateTheme\Theme
 				'label' => 'G4 EA H1N1 Virus',
 				'uri' => 'https://www.aasv.org/news/story.php?id=12853'
 			   ),		
-			array(
+			/*array(
 		    		'label' => 'Domestic Swine Disease Modeling System',
 		    		'uri' => 'https://fieldepi.research.cvm.iastate.edu/domestic-swine-disease-monitoring-program/',
-			),
+			),*/
 		    ),
                 ),
                 /*array(
