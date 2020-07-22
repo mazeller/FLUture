@@ -38,10 +38,6 @@ Demonstrates the distribution of the hemagglutinin and neuraminidase subtype com
 Submitted sequences will be identified to HA genetic clade, matched gene segment, and similar sequences in FLUture are presented.<br>
 </p>
 
-<h2>Domestic Swine Disease Reporting System</h2>
-<a href='https://fieldepi.research.cvm.iastate.edu/domestic-swine-disease-monitoring-program/'><strong>Swine Disease Detection Dashboards</strong></a><br>
-Aggregate swine diagnostic data describing dynamics of pathogen detection by PCR-based assay over time, specimen, age group, and geographical area.
-
 <!--<a name="variables"><h2>Variables</h2></a>
 <p>
 The ISU <em>FLU</em>ture database curates information related to the individual swine cases. An explanation of each of the variables that ISU <em>FLU</em>ture allows searching for can be found below.<br/><br/>

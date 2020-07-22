@@ -15,8 +15,8 @@ class Theme extends \IastateTheme\Theme
 		    'pages' => '',
                 ),
 	    ),*/
-            'sidebar' => array(
-                array(
+            'sidebar' => array( 
+		array(
                     'label' => 'Correlation',
                     'uri' => '/correlation.php',
                 ),
@@ -66,6 +66,11 @@ class Theme extends \IastateTheme\Theme
 		    		'uri' => 'https://fieldepi.research.cvm.iastate.edu/domestic-swine-disease-monitoring-program/',
 			),*/
 		    ),
+		),
+		array(
+		    'label' => 'Swine Disease Reporting System',
+		    'uri' => 'https://fieldepi.research.cvm.iastate.edu/sdrs/',
+		
                 ),
                 /*array(
                     'label' => '3D View',

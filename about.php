@@ -39,6 +39,7 @@ function toggleVisibility(id) {
 </ul>-->
 
 <div class="toolbar">
+	<a class='button' href="#SDRS">SDRS</a>
 	<a class='button' href="#cite-info">Citation</a>
 	<a class='button' href="#contact-info">Contact</a>
 	<!--<a class='button' href="#changelog-info">Changelog</a>-->
@@ -51,6 +52,12 @@ function toggleVisibility(id) {
 </div>
 
 <div class="content">
+
+<div id="SDRS">
+<h1 class='wd-u-Heading'>Swine Disease Reporting System</h1>
+<h3> <a href='https://fieldepi.research.cvm.iastate.edu/domestic-swine-disease-monitoring-program/'><strong>Swine Disease Detection Dashboards</strong></a><br></h3>
+<p>Aggregate swine diagnostic data describing dynamics of pathogen detection by PCR-based assay over time, specimen, age group, and geographical area.</p>
+</div>
 
 <div id='cite-info'>
 <h1 class='wd-u-Heading'>How to Cite</h1>
