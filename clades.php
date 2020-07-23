@@ -66,28 +66,25 @@ $theme->drawHeader();
             <td>gamma-like</td>
             <td>1A.3.3-like</td>
             <td>
-                H1 HA sequence does not belong to a gamma clade but share an internal node or is phylogenetically closest to H1 gamma. <br/><br/> <strong>Note</strong>: When classification of a query sequence is less certain, a designation that
-                includes the suffix &ldquo;-like&rdquo; is used to indicate its nearest relation. 
+                H1 HA sequence does not belong to a gamma clade but share an internal node or is phylogenetically closest to H1 gamma. 
             </td>
             <td>USA</td>
         </tr>
         <tr>
             <td>H1</td>
-            <td>gamma-npdm-like</td>
-            <td>gamma-npdm-like</td>
+            <td>gamma-npdm-like*</td>
+            <td>gamma-npdm-like*</td>
             <td>
-                H1 HA sequence does not belong to either gamma or the new pandemic clade but share an internal node with these two clades.<br/><br/> <strong>&nbsp;Note</strong>: When classification of a query sequence is less certain, a designation
-                that includes the suffix &ldquo;-like&rdquo; is used to indicate its nearest relation.
+                H1 HA sequence does not belong to either gamma or the new pandemic clade but share an internal node with these two clades.
             </td>
             <td>USA</td>
         </tr>
         <tr>
             <td>H1</td>
-            <td>gamma2-beta-like</td>
-            <td>gamma2-beta-like</td>
+            <td>gamma2-beta-like*</td>
+            <td>gamma2-beta-like*</td>
             <td>
-                Historic classical swine H1N1 virus that was no longer detected in US swine until recently in 2018 after the LAIV vaccine for use in swine was released commercially in the US. <br/><br/><strong>&nbsp;Note</strong>: When classification
-                of a query sequence is less certain, a designation that includes the suffix &ldquo;-like&rdquo; is used to indicate its nearest relation.
+                Historic classical swine H1N1 virus that was no longer detected in US swine until recently in 2018 after the LAIV vaccine for use in swine was released commercially in the US.
             </td>
             <td>USA</td>
         </tr>
@@ -136,8 +133,7 @@ $theme->drawHeader();
             <td>delta-like</td>
             <td>delta-like</td>
             <td>
-                H1 HA sequence does not belong to a delta clade but share an internal node or is phylogenetically closest to H1 delta clade. <br/><br/><strong>Note:</strong> When classification of a query sequence is less certain, a designation that includes the
-                suffix &ldquo;-like&rdquo; is used to indicate its nearest relation.
+                H1 HA sequence does not belong to a delta clade but share an internal node or is phylogenetically closest to H1 delta clade.
             </td>
             <td>USA</td>
         </tr>
@@ -261,7 +257,7 @@ $theme->drawHeader();
         </tr>
     </tbody>
 </table>
-
+<p><b>*</b> the "-like" designation indicates that a query sequence shares a common ancestor with the 2 named clades, but does not fall within the named clade. </p>
 
 <?php
 $theme->drawFooter();
