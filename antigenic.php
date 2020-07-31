@@ -26,7 +26,7 @@ nucleotide or amino acid sequence.</p>
 <div id="options">
 	<fieldset>
 		<b>Signal Peptide</b><br/>
-		<input type="checkbox" name="signalpeptide" checked="checked"/>included in sequence (will offset positions by 16)<br/>
+		<input type="checkbox" id="signalpeptide" name="signalpeptide" checked="checked"/>included in sequence (will offset positions by 16)<br/>
 		<b>Amino Acid Positions</b>
 		<input type="text" id="positions" value="145,155,156,158,159,189"></textarea><br/>
 	</fieldset>
@@ -66,21 +66,20 @@ function toggleOptions() {
 	return;
 }
 
-var motif_json;
+//Retrieve existing aggregate of motif frequency by year
 $.ajax({
-	url: '/motif_update.php',
-	type: 'post',
-	data: motif_json,
-	success: function(data, status) {
-		var motif_data = JSON.parse(data);
+	url: '/motif.json',
+	dataType: 'json', 
+	success: function(data, status){
+		var motif_data = data;
 		summarize_existing(Object.entries(motif_data));
 		},
 	error: function(xhr, desc, err) {
 		console.log(xhr);
-		console.log("Details: " + desc + "\nError:" + err);
-		$("#results").html("Server Error");
-		}
+		console.log("Details: " + desc + "\nError:" + err );
+	}
 });
+
 
 function summarize_existing(motif_data){
 	console.log(motif_data);
@@ -96,35 +95,29 @@ function summarize_existing(motif_data){
 	console.log(motif_array);
 	plot_motifs(motif_array);
 }
+
+//create time series chart from yearly motif counts
 function plot_motifs(motif_array){
-
-var chart = c3.generate({
-    bindto: '#summaryChart',
-    data: {
-        x: 'x',
-	columns: motif_array.slice(0,15)
-    },
-    axis: {
-        x: {
-            type: 'timeseries',
-            tick: {
-                format: '%Y-%m-%d'
-            }
-        }
-    }
-});
-
+	var chart = c3.generate({
+    		bindto: '#summaryChart',
+    			data: {
+        			x: 'x',
+				columns: motif_array.slice(0,15)
+    			},
+    			axis: {
+        			x: {
+            			type: 'timeseries',
+            			tick: {
+                			format: '%Y-%m-%d'
+            			}
+        		}
+    		}
+	});
 }
 
-/*
-setTimeout(function () {
-    chart.groups([['data1', 'data2', 'data3', 'data4']])
-}, 1);
-*/
 function getResult() {
 	$("#wait").slideDown("slow");
-	$("#sequences").prop("disabled", true);
-	
+	$("#sequences").prop("disabled", true);	
 	//disconnect button
 	$("#submit").unbind("click");
 	
@@ -133,7 +126,11 @@ function getResult() {
 	var fastaString = $("#sequences").val();
 	var blastType = $('input[name=blasttype]:checked').val();
  	var positions = $('#positions').val();
-	if (1==1) { //positions.indexOf(',') != -1) {
+	positions = positions.split(",");	
+	
+
+	//error handling if positions are not separated by commas
+	/*if ( positions.indexOf(',') != -1) {
 		positions = positions.split(",");		
 	}
 	else {
@@ -141,8 +138,12 @@ function getResult() {
 		returnData(error);
 		return;		
 	}
-	//positions = positions.split(",");	
-	var offsetincluded =$('input[name=signalpeptide]:checked').val();
+	*/
+
+	//check whether to include signal peptide offset	
+	var offsetCheckbox = document.getElementById("signalpeptide");
+	var offsetincluded = offsetCheckbox.checked;	
+
 	
 	console.log(fastaString)
 	var splitString = fastaString.split("\n");
@@ -190,16 +191,13 @@ function getResult() {
                }
         }	
 
+	//Build array of the antigenic motifs for each sequence inputted
 	var motifArray = [];
+	var containsInvalidPosition = false;
 	fastaList.forEach(getMotif);
 	function getMotif(item, index){
 		motif = "";
 		sequence = item[1];
-		/*if(blastType == 'nt'){
-			sequence = convertToAminoAcid(sequence);
-			sequence = sequence.toUpperCase();
-			console.log("nucleotide converted");
-		}*/
 		positions.forEach(addToMotif);
         	function addToMotif(pos_item, pos_index){
                 	pos_item = Number(pos_item)
@@ -207,12 +205,27 @@ function getResult() {
                         	pos_item = pos_item + 16;
                 	}
                 	pos_item = pos_item - 1;
-                	motif = motif.concat(sequence[pos_item]);
+                	if (sequence[pos_item] !== undefined){
+				motif = motif.concat(sequence[pos_item]);
+			}
+			else{
+				containsInvalidPosition = true;
+				console.log("INVALID POSITION");
+				return;			
+			}
         	}
 		motifArray.push([item[0].replace('>',''),motif]);	
 	}			
 	console.log(motifArray);
 
+	//error handling for invalid aa positions
+	if(containsInvalidPosition){
+		var error = "Error: At least one amino acid position is invalid";
+		returnData(error);
+		return;
+	}
+
+	//Display table of fasta headers and motifs
 	function createTable(tableData) {
 		var table = document.createElement('table');
 		table.setAttribute("id", "MotifTable");
@@ -239,25 +252,21 @@ function getResult() {
   		});
 		table.appendChild(tableHeader);
   		table.appendChild(tableBody);
-		//document.getElementById("MotifTable").style.border = "thick solid #0000FF";
-
   		table.className = 'wd-Table--striped wd-Table--hover';
 		document.body.appendChild(table);
 		return(table);
 	}
 	var motifTable = createTable(motifArray);	
-	console.log(motifTable);
 	returnData(motifTable,motifArray);
-	
 	return;
 }
 
 
 
 function returnData(dataTable, dataArray) {
+	//allows user to download motif table as CSV
 	$("#grab-results").show();
 	$("#grab-results").click(downloadResult);
-
 	function downloadResult(){
 		text = "Strain,Motif\n"
 		dataArray.forEach(convertToCSV)
