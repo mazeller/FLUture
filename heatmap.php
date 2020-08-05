@@ -33,6 +33,11 @@ th.leftAxis {
 	font-weight: bold;
 }
 
+.rotate {
+	transform: rotate(90deg);
+	text-align: left; 
+}
+
 CSS
 , 'style');
 $theme->drawHeader();
@@ -374,14 +379,14 @@ function drawTable(haclade, naclade, haData, title)
         for (var key2 in naclade)
         {
 		//Postfix subtype
-		if (naclade[key2] == "1998" | naclade[key2] == "2002" | naclade[key2] == "human-to-swine-2010" | naclade[key2] == "human-to-swine-2016" ){
+		if (naclade[key2] == "1998" | naclade[key2] == "1998A" | naclade[key2] == "1998B" | naclade[key2] == "2002"| naclade[key2] == "2002A" | naclade[key2] == "2002B" | naclade[key2] == "human-to-swine-2010" | naclade[key2] == "human-to-swine-2016" ){
 			naclade[key2] = "N2." + naclade[key2];
 		}
 	        if (naclade[key2] == "classical" | naclade[key2] == "pandemic"){
                         naclade[key2] = "N1." + naclade[key2];
 		}
 
-		haTable += "<th>" + naclade[key2] + "</th>";
+		haTable += "<th class=\"rotate\" style=\"height:10em;\">" + naclade[key2] + "</th>";
         }
 	haTable += "</tr>";
 	haTable += "</table>";
