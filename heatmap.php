@@ -35,7 +35,6 @@ th.leftAxis {
 
 .rotate {
 	transform: rotate(90deg);
-	text-align: left; 
 }
 
 CSS
@@ -375,7 +374,7 @@ function drawTable(haclade, naclade, haData, title)
 		haTable += "</tr>";
 	}
 	//Draw legend on last line
-	haTable += "<tr><th></th>";
+	haTable += "<tr style='height:8em;'><th></th>";
         for (var key2 in naclade)
         {
 		//Postfix subtype
@@ -386,7 +385,7 @@ function drawTable(haclade, naclade, haData, title)
                         naclade[key2] = "N1." + naclade[key2];
 		}
 
-		haTable += "<th class=\"rotate\" style=\"height:10em;\">" + naclade[key2] + "</th>";
+		haTable += "<th class='rotate'>" + naclade[key2] + "</th>";
         }
 	haTable += "</tr>";
 	haTable += "</table>";
