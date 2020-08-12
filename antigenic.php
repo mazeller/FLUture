@@ -8,8 +8,13 @@ $theme->addStyle('{{asset_path}}/css/c3.min.css');
 $theme->addStyle('{{asset_path}}/css/jquery-ui.css');
 $theme->drawHeader();
 ?>
-<h2 id="summaryChartTitle">H3 Antigenic Motif Detection Frequency</h2>
-<div id="summaryChart"></div>
+<div id="summaryChartSpace">
+	<h2 id="summaryChartTitle">H3 Antigenic Motif Detection Frequency</h2>
+	<div id="summaryChart"></div>
+	<div id="proportionOption">
+		<input type="checkbox" id="account-by-proportion"/>Account by proportion<br/>
+	</div>
+</div>
 
 <h2 id="chartTitle"> H3 Antigenic Motif Tool</h2>
 <p>
@@ -48,10 +53,16 @@ Please wait, identification in progress...
 
 $(document).ready(function() {
 	//Hide wait
+	
+	//in development:
+	$("#proportionOption").hide();
+
 	$("#wait").hide();
 	$("#wrapper").hide();
 	$("#options").hide();
 	$("#grab-results").hide();
+	parse();
+	$("#account-by-proportion").click(parse);
         $("#submit").click(getResult);
 });
 
@@ -66,53 +77,105 @@ function toggleOptions() {
 	return;
 }
 
-//Retrieve existing aggregate of motif frequency by year
-$.ajax({
-	url: '/motif.json',
-	dataType: 'json', 
-	success: function(data, status){
-		var motif_data = data;
-		summarize_existing(Object.entries(motif_data));
+function parse() {
+	//Retrieve existing aggregate of motif frequency by year
+	$.ajax({
+		url: '/motif.json',
+		dataType: 'json', 
+		success: function(data, status){
+			motif_data = data;
+			motif_array = summarize_existing(Object.entries(motif_data));
+			var proportionCheckbox = document.getElementById("account-by-proportion");
+			if(proportionCheckbox.checked){
+				console.log("normalizing");
+				motif_array = normalize(motif_array);
+			}
+			plot_motifs(motif_array);
 		},
-	error: function(xhr, desc, err) {
-		console.log(xhr);
-		console.log("Details: " + desc + "\nError:" + err );
-	}
-});
-
-
-function summarize_existing(motif_data){
-	console.log(motif_data);
-	var cutoff = motif_data.length * 0.01
-	console.log(cutoff);
-
-	//reformat into one array for each motif
-	var motif_array = [];
-	motif_data.forEach(reconstruct_array);
-	function reconstruct_array(item, index) {
-		motif_array.push([Object.values(item)[0]].concat(Object.values(item[1])));
-	}
-	console.log(motif_array);
-	plot_motifs(motif_array);
-}
-
-//create time series chart from yearly motif counts
-function plot_motifs(motif_array){
-	var chart = c3.generate({
-    		bindto: '#summaryChart',
-    			data: {
-        			x: 'x',
-				columns: motif_array.slice(0,15)
-    			},
-    			axis: {
-        			x: {
-            			type: 'timeseries',
-            			tick: {
-                			format: '%Y-%m-%d'
-            			}
-        		}
-    		}
+		error: function(xhr, desc, err) {
+			console.log(xhr);
+			console.log("Details: " + desc + "\nError:" + err );
+		}
 	});
+
+	function summarize_existing(motif_data){
+		console.log(motif_data);
+		var cutoff = motif_data.length * 0.01
+		console.log(cutoff);
+
+		//reformat into one array for each motif
+		var motif_array = [];
+		motif_data.forEach(reconstruct_array);
+		function reconstruct_array(item, index) {
+			motif_array.push([Object.values(item)[0]].concat(Object.values(item[1])));
+		}	
+		console.log(motif_array);
+		return(motif_array);
+	}
+
+
+	function normalize(motif_array){
+		//console.log(motif_array[1][14]);
+		num_yrs = motif_array[1].length - 1;
+		num_motifs = motif_array.length - 1;
+		console.log(num_motifs);
+		
+		//create array of totals for each year
+		yearly_totals = new Array(num_yrs).fill(0);
+		console.log(yearly_totals);
+		//loop through each year
+		for (var i = 1; i <= num_yrs; i++){
+			//loop through each motif for that year
+			for (var j=1; j <= num_motifs; j++){
+				yearly_totals[i-1] += motif_array[j][i]
+			}
+		}
+		console.log(yearly_totals);
+
+		//turn counts into proportions		
+		for (var i = 1; i <= num_yrs; i++){
+			//loop through each motif for that year
+			for (var j=1; j <= num_motifs; j++){
+				motif_array[j][i] = (motif_array[j][i] / yearly_totals[i-1] * 100).toFixed(3);
+			}
+		}
+		console.log(motif_array);
+
+		return motif_array;
+	}
+
+	//create time series chart from yearly motif counts
+	function plot_motifs(motif_array){
+		var groups = [];
+		var types = {};
+		var chart = c3.generate({
+    			bindto: '#summaryChart',
+    				data: {
+        				x: 'x',
+					columns: motif_array,
+					//to account by proportion, must set up groups and types for all motifs
+					groups: groups,
+					types: types
+					/*	{ NYHNYK: 'area',
+						NHNDYR: 'area',
+						KTHNFK: 'area',
+						NYNNYK: 'area'}*/
+    				},
+    				axis: {
+        				x: {
+            					type: 'timeseries',
+            					tick: {
+                					format: '%Y-%m-%d'
+            					}	
+        				},
+				/*	y: {
+						tick: {
+							format: d3.format('%')
+						}
+					}*/
+    				}
+		});
+	}
 }
 
 function getResult() {
