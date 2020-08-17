@@ -13,7 +13,7 @@ $theme->drawHeader();
 	<div id="summaryChart"></div>
 	<div id="proportionOption">
 		<input type="checkbox" id="account-by-proportion"/>Account by proportion<br/>
-	</div>
+	</div><br/>
 </div>
 
 <h2 id="chartTitle"> H3 Antigenic Motif Tool</h2>
@@ -46,8 +46,16 @@ Please wait, identification in progress...
 </div>
 
 <div id="results">
-	<div id="results-data"></div>
-	<a id="grab-results">Download Motif Data</a>
+	<div id="results-data-div">
+		<h3 id="results-data-title">Antigenic Motif(s) Identified</h3>
+		<div id="results-data"></div>
+		<a id="grab-results">Download Motif Data</a><br/><br/>
+	</div>
+	<div id="results-data-freq-div">
+		<h3 id="results-data-sum-title">Idenified Antigenic Motif Detection Frequency</h3>
+		<div id ="results-motifs"></div>
+		<a class="wd-Button" id="update-graph">Show Detection Frequencies on Graph</a>
+	</div>
 </div>
 <script>
 
@@ -56,13 +64,16 @@ $(document).ready(function() {
 	
 	//in development:
 	$("#proportionOption").hide();
-
+	
 	$("#wait").hide();
 	$("#wrapper").hide();
 	$("#options").hide();
+	$("#results-data-title").hide();
+	$("#results-data-sum-title").hide();
+	$("#update-graph").hide();
 	$("#grab-results").hide();
 	parse();
-	$("#account-by-proportion").click(parse);
+	$("#account-by-proportion").click(accountByProportion);
         $("#submit").click(getResult);
 });
 
@@ -83,99 +94,150 @@ function parse() {
 		url: '/motif.json',
 		dataType: 'json', 
 		success: function(data, status){
+			var normalize = false;
 			motif_data = data;
-			motif_array = summarize_existing(Object.entries(motif_data));
+			motif_array = reformat(Object.entries(motif_data));
+			motif_array = cutoff(motif_array);
 			var proportionCheckbox = document.getElementById("account-by-proportion");
 			if(proportionCheckbox.checked){
-				console.log("normalizing");
-				motif_array = normalize(motif_array);
+				normalize = true;
 			}
-			plot_motifs(motif_array);
+			plot_motifs(motif_array,normalize);
 		},
 		error: function(xhr, desc, err) {
 			console.log(xhr);
 			console.log("Details: " + desc + "\nError:" + err );
 		}
+	});	
+}
+
+function reformat(motif_data){
+	//reformat into one array for each motif
+	var motif_array = [];
+	motif_data.forEach(reconstruct_array);
+	function reconstruct_array(item, index) {
+		motif_array.push([Object.values(item)[0]].concat(Object.values(item[1])));
+	}	
+	console.log(motif_array);
+	return(motif_array);
+}
+
+function normalize(motif_array){
+	//console.log(motif_array[1][14]);
+	num_yrs = motif_array[1].length - 1;
+	num_motifs = motif_array.length - 1;
+	//console.log(num_motifs);
+	
+	check1 = motif_array	
+	console.log(check1);
+	
+	//create array of totals for each year
+	yearly_totals = new Array(num_yrs).fill(0);
+	console.log(yearly_totals);
+	//loop through each year
+	for (var i = 1; i <= num_yrs; i++){
+		//loop through each motif for that year
+		for (var j=1; j <= num_motifs; j++){
+			yearly_totals[i-1] += motif_array[j][i]
+		}
+	}
+	//console.log(yearly_totals);
+
+	console.log(motif_array);	
+
+	normal_motif_array = motif_array;
+
+	//turn counts into proportions		
+	for (var i = 1; i <= num_yrs; i++){
+		//loop through each motif for that year
+		for (var j=1; j <= num_motifs; j++){
+			normal_motif_array[j][i] = (motif_array[j][i] / yearly_totals[i-1]).toFixed(3);
+		}
+	}
+	console.log(motif_array);
+	console.log(normal_motif_array);
+
+	return normal_motif_array;
+}
+
+function cutoff(motif_array){
+	var motif_freq_cutoff = 9;
+	var new_motif_array = [];
+	//push date header into subset array
+	new_motif_array.push(motif_array[0])
+	//skip header (dates)
+	var i = 1;
+	var j = 1;
+	for (i; i < motif_array.length;i++){
+		for (j=1; j < motif_array[i].length; j++){
+			if (motif_array[i][j] >= 9){
+				new_motif_array.push(motif_array[i]);
+				break;
+			}
+		}
+	}
+	return new_motif_array;		
+}
+
+//create time series chart from yearly motif counts
+function plot_motifs(motif_array, account_by_proportion){
+	var groups = [];
+	var types = {};
+	var yaxis = {padding: {bottom:0}};
+	
+	console.log(account_by_proportion);
+	//var account_by_proportion = true;
+	//account_by_proportion = true;
+	var plot_motif_array = [];
+	if (account_by_proportion){
+		plot_motif_array = normalize(motif_array);
+		groups[0] = [];
+		console.log(groups);
+		for (i=1;i < plot_motif_array.length;i++){
+			groups[0].push(plot_motif_array[i][0]);
+			types[plot_motif_array[i][0]] = "area"
+		}
+		yaxis = { max: 1,tick:{ format: d3.format('%')}, padding: {top:0,bottom:0} } 
+	}
+	else {
+		plot_motif_array = motif_array;
+		console.log(plot_motif_array);
+	}
+	
+	var chart = c3.generate({
+		bindto: '#summaryChart',
+			data: {
+				x: 'x',
+				columns: plot_motif_array,
+				//to account by proportion, must set up groups and types for all motifs
+				groups: groups,
+				types: types
+				/*	{ NYHNYK: 'area',
+					NHNDYR: 'area',
+					KTHNFK: 'area',
+					NYNNYK: 'area'}*/
+			},
+			axis: {
+				x: {
+					type: 'timeseries',
+					tick: {
+						format: '%Y-%m-%d'
+					}	
+				},
+				y: yaxis
+			/*	y: {
+					tick: {
+						format: d3.format('%')
+					}
+				}*/
+			}
 	});
+}
 
-	function summarize_existing(motif_data){
-		console.log(motif_data);
-		var cutoff = motif_data.length * 0.01
-		console.log(cutoff);
-
-		//reformat into one array for each motif
-		var motif_array = [];
-		motif_data.forEach(reconstruct_array);
-		function reconstruct_array(item, index) {
-			motif_array.push([Object.values(item)[0]].concat(Object.values(item[1])));
-		}	
-		console.log(motif_array);
-		return(motif_array);
-	}
-
-
-	function normalize(motif_array){
-		//console.log(motif_array[1][14]);
-		num_yrs = motif_array[1].length - 1;
-		num_motifs = motif_array.length - 1;
-		console.log(num_motifs);
-		
-		//create array of totals for each year
-		yearly_totals = new Array(num_yrs).fill(0);
-		console.log(yearly_totals);
-		//loop through each year
-		for (var i = 1; i <= num_yrs; i++){
-			//loop through each motif for that year
-			for (var j=1; j <= num_motifs; j++){
-				yearly_totals[i-1] += motif_array[j][i]
-			}
-		}
-		console.log(yearly_totals);
-
-		//turn counts into proportions		
-		for (var i = 1; i <= num_yrs; i++){
-			//loop through each motif for that year
-			for (var j=1; j <= num_motifs; j++){
-				motif_array[j][i] = (motif_array[j][i] / yearly_totals[i-1] * 100).toFixed(3);
-			}
-		}
-		console.log(motif_array);
-
-		return motif_array;
-	}
-
-	//create time series chart from yearly motif counts
-	function plot_motifs(motif_array){
-		var groups = [];
-		var types = {};
-		var chart = c3.generate({
-    			bindto: '#summaryChart',
-    				data: {
-        				x: 'x',
-					columns: motif_array,
-					//to account by proportion, must set up groups and types for all motifs
-					groups: groups,
-					types: types
-					/*	{ NYHNYK: 'area',
-						NHNDYR: 'area',
-						KTHNFK: 'area',
-						NYNNYK: 'area'}*/
-    				},
-    				axis: {
-        				x: {
-            					type: 'timeseries',
-            					tick: {
-                					format: '%Y-%m-%d'
-            					}	
-        				},
-				/*	y: {
-						tick: {
-							format: d3.format('%')
-						}
-					}*/
-    				}
-		});
-	}
+function accountByProportion(){
+	console.log("Accounting");
+	console.log(motif_array);
+	plot_motifs(motif_array, true);
 }
 
 function getResult() {
@@ -206,7 +268,6 @@ function getResult() {
 	//check whether to include signal peptide offset	
 	var offsetCheckbox = document.getElementById("signalpeptide");
 	var offsetincluded = offsetCheckbox.checked;	
-
 	
 	console.log(fastaString)
 	var splitString = fastaString.split("\n");
@@ -256,6 +317,8 @@ function getResult() {
 
 	//Build array of the antigenic motifs for each sequence inputted
 	var motifArray = [];
+	var motifSummaryArray = [];
+	var motifObject = {};
 	var containsInvalidPosition = false;
 	fastaList.forEach(getMotif);
 	function getMotif(item, index){
@@ -277,9 +340,18 @@ function getResult() {
 				return;			
 			}
         	}
-		motifArray.push([item[0].replace('>',''),motif]);	
+		motifArray.push([item[0].replace('>',''),motif]);
+		//build motif summary array
+		if (motif !== ""){
+			motifObject[motif] = motif_data[motif]
+		}	
 	}			
+	console.log(motif_data);
+	console.log(motifObject);
+	console.log(Object.entries(motifObject));
 	console.log(motifArray);
+
+	
 
 	//error handling for invalid aa positions
 	if(containsInvalidPosition){
@@ -301,7 +373,7 @@ function getResult() {
 		tableHeader.appendChild(col2);
 		var tableBody = document.createElement('tbody');
 
-  		tableData.forEach(function(rowData) {
+		tableData.forEach(function(rowData) {
     			var row = document.createElement('tr');
 
     			rowData.forEach(function(cellData) {
@@ -313,22 +385,92 @@ function getResult() {
 
     			tableBody.appendChild(row);
   		});
+
 		table.appendChild(tableHeader);
   		table.appendChild(tableBody);
   		table.className = 'wd-Table--striped wd-Table--hover';
 		document.body.appendChild(table);
 		return(table);
 	}
-	var motifTable = createTable(motifArray);	
-	returnData(motifTable,motifArray);
+	var motifTable = createTable(motifArray);
+
+	function createSummaryTable(tableData) {
+		var table = document.createElement('table');
+		table.setAttribute("id", "MotifTable");
+  		var tableHeader = document.createElement('thead');
+		var col1 = document.createElement('th');
+		col1.appendChild(document.createTextNode("Antigenic Motif"));
+		tableHeader.appendChild(col1);
+
+		//get years from motif data
+		var yearsArray = Object.values(motif_data['x']);
+		console.log(yearsArray);
+		yearsArray.forEach(colData);
+		function colData(item,index) {
+			var col2 = document.createElement('th');
+			col2.appendChild(document.createTextNode(item.split('-')[0]));
+			tableHeader.appendChild(col2);		
+		}
+		/*
+		var col2 = document.createElement('th');
+		col2.appendChild(document.createTextNode("Year"));
+		tableHeader.appendChild(col2);
+		*/
+		var tableBody = document.createElement('tbody');
+
+  	
+		tableData.forEach(function(rowData) {
+    			var row = document.createElement('tr');
+			var cell = document.createElement('td');
+			cell.appendChild(document.createTextNode(rowData[0]));
+			row.appendChild(cell);
+
+		
+			rowData[1].forEach(function(cellData) {
+      				var cell = document.createElement('td');
+      				cell.appendChild(document.createTextNode(cellData));
+      				row.appendChild(cell);
+				//row.style.border = 'solid'; 
+			});
+
+    			tableBody.appendChild(row);
+  		});
+
+		table.appendChild(tableHeader);
+  		table.appendChild(tableBody);
+  		table.className = 'wd-Table--striped wd-Table--hover';
+		document.body.appendChild(table);
+		return(table);
+	}
+	
+	freqArray = Object.entries(motifObject)
+	console.log(freqArray);
+	var freqTable = createSummaryTable(freqArray);	
+	returnData(motifTable,motifArray,freqTable,freqArray);
 	return;
 }
 
 
 
-function returnData(dataTable, dataArray) {
+function returnData(motifTable, motifArray, freqTable,freqArray) {
 	//allows user to download motif table as CSV
+	$("#update-graph").show();
 	$("#grab-results").show();
+	$("#results-data-title").show();
+	$("#results-data-sum-title").show();
+
+	$("#results-data").html(motifTable);
+	$("#results-motifs").html(freqTable);
+
+	$("#update-graph").click(updateGraph);
+
+	function updateGraph(){
+		freqArray = reformat(freqArray);
+		freqArray.unshift(motif_array[0]);
+		plot_motifs(freqArray, false);
+		$('html, body').animate({ scrollTop: 0}, 'fast');
+	}
+
 	$("#grab-results").click(downloadResult);
 	function downloadResult(){
 		text = "Strain,Motif\n"
@@ -343,8 +485,6 @@ function returnData(dataTable, dataArray) {
 		download("motifs.csv",text);
 	}
 
-	$("#results-data").html(dataTable);
-	
 	setTimeout(function() {
 	$("#wait").slideUp("slow");
 	$("#sequences").prop("disabled", false);
@@ -354,9 +494,6 @@ function returnData(dataTable, dataArray) {
 
 	}, 10);
 }
-
-
-
 
 </script>
 
