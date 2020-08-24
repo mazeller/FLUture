@@ -11,7 +11,7 @@ $theme->drawHeader();
 <div id="summaryChartSpace">
 	<h2 id="summaryChartTitle">H3 Antigenic Motif Detection Frequency - Common Motifs</h2>
 	<div id="summaryChart"></div>
-	<a id="grab-all-detected">Download Detection Frequency Data for All Motifs</a><br/>
+	<a href="javascript:;" id="grab-all-detected">Download Detection Frequency Data for All Motifs</a><br/>
 	<a class="wd-Button" id="update-graph">Show Detection Frequencies of Submitted Motifs</a>
 	<a class="wd-Button" id="return-graph">Show Detection Frequencies of Most Common Motifs</a><br/>
 	<div id="proportionOption">
@@ -53,12 +53,12 @@ Please wait, identification in progress...
 	<div id="results-data-div">
 		<h3 id="results-data-title">Submitted Antigenic Motif(s)</h3>
 		<div id="results-data"></div>
-		<a id="grab-results">Download Motif Data</a><br/><br/>
+		<a href="javascript:;" id="grab-results">Download Motif Data</a><br/><br/>
 	</div>
 	<div id="results-data-freq-div">
 		<h3 id="results-data-sum-title">Detection Frequency of Submitted Antigenic Motif(s)</h3>
 		<div id ="results-motifs"></div>
-		<a id="grab-frequency-results">Download Detection Frequency Data</a><br/><br/>
+		<a href="javascript:;" id="grab-frequency-results">Download Detection Frequency Data</a><br/><br/>
 	</div>
 	<div id="freq-err"></div>
 </div>
@@ -83,7 +83,7 @@ $(document).ready(function() {
 	$("#account-by-proportion").click(accountByProportion);
         $("#submit").click(getResult);
 	$("#grab-all-detected").click(function() {
-		downloadResult("frequency",motif_array.slice(1));
+		downloadResult("frequency",motif_array.slice(1),"detection_frequency_of_all_motifs.csv");
 	});
 });
 
@@ -515,9 +515,9 @@ function returnData(motifTable, motifArray, freqTable,freqArray) {
 		});
 
 	$("#grab-results").click(function() {
-		downloadResult("motif", motifArray)});
+		downloadResult("motif", motifArray, "submitted_antigenic_motifs.csv")});
 	$("#grab-frequency-results").click(function() {
-		downloadResult("frequency", freqArray)});
+		downloadResult("frequency", freqArray, "detection_frequency_of_submitted_motifs.csv")});
 	setTimeout(function() {
 	$("#wait").slideUp("slow");
 	$("#sequences").prop("disabled", false);
@@ -529,7 +529,7 @@ function returnData(motifTable, motifArray, freqTable,freqArray) {
 }
 
 //download CSV file of chosen results
-function downloadResult(type,dataArray){
+function downloadResult(type,dataArray,filename){
 	text = "";
 	if (type == "motif"){
 		text = "Strain,Motif\n";
@@ -547,7 +547,7 @@ function downloadResult(type,dataArray){
 	}
 	//var text = dataArray[0].toString();
 	//console.log(text);
-	download("motifs.csv",text);
+	download(filename,text);
 }
 
 
