@@ -9,11 +9,15 @@ $theme->addStyle('{{asset_path}}/css/jquery-ui.css');
 $theme->drawHeader();
 ?>
 <div id="summaryChartSpace">
-	<h2 id="summaryChartTitle">H3 Antigenic Motif Detection Frequency</h2>
+	<h2 id="summaryChartTitle">H3 Antigenic Motif Detection Frequency - Common Motifs</h2>
 	<div id="summaryChart"></div>
+	<a id="grab-all-detected">Download Detection Frequency Data for All Motifs</a><br/>
+	<a class="wd-Button" id="update-graph">Show Detection Frequencies of Submitted Motifs</a>
+	<a class="wd-Button" id="return-graph">Show Detection Frequencies of Most Common Motifs</a><br/>
 	<div id="proportionOption">
 		<input type="checkbox" id="account-by-proportion"/>Account by proportion<br/>
 	</div><br/>
+	
 </div>
 
 <h2 id="chartTitle"> H3 Antigenic Motif Tool</h2>
@@ -47,15 +51,16 @@ Please wait, identification in progress...
 
 <div id="results">
 	<div id="results-data-div">
-		<h3 id="results-data-title">Antigenic Motif(s) Identified</h3>
+		<h3 id="results-data-title">Submitted Antigenic Motif(s)</h3>
 		<div id="results-data"></div>
 		<a id="grab-results">Download Motif Data</a><br/><br/>
 	</div>
 	<div id="results-data-freq-div">
-		<h3 id="results-data-sum-title">Idenified Antigenic Motif Detection Frequency</h3>
+		<h3 id="results-data-sum-title">Detection Frequency of Submitted Antigenic Motif(s)</h3>
 		<div id ="results-motifs"></div>
-		<a class="wd-Button" id="update-graph">Show Detection Frequencies on Graph</a>
+		<a id="grab-frequency-results">Download Detection Frequency Data</a><br/><br/>
 	</div>
+	<div id="freq-err"></div>
 </div>
 <script>
 
@@ -71,11 +76,27 @@ $(document).ready(function() {
 	$("#results-data-title").hide();
 	$("#results-data-sum-title").hide();
 	$("#update-graph").hide();
+	$("#return-graph").hide();
 	$("#grab-results").hide();
+	$("#grab-frequency-results").hide();
 	parse();
 	$("#account-by-proportion").click(accountByProportion);
         $("#submit").click(getResult);
+	$("#grab-all-detected").click(function() {
+		downloadResult("frequency",motif_array.slice(1));
+	});
 });
+
+function reset(){
+	$("#results-data-title").hide();
+	$("#results-data-sum-title").hide();
+	$("#update-graph").hide();
+	$("#return-graph").hide();
+	$("#grab-results").hide();
+	$("#grab-frequency-results").hide();
+	$("#results-motifs").hide();
+	$("#freq-err").empty();	
+}
 
 function toggleOptions() {
 	var x = document.getElementById("options");	
@@ -241,6 +262,7 @@ function accountByProportion(){
 }
 
 function getResult() {
+	reset();
 	$("#wait").slideDown("slow");
 	$("#sequences").prop("disabled", true);	
 	//disconnect button
@@ -251,19 +273,12 @@ function getResult() {
 	var fastaString = $("#sequences").val();
 	var blastType = $('input[name=blasttype]:checked').val();
  	var positions = $('#positions').val();
-	positions = positions.split(",");	
-	
-
-	//error handling if positions are not separated by commas
-	/*if ( positions.indexOf(',') != -1) {
-		positions = positions.split(",");		
+	console.log(positions);
+	standard_motif = false;
+	if (positions == "145,155,156,158,159,189") {
+		standard_motif = true;
 	}
-	else {
-		var error = "Please check that amino acid positions are separated with commas."
-		returnData(error);
-		return;		
-	}
-	*/
+	positions = positions.split(",");
 
 	//check whether to include signal peptide offset	
 	var offsetCheckbox = document.getElementById("signalpeptide");
@@ -290,7 +305,8 @@ function getResult() {
 	
 	if (j == -1){
 		var error = "Please check that sequence(s) are in fasta format."
-		returnData(error);
+		$("#results").html(error);
+		$("#wait").hide();
 		return;
 	}
 
@@ -356,7 +372,8 @@ function getResult() {
 	//error handling for invalid aa positions
 	if(containsInvalidPosition){
 		var error = "Error: At least one amino acid position is invalid";
-		returnData(error);
+		$("#results").html(error);
+		$("#wait").hide();
 		return;
 	}
 
@@ -394,16 +411,16 @@ function getResult() {
 	}
 	var motifTable = createTable(motifArray);
 
+	//creates detection frequency summary table from submitted motifs
 	function createSummaryTable(tableData) {
 		var table = document.createElement('table');
-		table.setAttribute("id", "MotifTable");
-  		var tableHeader = document.createElement('thead');
+		var tableHeader = document.createElement('thead');
 		var col1 = document.createElement('th');
 		col1.appendChild(document.createTextNode("Antigenic Motif"));
 		tableHeader.appendChild(col1);
 
 		//get years from motif data
-		var yearsArray = Object.values(motif_data['x']);
+		yearsArray = Object.values(motif_data['x']);
 		console.log(yearsArray);
 		yearsArray.forEach(colData);
 		function colData(item,index) {
@@ -411,14 +428,8 @@ function getResult() {
 			col2.appendChild(document.createTextNode(item.split('-')[0]));
 			tableHeader.appendChild(col2);		
 		}
-		/*
-		var col2 = document.createElement('th');
-		col2.appendChild(document.createTextNode("Year"));
-		tableHeader.appendChild(col2);
-		*/
 		var tableBody = document.createElement('tbody');
 
-  	
 		tableData.forEach(function(rowData) {
     			var row = document.createElement('tr');
 			var cell = document.createElement('td');
@@ -445,7 +456,20 @@ function getResult() {
 	
 	freqArray = Object.entries(motifObject)
 	console.log(freqArray);
-	var freqTable = createSummaryTable(freqArray);	
+	var freqTable = "";
+	//error handling for non-standard motif position selection
+	if (standard_motif) {
+		//error handling for motifs without any VDL detection frequency
+		try {
+			freqTable = createSummaryTable(freqArray);
+		}
+		catch (error) {
+			$("#freq-err").html("There is no detection frequency data for at least one of your motifs");
+			console.log(error);
+			standard_motif = false;
+			//return;
+		}
+	}	
 	returnData(motifTable,motifArray,freqTable,freqArray);
 	return;
 }
@@ -454,37 +478,46 @@ function getResult() {
 
 function returnData(motifTable, motifArray, freqTable,freqArray) {
 	//allows user to download motif table as CSV
-	$("#update-graph").show();
+	if (standard_motif) {
+		$("#update-graph").show();
+		freqArrayForGraph = reformat(freqArray);
+		freqArrayForGraph.unshift(motif_array[0]);
+	};
 	$("#grab-results").show();
 	$("#results-data-title").show();
-	$("#results-data-sum-title").show();
 
 	$("#results-data").html(motifTable);
-	$("#results-motifs").html(freqTable);
+	if (standard_motif == true) {
+		$("#grab-frequency-results").show();
+		$("#results-data-sum-title").show();
+		$("#results-motifs").html(freqTable);
+		$("#results-motifs").show();
+	}
 
+	//updates graph with submitted motifs when clicked
 	$("#update-graph").click(updateGraph);
-
 	function updateGraph(){
-		freqArray = reformat(freqArray);
-		freqArray.unshift(motif_array[0]);
-		plot_motifs(freqArray, false);
-		$('html, body').animate({ scrollTop: 0}, 'fast');
+		//freqArray = reformat(freqArray);
+		//freqArray.unshift(motif_array[0]);
+		plot_motifs(freqArrayForGraph, false);
+		//$('html, body').animate({ scrollTop: 0}, 'fast');
+		$("#update-graph").hide();
+		$("#return-graph").show();
+		$("#summaryChartTitle").html("H3 Antigenic Motif Detection Frequency - Submitted Motifs");
 	}
 
-	$("#grab-results").click(downloadResult);
-	function downloadResult(){
-		text = "Strain,Motif\n"
-		dataArray.forEach(convertToCSV)
-		function convertToCSV(item, index){
-			text = text.concat(item.toString());
-			text = text.concat("\n");
-			console.log(text)
-		}
-		//var text = dataArray[0].toString();
-		//console.log(text);
-		download("motifs.csv",text);
-	}
+	//returns graph to common motifs when clicked
+	$("#return-graph").click(function() {
+		$("#update-graph").show();
+		$("#return-graph").hide();
+		plot_motifs(motif_array,false);
+		$("#summaryChartTitle").html("H3 Antigenic Motif Detection Frequency - Common Motifs");
+		});
 
+	$("#grab-results").click(function() {
+		downloadResult("motif", motifArray)});
+	$("#grab-frequency-results").click(function() {
+		downloadResult("frequency", freqArray)});
 	setTimeout(function() {
 	$("#wait").slideUp("slow");
 	$("#sequences").prop("disabled", false);
@@ -495,7 +528,32 @@ function returnData(motifTable, motifArray, freqTable,freqArray) {
 	}, 10);
 }
 
+//download CSV file of chosen results
+function downloadResult(type,dataArray){
+	text = "";
+	if (type == "motif"){
+		text = "Strain,Motif\n";
+	}
+	if (type == "frequency"){
+		var yearsArray = motif_array[0];
+		text = "Antigenic Motif," + yearsArray.slice(1) + "\n";
+	}
+	//text = "Strain,Motif\n"
+	dataArray.forEach(convertToCSV)
+	function convertToCSV(item, index){
+		text = text.concat(item.toString());
+		text = text.concat("\n");
+		console.log(text)
+	}
+	//var text = dataArray[0].toString();
+	//console.log(text);
+	download("motifs.csv",text);
+}
+
+
+
 </script>
+
 
 
     
