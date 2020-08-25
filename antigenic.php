@@ -83,7 +83,7 @@ $(document).ready(function() {
 	$("#account-by-proportion").click(accountByProportion);
         $("#submit").click(getResult);
 	$("#grab-all-detected").click(function() {
-		downloadResult("frequency",motif_array.slice(1),"detection_frequency_of_all_motifs.csv");
+		downloadResult("frequency",all_motifs_array.slice(1),"detection_frequency_of_all_motifs.csv");
 	});
 });
 
@@ -118,6 +118,7 @@ function parse() {
 			var normalize = false;
 			motif_data = data;
 			motif_array = reformat(Object.entries(motif_data));
+			all_motifs_array = motif_array;
 			motif_array = cutoff(motif_array);
 			var proportionCheckbox = document.getElementById("account-by-proportion");
 			if(proportionCheckbox.checked){
@@ -149,12 +150,8 @@ function normalize(motif_array){
 	num_motifs = motif_array.length - 1;
 	//console.log(num_motifs);
 	
-	check1 = motif_array	
-	console.log(check1);
-	
 	//create array of totals for each year
 	yearly_totals = new Array(num_yrs).fill(0);
-	console.log(yearly_totals);
 	//loop through each year
 	for (var i = 1; i <= num_yrs; i++){
 		//loop through each motif for that year
@@ -164,7 +161,7 @@ function normalize(motif_array){
 	}
 	//console.log(yearly_totals);
 
-	console.log(motif_array);	
+	//console.log(motif_array);	
 
 	normal_motif_array = motif_array;
 
@@ -175,8 +172,8 @@ function normalize(motif_array){
 			normal_motif_array[j][i] = (motif_array[j][i] / yearly_totals[i-1]).toFixed(3);
 		}
 	}
-	console.log(motif_array);
-	console.log(normal_motif_array);
+	//console.log(motif_array);
+	//console.log(normal_motif_array);
 
 	return normal_motif_array;
 }
@@ -206,14 +203,14 @@ function plot_motifs(motif_array, account_by_proportion){
 	var types = {};
 	var yaxis = {padding: {bottom:0}};
 	
-	console.log(account_by_proportion);
+	//console.log(account_by_proportion);
 	//var account_by_proportion = true;
 	//account_by_proportion = true;
 	var plot_motif_array = [];
 	if (account_by_proportion){
 		plot_motif_array = normalize(motif_array);
 		groups[0] = [];
-		console.log(groups);
+		//console.log(groups);
 		for (i=1;i < plot_motif_array.length;i++){
 			groups[0].push(plot_motif_array[i][0]);
 			types[plot_motif_array[i][0]] = "area"
@@ -222,7 +219,7 @@ function plot_motifs(motif_array, account_by_proportion){
 	}
 	else {
 		plot_motif_array = motif_array;
-		console.log(plot_motif_array);
+		//console.log(plot_motif_array);
 	}
 	
 	var chart = c3.generate({
@@ -256,8 +253,8 @@ function plot_motifs(motif_array, account_by_proportion){
 }
 
 function accountByProportion(){
-	console.log("Accounting");
-	console.log(motif_array);
+	//console.log("Accounting");
+	//console.log(motif_array);
 	plot_motifs(motif_array, true);
 }
 
@@ -284,7 +281,7 @@ function getResult() {
 	var offsetCheckbox = document.getElementById("signalpeptide");
 	var offsetincluded = offsetCheckbox.checked;	
 	
-	console.log(fastaString)
+	//console.log(fastaString)
 	var splitString = fastaString.split("\n");
 	var j = -1;
 	var fastaList = new Array();
@@ -362,10 +359,10 @@ function getResult() {
 			motifObject[motif] = motif_data[motif]
 		}	
 	}			
-	console.log(motif_data);
-	console.log(motifObject);
-	console.log(Object.entries(motifObject));
-	console.log(motifArray);
+	//console.log(motif_data);
+	//console.log(motifObject);
+	//console.log(Object.entries(motifObject));
+	//console.log(motifArray);
 
 	
 
@@ -421,7 +418,7 @@ function getResult() {
 
 		//get years from motif data
 		yearsArray = Object.values(motif_data['x']);
-		console.log(yearsArray);
+		//console.log(yearsArray);
 		yearsArray.forEach(colData);
 		function colData(item,index) {
 			var col2 = document.createElement('th');
@@ -455,7 +452,7 @@ function getResult() {
 	}
 	
 	freqArray = Object.entries(motifObject)
-	console.log(freqArray);
+	//console.log(freqArray);
 	var freqTable = "";
 	//error handling for non-standard motif position selection
 	if (standard_motif) {
@@ -538,15 +535,12 @@ function downloadResult(type,dataArray,filename){
 		var yearsArray = motif_array[0];
 		text = "Antigenic Motif," + yearsArray.slice(1) + "\n";
 	}
-	//text = "Strain,Motif\n"
 	dataArray.forEach(convertToCSV)
 	function convertToCSV(item, index){
 		text = text.concat(item.toString());
 		text = text.concat("\n");
-		console.log(text)
+		//console.log(text)
 	}
-	//var text = dataArray[0].toString();
-	//console.log(text);
 	download(filename,text);
 }
 
