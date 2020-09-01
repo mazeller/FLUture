@@ -140,6 +140,9 @@ table tr:last-child td {
 </style>
 
 <body>
+<p class="wd-Alert--error">
+	<strong>Error:</strong> Currently the querying of this tool is incorrect. The numbers cannot be guaranteed as accurate.
+</p>
 <h2 id="chartTitle"></h2>
 <div style="float: right; position:absolute;z-index:10;background:#FFFFFF;opacity:0.7;" class="legend">
         <i style="background:#009999"></i><b id="p1"> &gt; 0%</b><br>
