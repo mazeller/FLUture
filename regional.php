@@ -140,9 +140,6 @@ table tr:last-child td {
 </style>
 
 <body>
-<p class="wd-Alert--error">
-	<strong>Error:</strong> Currently the querying of this tool is incorrect. The numbers cannot be guaranteed as accurate.
-</p>
 <h2 id="chartTitle"></h2>
 <div style="float: right; position:absolute;z-index:10;background:#FFFFFF;opacity:0.7;" class="legend">
         <i style="background:#009999"></i><b id="p1"> &gt; 0%</b><br>
@@ -497,7 +494,7 @@ function parse(requestData) {
 				if (!hover_table.hasOwnProperty(option)) {
 					hover_table[option] = 0;
 				}
-				if (!levelOne.includes(option)) {
+				if (levelOne.localeCompare(option) != 0) {
 					continue;
 				}
 				hover_table[option] += 1;
@@ -547,15 +544,15 @@ function parse(requestData) {
                 	if(percentPop > 71) fillcolor = 'color6';
                 	if(percentPop > 85) fillcolor = 'color7';
                 	if(percentPop > 98) fillcolor = 'color8';
-			if(isNaN(percentPopDecimal) || percentPopDecimal == 0.00) fillcolor = 'defaultFill';
+			if(Number.isNaN(percentPopDecimal) || percentPopDecimal == 0.00) fillcolor = 'defaultFill';
 			
 			tempData[states[state]].fillKey = fillcolor;
 			tempData[states[state]].percentPop = percentPopDecimal;
-			tempData[states[state]].percentage = (isNaN((tempData[states[state]].freq/total*100).toFixed(2))) ? (0).toFixed(2) : (tempData[states[state]].freq/total*100).toFixed(2);
+			tempData[states[state]].percentage = (Number.isNaN((tempData[states[state]].freq/total*100).toFixed(2))) ? (0).toFixed(2) : (tempData[states[state]].freq/total*100).toFixed(2);
 			// percentage by national total
 			hover_table_editing = tempData[states[state]].hover_table;
 			for (key in hover_table_editing) {
-				hover_table_editing[key].percentage = (isNaN((hover_table_editing[key].freq/total*100).toFixed(2))) ? (0).toFixed(2) : (hover_table_editing[key].freq/total*100).toFixed(2); 
+				hover_table_editing[key].percentage = (Number.isNaN((hover_table_editing[key].freq/total*100).toFixed(2))) ? (0).toFixed(2) : (hover_table_editing[key].freq/total*100).toFixed(2); 
 			}
 	                $("#p1").text("> 0");
                 	$("#p2").text("> " + parseInt(max*0.142));
