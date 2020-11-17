@@ -19,7 +19,7 @@ CSS
 $theme->drawHeader();
 ?>
 
-<h2 id="chartTitle">HA Sequence Identity Tool</h2>
+<h2 id="chartTitle">Multi Sequence Identity Tool</h2>
 
 <p>
 The HA-NA sequence identity tool uses BLAST to find similar hemagglutinin/neuraminidase sequences in the ISU VDL data. Results are limited to greater than 96% identity, with at max 10 results returned per query sequence. For a more complex analysis, please refer to the <a href="https://www.fludb.org/brc/blast.spg?method=ShowCleanInputPage&decorator=influenza">IRD BLAST tool</a>. 
