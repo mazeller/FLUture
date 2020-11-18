@@ -406,7 +406,7 @@ for ($index = 0; $index < count($seq_input); $index++) {
         else {
 		$tableData .= ' 
 			<div class="chartChild"> 
-				<h3>Paired Hemagglutenin</h3> 
+				<h3>Paired Hemagglutinin</h3> 
 				<div id=' . $pairedChartID . ' class="chartChild"></div> 
 			</div> 
 		</div>
