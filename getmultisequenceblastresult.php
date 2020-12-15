@@ -73,12 +73,13 @@ array_push($seq_input, $str);
 
 // Set up table
 // Style html style for the result
+// TODO: Check other options. transition ease-out works with max-height but not height attribute, but height auto resolves bug. Other way might be to calculate scrollHeight for every DIV then set maxHeight to it.
 $wholeTable = "<style>
         .collapsible {background-color: #777; color: white; cursor: pointer; margin-bottom: 2px; padding: 10px; width: 100%; border: 1px solid black; text-align: left; outline: none; font-size: 14px;}
         .active, .collapsible:hover { background-color: #555;}
         .collapsible:after {content: '+'; color: white; font-weight: bold; float: right; margin-left: 5px;}
         .active:after {content: '-';}
-        .content { padding: 0 12px; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; background-color: #f1f1f1;}
+        .content { padding: 0 12px; height: 0; overflow: hidden; transition: height 0.2s ease-out; background-color: #f1f1f1;}
         </style>";
 // Script to collapse and expand content
 $wholeTable .= "<script>
@@ -89,11 +90,11 @@ $wholeTable .= "<script>
                 coll[i].addEventListener('click', function() {
                         this.classList.toggle('active');
                         var content = this.nextElementSibling;
-                        if (content.style.maxHeight) {
-                                content.style.maxHeight = null;
+                        if (content.style.height) {
+                                content.style.height = null;
                                 $('.show_hide').val( $('.collapsible').length == $('.collapsible.active').length ? 'Collapse All' : 'Expand All' );
                         } else {
-                                content.style.maxHeight = content.scrollHeight + 'px';
+                                content.style.height = 'auto';//content.scrollHeight + 'px';
                                 $('.show_hide').val( $('.collapsible').length == $('.collapsible.active').length ? 'Collapse All' : 'Expand All' );
                         }
                 });
@@ -104,14 +105,14 @@ $wholeTable .= "<script>
 $wholeTable .= "<script>
         $(document).ready(function(){
                 $('.show_hide').click(function(){
-                        var maxDivHeight = $('div.content')[0].scrollHeight + 'px';
+                        //var maxDivHeight = $('div.content')[0].scrollHeight + 'px';
                         if($(this).val() == 'Expand All') {
                                 $('.collapsible').addClass('active');
-                                $('div.content').css('maxHeight', maxDivHeight);
+                                $('div.content').css('height', 'auto');
                         }
                         else {
                                 $('.collapsible').removeClass('active');
-                                $('div.content').css('maxHeight', '');
+                                $('div.content').css('height', '');
                         }
                         // Change the button text on expansion nd collapse
                         $(this).val( $(this).val() == 'Expand All' ? 'Collapse All' : 'Expand All' );
