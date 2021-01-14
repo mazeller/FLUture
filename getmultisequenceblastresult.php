@@ -162,11 +162,11 @@ for ($index = 0; $index < count($seq_input); $index++) {
         //Default NT, unless type = AA
         if($blast_type == "aa")
         {
-                $result = shell_exec("/opt/ncbi-blast-2.9.0+/bin/blastp -query " . $path . " -db /var/www/BLASTdb-new/vdl_flu_aa -outfmt \"6 sseqid pident\" -num_alignments=10 2>&1");
+                $result = shell_exec("/opt/ncbi-blast-2.9.0+/bin/blastp -query " . $path . " -db /var/www/BLASTdbMultiSequence/vdl_flu_aa -outfmt \"6 sseqid pident\" -num_alignments=10 2>&1");
         }
         else
         {
-	        $result = shell_exec("/opt/ncbi-blast-2.9.0+/bin/blastn -query " . $path . " -db /var/www/BLASTdb-new/vdl_flu_nt -outfmt \"6 sseqid pident\" -perc_identity 96 -num_alignments=10 2>&1");
+	        $result = shell_exec("/opt/ncbi-blast-2.9.0+/bin/blastn -query " . $path . " -db /var/www/BLASTdbMultiSequence/vdl_flu_nt -outfmt \"6 sseqid pident\" -perc_identity 96 -num_alignments=10 2>&1");
         }
 
         //Delete temp
