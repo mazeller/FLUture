@@ -229,28 +229,28 @@ $theme->drawHeader();
         </tr>
         <tr>
             <td>H3</td>
-            <td>human-to-swine-2013</td>
+            <td>HA-human-to-swine-2013</td>
             <td>human-to-swine-2013</td>
             <td>One off event of human to swine transmission that was detected in 2013 with less than 5 cases</td>
             <td>USA</td>
         </tr>
         <tr>
             <td>H3</td>
-            <td>human-to-swine-2016</td>
+            <td>HA-human-to-swine-2016</td>
             <td>human-to-swine-2016</td>
             <td>One off event of human to swine transmission that was detected in 2016 with less than 5 cases</td>
             <td>USA</td>
         </tr>
         <tr>
             <td>H3</td>
-            <td>human-to-swine-2017</td>
+            <td>HA-human-to-swine-2017</td>
             <td>human-to-swine-2017</td>
             <td>One off event of human to swine transmission that was detected in 2017 with less than 5 cases</td>
             <td>USA</td>
         </tr>
         <tr>
             <td>H3</td>
-            <td>human-to-swine-2018</td>
+            <td>HA-human-to-swine-2018</td>
             <td>human-to-swine-2018</td>
             <td>One off event of human to swine transmission that was detected in 2018 with less than 5 cases</td>
             <td>USA</td>

@@ -36,7 +36,6 @@ th.leftAxis {
 .rotate {
 	transform: rotate(90deg);
 }
-
 CSS
 , 'style');
 $theme->drawHeader();
@@ -126,7 +125,7 @@ function tabulateData(haclade, naclade, haData) {
         for (var key2 in naclade)
         {
                 //Postfix subtype
-                if (naclade[key2] == "1998" | naclade[key2] == "2002" | naclade[key2] == "human-to-swine-2010" | naclade[key2] == "human-to-swine-2016" ){
+                if (naclade[key2] == "1998" | naclade[key2] == "2002" | naclade[key2] == "NA-human-to-swine-2010" | naclade[key2] == "NA-human-to-swine-2016" ){
                         naclade[key2] = "N2." + naclade[key2];
                 }
                 if (naclade[key2] == "classical" | naclade[key2] == "pandemic"){
@@ -295,7 +294,7 @@ function parse(requestData) {
 
 	//Draw tables and tools
 	$("#heatmap").empty();
-	drawTable(h1clade, nh1clade.slice(), h1Data, "Count  of H1 and NA combinations");
+	drawTable(h1clade, nh1clade.slice(), h1Data, "Count of H1 and NA combinations");
 	drawLegend(h1Data, "h1legend");
 	drawTable(h3clade, nh3clade.slice(), h3Data, "Count of H3 and NA combinations");
 	drawLegend(h3Data, "h3legend");
@@ -378,7 +377,7 @@ function drawTable(haclade, naclade, haData, title)
         for (var key2 in naclade)
         {
 		//Postfix subtype
-		if (naclade[key2] == "1998" | naclade[key2] == "1998A" | naclade[key2] == "1998B" | naclade[key2] == "2002"| naclade[key2] == "2002A" | naclade[key2] == "2002B" | naclade[key2] == "human-to-swine-2010" | naclade[key2] == "human-to-swine-2016" | naclade[key2] == "2016" ){
+		if (naclade[key2] == "1998" | naclade[key2] == "1998A" | naclade[key2] == "1998B" | naclade[key2] == "2002"| naclade[key2] == "2002A" | naclade[key2] == "2002B" | naclade[key2] == "NA-human-to-swine-2010" | naclade[key2] == "NA-human-to-swine-2016" | naclade[key2] == "2016" ){
 			naclade[key2] = "N2." + naclade[key2];
 		}
 	        if (naclade[key2] == "classical" | naclade[key2] == "pandemic"){

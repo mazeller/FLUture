@@ -112,7 +112,7 @@ $wholeTable .= "<script>
                         }
                         else {
                                 $('.collapsible').removeClass('active');
-                                $('div.content').css('height', '');
+                                $('div.content').css('height', '0');
                         }
                         // Change the button text on expansion nd collapse
                         $(this).val( $(this).val() == 'Expand All' ? 'Collapse All' : 'Expand All' );
@@ -223,6 +223,22 @@ for ($index = 0; $index < count($seq_input); $index++) {
                 continue;	
         }
 
+        //Non HA & Non NA sequences
+        if(substr($blastHits[0],0,2) != "ha" and substr($blastHits[0],0,2) != "na")
+        {
+                $hits = explode("+", $blastHits[0]);
+                $tableData .= "<div class='content'>";
+                $tableData .= "This sequence has the best BLAST match to the <span style='color:red'>" . $hits[4] . "</span> gene.<h2>";
+                $tableData .= "</div>";
+                $tableHeader = "<button class='collapsible'>" . $matches[0][$index] . " <br/><span style='padding-left: 60%; font-weight:bold;'>" . $hits[4] . " " . $hits[4] . "</span></button>";
+                $wholeTable .= $tableHeader;
+                $wholeTable .= $tableData;
+
+                //Add Download data
+                $csvData .= '"' . str_replace(",",";",$matches[0][$index]) . '"' . "," . $hits[4] . "," . $hits[4] . "," . $hits[4] . "\n";
+                continue;
+        }
+
         //Init arrays of interest
         $state = array();
         $haClade = array();
@@ -230,29 +246,6 @@ for ($index = 0; $index < count($seq_input); $index++) {
         $haGlobalClade = array();
         $naGlobalClade = array();
         $subtype = array ();
-
-        //Check if first BLAST hit is not HA, use alternative action
-        //if (substr($blastHits[0],0,2) != "ha")
-        //{
-	//        $tableData .= "<div class='content'>";
-	//        $hit = explode("+", $blastHits[0]);
-	//        if (substr($hit[0],0,2) == "na")
-	//        {
-	//	        $tableData .= "<h2>This sequence has the best BLAST match to the <span style='color:red'>" . $hit[4] . "</span> gene.</h2>";
-	//	        $tableData .= "<h3>The top BLAST hit matches the following NA clade: <span style='color:red'>" . $hit[6] . "</span>.</h2>";
-	//        }
-	//        else
-	//        {
-	//	        $tableData .= "<h2>This sequence has the best BLAST match to the <span style='color:red'>" . $hit[5] . "</span> gene.</h2>";
-	//        }
-	//        $tableData .= "<p>This result can be validated using either the <a href='https://www.fludb.org/brc/blast.spg?method=ShowCleanInputPage&decorator=influenza'>IRD BLAST Tool</a> or the <a rhef = 'https://www.fludb.org/brc/influenza_batch_submission.spg?method=NewAnnotation&decorator=influenza'>IRD Annotate Nucleotide Sequence Tool</a>.</p>";
-	//	$tableData .= "</div>";
-
-        //        $tableHeader = "<button class='collapsible'>" . $matches[0][$index] . "</span></button>";
-        //        $wholeTable .= $tableHeader;
-        //        $wholeTable .= $tableData;
-	//        continue;
-        //}
 
         //Set up table
 	$tableData .= "<div class='content'>";
@@ -350,7 +343,7 @@ for ($index = 0; $index < count($seq_input); $index++) {
 			}
 		}
         }
-        else
+        elseif (substr($blastHits[0],0,2) == "na")
         { 
 		//Process percentages
 		$stateProp = array_count_values($state);
@@ -371,6 +364,20 @@ for ($index = 0; $index < count($seq_input); $index++) {
 				break;
 			}
 		}
+        }
+        else
+        {
+                $topSubtype = "";
+		foreach($subtype as $idx => &$val) {
+			if($val != "") {
+				$topSubtype = $val;
+				break;
+			}
+		}
+                $tableHeader = "<button class='collapsible'>" . $matches[0][$index] . " <br/><span style='padding-left: 60%; font-weight:bold;'>" .  $topSubtype . "</span></button>";
+                $wholeTable .= $tableHeader;
+                $wholeTable .= $tableData;
+                continue;
         }
 
         $topSubtype = "";
@@ -430,8 +437,14 @@ for ($index = 0; $index < count($seq_input); $index++) {
         $csvData .= '"' . str_replace(",",";",$matches[0][$index]) . '"' . "," . $topSubtype . "," . $topClade . "," . $topGlobalClade . "\n";
 
         //Add headers
-        $tableHeader = "<button class='collapsible'>" . $matches[0][$index] . " <br/><span style='padding-left: 80%; font-weight:bold;'>" . $topSubtype . " " . $topClade . " " . $topGlobalClade . "</span></button>";
+        $tableHeader = "<button class='collapsible'>" . $matches[0][$index] . " <br/><span style='padding-left: 60%; font-weight:bold;'>" . $topSubtype . " " . $topClade . " " . $topGlobalClade . "</span></button>";
         $wholeTable .= $tableHeader;
         $wholeTable .= $tableData;
 }
+
+//Compression
+ob_start('ob_gzhandler');
 echo json_encode(array($wholeTable,$csvData));
+ob_end_flush();
+return;
+#send data back to requester

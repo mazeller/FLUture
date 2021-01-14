@@ -85,8 +85,8 @@ $(document).ready(function() {
         $("#waitUpload").hide();
 	$("#wrapper").hide();
 	$("#download").hide();
-	$("#upload").click(uploadData);
-        $("#submit").click(getBlastResult);
+	$("#upload").on("click". uploadData);
+        $("#submit").on("click", getBlastResult);
         document.getElementById('fileUploader').addEventListener('change', addDataToTextField, false);
         document.getElementById('download').addEventListener('click', download, false);
 });
@@ -129,7 +129,7 @@ function addDataToTextField(data) {
                 $("#waitUpload").slideUp("slow");
                 $("#sequences").prop("disabled", false);
                 //Reconnect button
-                $("#upload").click(uploadData);
+                $("#upload").on("click", uploadData);
         }, 1000);
 }
 
@@ -155,8 +155,9 @@ function getBlastResult() {
 	$("#sequences").prop("disabled", true);
 	
 	//Disconnect button
-        $("#upload").attr("disabled", false);
-        $("#download").attr("disabled", false);
+        $("#upload").off("click");
+        $("#download").off("click");
+        $("#submit").off("click");
 
         //Process fasta input into specific object structure
         var fastaString = $("#sequences").val();
@@ -179,7 +180,7 @@ function getBlastResult() {
 			//	download("data.csv",csvData);
 		        //});
 
-	                $("#download").bind("click");
+	                $("#download").on("click", download);
 			$("#download").show();
                 },
                 error: function(xhr, desc, err) {
@@ -204,7 +205,7 @@ function resultData(data) {
 	$("#sequences").prop("disabled", false);
 
 	//Reconnect button	
-	$("#submit").click(getBlastResult);
+	$("#submit").on("click", getBlastResult);
 	}, 1000);
 }
 
