@@ -189,12 +189,16 @@ for ($index = 0; $index < count($seq_input); $index++) {
                 $tableHeader = "<button class='collapsible'>" . $matches[0][$index] . "</span></button>";
                 $wholeTable .= $tableHeader;
                 $wholeTable .= $tableData;
+
+                //Add Download data
+                $csvData .= '"' . str_replace(",",";",$matches[0][$index]) . '"' . "," . "," . "," . "\n";
+
 	        //Exit gracefully
 	        continue;
         }
 
         //Finer error handeling - Empty search
-        if($blastHits[0] == "Warning: [blastn] Query is Empty!" | $blastHits[0] == "Warning: [blastp] Query is Empty!")
+        if($blastHits[0] == "Warning: [blastn] Query is Empty!" | $blastHits[0] == "Warning: [blastp] Query is Empty!" | trim($blastHits[0]) == "BLAST engine error: Warning: Sequence contains no data" )
         {
 	        //Send error message
 	        $tableData .= "<div class='content'>";
@@ -204,6 +208,10 @@ for ($index = 0; $index < count($seq_input); $index++) {
                 $tableHeader = "<button class='collapsible'>" . $matches[0][$index] . "</span></button>";
                 $wholeTable .= $tableHeader;
                 $wholeTable .= $tableData;
+
+                //Add Download data
+                $csvData .= '"' . str_replace(",",";",$matches[0][$index]) . '"' . "," . "," . "," . "\n";
+
 	        //Exit gracefully
 	        continue;
         }
@@ -219,6 +227,10 @@ for ($index = 0; $index < count($seq_input); $index++) {
                 $tableHeader = "<button class='collapsible'>" . $matches[0][$index] . "</span></button>";
                 $wholeTable .= $tableHeader;
                 $wholeTable .= $tableData;
+
+                //Add Download data
+                $csvData .= '"' . str_replace(",",";",$matches[0][$index]) . '"' . "," . "," . "," . "\n";
+
                 //Exit gracefully
                 continue;	
         }
@@ -306,8 +318,14 @@ for ($index = 0; $index < count($seq_input); $index++) {
 		{
                         $tableHeader = "<button class='collapsible'>" . $matches[0][$index] . "</span></button>";
                         $wholeTable .= $tableHeader;
+                        $tableData = "<div class='content'>";
 			$tableData .= "No results were returned";
+                        $tableData .= "</div>";
                         $wholeTable .= $tableData;
+
+                        //Add Download data
+                        $csvData .= '"' . str_replace(",",";",$matches[0][$index]) . '"' . "," . "," . "," . "\n";
+
 			continue;
 		}
 
@@ -365,6 +383,7 @@ for ($index = 0; $index < count($seq_input); $index++) {
 			}
 		}
         }
+        //non ha na is already taken into consideration before blast result is converted to results
         else
         {
                 $topSubtype = "";
@@ -377,6 +396,10 @@ for ($index = 0; $index < count($seq_input); $index++) {
                 $tableHeader = "<button class='collapsible'>" . $matches[0][$index] . " <br/><span style='padding-left: 60%; font-weight:bold;'>" .  $topSubtype . "</span></button>";
                 $wholeTable .= $tableHeader;
                 $wholeTable .= $tableData;
+
+                //Add Download data
+                $csvData .= '"' . str_replace(",",";",$matches[0][$index]) . '"' . "," . $topSubtype . ","  . "," . "\n";
+
                 continue;
         }
 

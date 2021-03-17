@@ -126,8 +126,10 @@ function requestData() {
 
 //Update time
 function updateLastRecord(dateLR) {
+     // toUTCString date standard shows correct date, whereas toDateString looses 6 hours for CST/CDT due to being behind GMT thus the date is always one less
+     // use UTC or ISO date standards
      dateString = new Date(dateLR);
-     dateLR = dateString.toDateString();
+     dateLR = dateString.toUTCString();
      $("#lr").text (dateLR);	
 }
 

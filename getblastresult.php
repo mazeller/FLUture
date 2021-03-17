@@ -88,7 +88,7 @@ if(count($blastHits) < 2)
 }
 
 //Finer error handeling - Empty search
-if($blastHits[0] == "Warning: [blastn] Query is Empty!" | $blastHits[0] == "Warning: [blastp] Query is Empty!")
+if($blastHits[0] == "Warning: [blastn] Query is Empty!" | $blastHits[0] == "Warning: [blastp] Query is Empty!"  | trim($blastHits[0]) == "BLAST engine error: Warning: Sequence contains no data")
 {
 	//Send error message
 	echo "<p>Empty query submitted.</p>";
