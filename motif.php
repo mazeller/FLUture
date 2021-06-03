@@ -180,7 +180,7 @@ function getResult() {
 		col1.appendChild(document.createTextNode("Strain"));
 		tableHeader.appendChild(col1);
 		var col2 = document.createElement('th');
-		col2.appendChild(document.createTextNode("Antigenic Motif"));
+		col2.appendChild(document.createTextNode("Motif"));
 		tableHeader.appendChild(col2);
 		var tableBody = document.createElement('tbody');
 
