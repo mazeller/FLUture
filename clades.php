@@ -47,7 +47,7 @@ $theme->drawHeader();
         <tr>
             <td>H1</td>
             <td>gamma</td>
-            <td>1A3.3.3</td>
+            <td>1A.3.3.3</td>
             <td>Gamma (&gamma;) clade&nbsp; belong to the 1A classical lineage and such viruses are referred to as H1N2-like isolates and are the result of a triple reassortment event between H3N2 and cH1N1 viruses.</td>
             <td>South Korea, USA</td>
         </tr>
@@ -140,7 +140,7 @@ $theme->drawHeader();
         <tr>
             <td>H1</td>
             <td>pdmH1</td>
-            <td>1.A.3.3.2</td>
+            <td>1A.3.3.2</td>
             <td>
                 In 2009, the first pandemic of the 21st century occurred with the introduction of a swine-origin influenza virus of the cH1N1 subtype into the human population that transmitted easily between people. The pdmH1 spilled back
                 from humans into swine and became an established clade.
