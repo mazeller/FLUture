@@ -68,7 +68,7 @@ function reset(){
 	$("#grab-frequency-results").hide();
 	$("#results-motifs").hide();
 	$("#results-data").empty();
-	$("#freq-err").empty();	
+	$("#error-report").empty();	
 }
 
 
