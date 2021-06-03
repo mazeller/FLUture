@@ -219,6 +219,7 @@ function returnData(motifTable, motifArray, freqTable,freqArray) {
 	$("#grab-results").show();
 	$("#results-data-title").show();
 	$("#results-data").html(motifTable);
+	$("#grab-results").off();
 	$("#grab-results").click(function() {
 		downloadResult("motif", motifArray, "submitted_antigenic_motifs.csv")});
 	setTimeout(function() {
@@ -231,6 +232,7 @@ function returnData(motifTable, motifArray, freqTable,freqArray) {
 
 //download CSV file of chosen results
 function downloadResult(type,dataArray,filename){
+	console.log("hit!");
 	text = "";
 	if (type == "motif"){
 		text = "Strain,Motif\n";
