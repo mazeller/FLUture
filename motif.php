@@ -10,10 +10,10 @@ $theme->drawHeader();
 ?>
 
 
-<h2 id="chartTitle">Protein Sequence Motif Viewing Tool</h2>
+<h2 id="chartTitle">Amino Acid Sequence Motif Viewing Tool</h2>
 <p>
-The Protein Sequence Motif Viewing Tool identifies the amino acid residue present at the position(s) indicated for the 
-nucleotide or amino acid sequence(s) inputted.</p>
+The Amino Acid Sequence Motif Viewing Tool identifies the amino acid residue present at the position(s) indicated for the 
+nucleotide or amino acid sequence(s) inputted. Regex determines if nucleotide sequence is present and needs to be translated to amino acid. </p>
 
 <form id="target">
 <textarea rows="16" cols="100" id="sequences" placeholder="Paste sequence(s) in fasta format">
@@ -28,7 +28,7 @@ nucleotide or amino acid sequence(s) inputted.</p>
 	</fieldset>
 </div><br/>
 
-<a class="wd-Button" id="submit">Search</a>
+<a class="wd-Button" id="submit">Submit</a>
 </form>
 
 <br/>
