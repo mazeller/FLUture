@@ -42,6 +42,7 @@ Please wait, identification in progress...
 		<div id="results-data"></div>
 		<a href="javascript:;" id="grab-results">Download Motif Data</a><br/><br/>
 	</div>
+	<div id="error-report"></div>
 </div>
 <script>
 
@@ -66,6 +67,7 @@ function reset(){
 	$("#grab-results").hide();
 	$("#grab-frequency-results").hide();
 	$("#results-motifs").hide();
+	$("#results-data").empty();
 	$("#freq-err").empty();	
 }
 
@@ -112,10 +114,36 @@ function getResult() {
 	}	
 	
 	if (j == -1){
-		var error = "Please check that sequence(s) are in fasta format."
-		$("#results").html(error);
+		var fasta_error = "Error: Please check that sequence(s) are in fasta format."
+		$("#error-report").html(fasta_error);
 		$("#wait").hide();
+		setTimeout(function() {
+		$("#wait").slideUp("slow");
+		$("#sequences").prop("disabled", false);
+		//reconnect button
+		$("#submit").click(getResult);	
+		}, 10);
 		return;
+	}
+
+	//Check for invalid characters
+	for (var i = 0; i < fastaList.length; i++) {
+		if(/^[A-Za-z]+$/.test(fastaList[i][1])) {
+			console.log("All valid characters");
+		}
+		else { 
+			console.log("Invalid character detected");
+			var invalid_char_error = "Error: Invalid character detected in sequence input."
+			$("#error-report").html(invalid_char_error);
+			$("#wait").hide();
+			setTimeout(function() {
+			$("#wait").slideUp("slow");
+			$("#sequences").prop("disabled", false);
+			//reconnect button
+			$("#submit").click(getResult);	
+			}, 10);
+			return;
+		}
 	}
 
 	//Check that there are no DNA strings, and if so convert to most likely inframe DNA
@@ -137,7 +165,9 @@ function getResult() {
                         if (stopcount2 < stopcount1 & stopcount2 < stopcount0) finalFrame = frame2;
                         fastaList[i][1] = finalFrame.toUpperCase();
                }
-        }	
+        }
+
+		
 
 	//Build array of the antigenic motifs for each sequence inputted
 	var motifArray = [];
@@ -165,9 +195,15 @@ function getResult() {
 
 	//error handling for invalid aa positions
 	if(containsInvalidPosition){
-		var error = "Error: At least one amino acid position is invalid";
-		$("#results").html(error);
+		var position_error = "Error: At least one requested amino acid position is invalid";
+		$("#error-report").html(position_error);
 		$("#wait").hide();
+		setTimeout(function() {
+		$("#wait").slideUp("slow");
+		$("#sequences").prop("disabled", false);
+		//reconnect button
+		$("#submit").click(getResult);	
+		}, 10);
 		return;
 	}
 
