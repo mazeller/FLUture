@@ -476,7 +476,9 @@ function getResult() {
 function returnData(motifTable, motifArray, freqTable,freqArray) {
 	//allows user to download motif table as CSV
 	if (standard_motif) {
-		$("#update-graph").show();
+		//update-graph in development
+		$("#update-graph").hide();
+
 		freqArrayForGraph = reformat(freqArray);
 		freqArrayForGraph.unshift(motif_array[0]);
 	};

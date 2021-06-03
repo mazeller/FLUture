@@ -45,8 +45,8 @@ class Theme extends \IastateTheme\Theme
                     'uri' => '/tree.php',
               	),*/
 		/*array(
-		    'label' => 'H3 Antigenic Motif',
-		    'uri' => '/antigenic.php',
+		    'label' => 'Protein Sequence Motif Viewing Tool',
+		    'uri' => '/motif.php',
 		),*/
 
                 array(

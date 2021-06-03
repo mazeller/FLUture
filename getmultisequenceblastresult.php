@@ -272,6 +272,7 @@ for ($index = 0; $index < count($seq_input); $index++) {
 		
 		$no_result_flag = 0;
 		$hits = explode("+", $blastHits[$i]);
+
 		for ($j = 1; $j < count($hits); $j++)	//This j starts at 1 to leave out db id, less then the count to leave off blank row
 		{
 			//If the %identity is too low, break assuming results are in order. This is mainly for blastp, which perc_identity does not work
@@ -326,7 +327,7 @@ for ($index = 0; $index < count($seq_input); $index++) {
                         //Add Download data
                         $csvData .= '"' . str_replace(",",";",$matches[0][$index]) . '"' . "," . "," . "," . "\n";
 
-			continue;
+			continue 2;
 		}
 
 		//Close row
