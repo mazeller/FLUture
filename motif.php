@@ -42,7 +42,7 @@ Please wait, identification in progress...
 		<div id="results-data"></div>
 		<a href="javascript:;" id="grab-results">Download Motif Data</a><br/><br/>
 	</div>
-	<div id="error-report"></div>
+	<div id="error-report" class="wd-Alert--error"></div>
 </div>
 <script>
 
@@ -58,6 +58,7 @@ $(document).ready(function() {
 	$("#results-data-title").hide();
 	$("#results-data-sum-title").hide();
 	$("#grab-results").hide();
+	$("#error-report").hide();
         $("#submit").click(getResult);
 });
 
@@ -68,7 +69,8 @@ function reset(){
 	$("#grab-frequency-results").hide();
 	$("#results-motifs").hide();
 	$("#results-data").empty();
-	$("#error-report").empty();	
+	$("#error-report").empty();
+	$("#error-report").hide();	
 }
 
 
@@ -116,6 +118,7 @@ function getResult() {
 	if (j == -1){
 		var fasta_error = "Error: Please check that sequence(s) are in fasta format."
 		$("#error-report").html(fasta_error);
+		$("#error-report").show();
 		$("#wait").hide();
 		setTimeout(function() {
 		$("#wait").slideUp("slow");
@@ -133,8 +136,9 @@ function getResult() {
 		}
 		else { 
 			console.log("Invalid character detected");
-			var invalid_char_error = "Error: Invalid character detected in sequence input."
+			var invalid_char_error = "Error: Invalid character detected in sequence input. Please check that sequence(s) contains only alphabetic characters."
 			$("#error-report").html(invalid_char_error);
+			$("#error-report").show();
 			$("#wait").hide();
 			setTimeout(function() {
 			$("#wait").slideUp("slow");
@@ -180,7 +184,10 @@ function getResult() {
 		sequence = item[1];
 		positions.forEach(addToMotif);
         	function addToMotif(pos_item, pos_index){
-                	pos_item = Number(pos_item) + Number(offset) - 1;
+			if (pos_item !== "") {
+				pos_item = Number(pos_item) + Number(offset) - 1;
+			}
+			//pos_item = Number(pos_item) + Number(offset) - 1;
                 	if (sequence[pos_item] !== undefined){
 				motif = motif.concat(sequence[pos_item]);
 			}
@@ -195,8 +202,9 @@ function getResult() {
 
 	//error handling for invalid aa positions
 	if(containsInvalidPosition){
-		var position_error = "Error: At least one requested amino acid position is invalid";
+		var position_error = "Error: At least one requested amino acid position is invalid. Please check that amino acid positions indicated in the Options box are less than or equal to the length of the sequence(s).";
 		$("#error-report").html(position_error);
+		$("#error-report").show();
 		$("#wait").hide();
 		setTimeout(function() {
 		$("#wait").slideUp("slow");

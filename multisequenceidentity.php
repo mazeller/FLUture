@@ -36,7 +36,7 @@ The HA-NA sequence identity tool uses BLAST to find similar hemagglutinin/neuram
         <i class="fa fa-cloud-upload"></i>Upload
 </label>
 <a class="wd-Button" id="submit">Search</a>
-<a href="javascript:;" class="wd-Button--success" id="download">Download Results Data</a> 
+<a href="javascript:;" class="wd-Button" id="download">Download Results Data</a> 
 </form>
 
 <br/>
