@@ -44,10 +44,10 @@ class Theme extends \IastateTheme\Theme
                     'label' => 'Tree Tool',
                     'uri' => '/tree.php',
               	),*/
-		/*array(
-		    'label' => 'Protein Sequence Motif Viewing Tool',
+		array(
+		    'label' => 'Amino Acid Sequence Motif Viewing Tool',
 		    'uri' => '/motif.php',
-		),*/
+		),
 
                 array(
                     'label' => 'General Information',
