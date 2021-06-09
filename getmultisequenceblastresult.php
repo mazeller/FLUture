@@ -217,7 +217,7 @@ for ($index = 0; $index < count($seq_input); $index++) {
         }
 
         //Invalid searches
-        if(strpos($blastHits[0], "FASTA-Reader: Ignoring invalid residues at position") !== false)
+        if((strpos($blastHits[0], "FASTA-Reader: Ignoring invalid residues at position") !== false) || (strpos($blastHits[0], "CFastaReader: Hyphens are invalid and will be ignored around line") !== false))
         {
                 //Send error message
 	        $tableData .= "<div class='content'>";
