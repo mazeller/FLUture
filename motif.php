@@ -136,7 +136,7 @@ function getResult() {
 		}
 		else { 
 			console.log("Invalid character detected");
-			var invalid_char_error = "Error: Invalid character detected in sequence input. Please check that sequence(s) contains only alphabetic characters."
+			var invalid_char_error = "Error: Invalid character detected in sequence input. Please check that all sequences contain only alphabetic characters."
 			$("#error-report").html(invalid_char_error);
 			$("#error-report").show();
 			$("#wait").hide();
