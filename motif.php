@@ -34,7 +34,8 @@ nucleotide or amino acid sequence(s) inputted. Regex determines if nucleotide se
 <br/>
 <div class="wd-Alert" id="wait">
 Please wait, identification in progress...
-</div>
+</div>	
+<div id="error-report" class="wd-Alert--error"></div>
 
 <div id="results">
 	<div id="results-data-div">
@@ -42,7 +43,6 @@ Please wait, identification in progress...
 		<div id="results-data"></div>
 		<a href="javascript:;" id="grab-results">Download Motif Data</a><br/><br/>
 	</div>
-	<div id="error-report" class="wd-Alert--error"></div>
 </div>
 <script>
 
