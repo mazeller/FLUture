@@ -14,6 +14,48 @@ $theme->addStyle(<<<CSS
     width: 50%;
     float:left;
 }
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  margin: 4px;
+  border: 4px solid #ff0;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #f00 transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.collapsible {background-color: #777; color: white; cursor: pointer; margin-bottom: 2px; padding: 10px; width: 100%; border: 1px solid black; text-align: left; outline: none; font-size: 14px;}
+.active, .collapsible:hover { background-color: #555;}
+.collapsible:after {content: '+'; color: white; font-weight: bold; float: right; margin-left: 5px;}
+.active:after {content: '-';}
+.content {padding: 0 12px; height: 0; overflow: hidden; transition: height 0.2s ease-out; background-color: #f1f1f1;}
+
 CSS
 , 'style');
 $theme->drawHeader();
@@ -26,7 +68,7 @@ The HA-NA sequence identity tool uses BLAST to find similar hemagglutinin/neuram
 </p>
 
 <form id="target">
-<textarea rows="16" cols="100" id="sequences" placeholder="Paste sequences (fasta/plain text)">
+<textarea rows="16" cols="100" id="sequences" placeholder="Paste sequences (fasta/plain text) in the following format:\n\n>defline1\nATCAAATTTTCCCCGGGG\n\n>defline2\nAAATTTTTCCCGGGCTGA">
 </textarea><br/>
 <b>Sequence type</b><br/>
 <input type="radio" name="blasttype" value="nt" checked="checked" />nucleotide<br>
@@ -48,20 +90,10 @@ Please wait, Sequence File is being uploaded...
 Please wait, BLAST in progress...
 </div>
 
-<!-- <div id="wrapper">
-	<h2>Influenza cases in ISU FLUture with 96% or greater similarity to query sequence</h2>
-	<div class="chartChild">
-		<h3>State of Detection</h3>
-		<div id="stateChart" class="chartChild"></div>
-	</div>
-	<div class="chartChild">
-		<h3>Paired Neuraminidase</h3>
-		<div id="naChart" class="chartChild"></div>
-	</div>
-</div> -->
-<div id="results">
+<div class="lds-ring" id="spinner"><div></div><div></div><div></div><div></div></div>
 
-</div>
+<div id="results"></div>
+
 <br/>
 <div>
 <small>
@@ -79,13 +111,41 @@ Please wait, BLAST in progress...
 </div>
 <script>
 
+window.onscroll = function() {scrollFunction()};
+
+// Logic to show and hide back to top button
+function scrollFunction() {
+        if(document.getElementById('top')) {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                        document.getElementById('top').style.visibility = 'visible';
+                } else {
+                        document.getElementById('top').style.visibility = 'hidden';
+                }
+        }
+}
+
+// Go back to top of page
+function goToTop() {
+        window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+        });
+}
+
 $(document).ready(function() {
+        var textAreas = document.getElementsByTagName('textarea');
+
+        Array.prototype.forEach.call(textAreas, function(elem) {
+                elem.placeholder = elem.placeholder.replace(/\\n/g, '\n');
+        });
+
 	//Hide wait
 	$("#wait").hide();
         $("#waitUpload").hide();
 	$("#wrapper").hide();
 	$("#download").hide();
 	$("#upload").on("click". uploadData);
+       	$("#spinner").hide();
         $("#submit").on("click", getBlastResult);
         document.getElementById('fileUploader').addEventListener('change', addDataToTextField, false);
         document.getElementById('download').addEventListener('click', download, false);
@@ -93,8 +153,8 @@ $(document).ready(function() {
 
 function download() {
 	var element = document.createElement('a');
-	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csvData));
-	element.setAttribute('download', 'data.csv');
+	element.setAttribute('href', 'data:application/octet-stream;charset=utf-8,' + encodeURIComponent(csvData));
+	element.setAttribute('download', 'multiSequenceIdentityData.csv');
 
 	element.style.display = 'none';
 	document.body.appendChild(element);
@@ -105,28 +165,31 @@ function download() {
 }
 
 function addDataToTextField(data) {
- 	var fileName = document.getElementById("fileUploader").files[0];
-	var fileData;
+ 	var fileName = this.files[0];
+        var fileLimit = 1024*1024*1.5; // 1.5Mb
 
-	if(fileName) {
+        if(!fileName) {
+		$("#results").html("Failed to load file!<br \>");
+	}
+        else if (fileName.size > fileLimit) {
+                $("#results").html("File size is too big: please select a smaller file to process queries<br \>");
+        }
+	else {
 		var reader = new FileReader();
 		reader.onload = function(loadedEvent) {
-			fileData = loadedEvent.target.result;
-			document.getElementById("sequences").value = fileData;
+			document.getElementById("sequences").value = loadedEvent.target.result;
 		}
+		reader.onerror = function() {
+                        $("#results").text("Process aborted, the file cannot be uploaded");
+                }
 		reader.readAsText(fileName);
-	} else {
-		console.log("Failed to load file!");
-	}
-
-	if(!fileData) {
-		console.log("We didn't get any data");
 	}
 
         //Force pause
         setTimeout(function() {
                 //Hide wait
                 $("#waitUpload").slideUp("slow");
+                $("#spinner").hide();
                 $("#sequences").prop("disabled", false);
                 //Reconnect button
                 $("#upload").on("click", uploadData);
@@ -137,6 +200,7 @@ function uploadData () {
         //Hide form, show wait
         $("#waitUpload").slideDown("slow");
         $("#wrapper").show();
+        $("#spinner").show();
         $("#sequences").prop("disabled", true);
         $("#download").hide();
 
@@ -149,9 +213,11 @@ function uploadData () {
 }
 
 function getBlastResult() {
+        $("#results").html("");
 	//Hide form, show wait
 	$("#wait").slideDown("slow");
 	$("#wrapper").show();
+        $("#spinner").show();
 	$("#sequences").prop("disabled", true);
 	
 	//Disconnect button
@@ -159,9 +225,31 @@ function getBlastResult() {
         $("#download").off("click");
         $("#submit").off("click");
 
+        //If showing hide download button
+        $("#download").hide();
+
         //Process fasta input into specific object structure
         var fastaString = $("#sequences").val();
 	var blastType = $('input[name=blasttype]:checked').val(); 
+
+        if(!fastaString) {
+                $("#results").html("Empty query submitted");
+                //Force pause
+                setTimeout(function() {
+                        //Hide wait
+                        $("#wait").slideUp("slow");
+                        $("#spinner").hide();
+                        $("#sequences").prop("disabled", false);
+
+                        //Reconnect button
+                        $("#submit").on("click",getBlastResult);
+                 }, 1000);
+                return;
+        }
+
+        if(fastaString.indexOf('>') == -1) {
+                fastaString = ">test\n".concat(fastaString);
+        }
 
         //Request data
         $.ajax({
@@ -169,28 +257,121 @@ function getBlastResult() {
                 type: 'post',
                 data: {'seq': fastaString, 'blast': blastType},
                 success: function(data, status) {
-                        var data = $.parseJSON(data);
-                        var tableData = data[0];
-                        //Global variable to download data
-                        csvData = data[1];
+                        var JSONres = $.parseJSON(data);
+                        
+                        var data = JSONres.data;
 
-                        resultData(tableData);
+                        if(data.length) {
+                                //Global variable to download data
+                                var wholeTable = "<input type='button' value='Expand All' class='show_hide wd-Button--block' style='margin: 0 0 5px 0;'></input>";
+                                wholeTable += "<input type='button' id='top' value='Top' onclick='goToTop();' class='wd-Button--small wd-Button--danger' style='float: right; margin-left: 25px; position: fixed; visibility: hidden;'></input>";
+                                csvData = "Defline,Subtype,US Clade,Global Clade\n";
+                                for(var i=0; i < data.length; i++) {
+                                        var tableData = "";
 
-			//$("#download").click(function() {
-			//	download("data.csv",csvData);
-		        //});
+                                        if(data[i].type == "other") {
+                                                tableData += "<button class='collapsible'>" + data[i].Defline + " <br/><span style='padding-left: 80%; font-weight:bold;'>" + data[i].subtype + " " + data[i].usCladeOther + " " + data[i].globalCladeOther + "</span></button>";
+                                                csvData += data[i].Defline + "," + data[i].subtype + "," + data[i].usCladeOther + "," + data[i].globalCladeOther + "\n";
+                                        }
+                                        if(data[i].type == "ha") {
+                                                tableData += "<button class='collapsible'>" + data[i].Defline + " <br/><span style='padding-left: 80%; font-weight:bold;'>" + data[i].subtype + " " + data[i].usCladeHA + " " + data[i].globalCladeHA + "</span></button>";
+                                                csvData += data[i].Defline + "," + data[i].subtype + "," + data[i].usCladeHA + "," + data[i].globalCladeHA + "\n";
+                                        }
+                                        if(data[i].type == "na") {
+                                                tableData += "<button class='collapsible'>" + data[i].Defline + " <br/><span style='padding-left: 80%; font-weight:bold;'>" + data[i].subtype + " " + data[i].usCladeNA + " " + data[i].globalCladeNA + "</span></button>";
+                                                csvData += data[i].Defline + "," + data[i].subtype + "," + data[i].usCladeNA + "," + data[i].globalCladeNA + "\n";
+                                        }
+                                        if(data[i].type == "error") {
+                                                tableData += "<button class='collapsible'>" + data[i].Defline + "</button>";
+                                                csvData += data[i].Defline + ",,,\n";
+                                        }
 
-	                $("#download").on("click", download);
-			$("#download").show();
+                                        if(data[i].message) {
+                                                tableData += "<div class='content'>" + data[i].message + "</div>";
+                                        }
+                                        if(data[i].children.length) {
+                                                tableData += "<div class='content'>";
+                                                tableData += "<table class=\"wd-Table--striped wd-Table--hover\"><th>USDA Barcode</th><th>Received date</th><th>State</th><th>Subtype</th><th>HA clade</th><th>NA clade</th><th>HA Global clade</th><th>NA Global clade</th><th>% identity</th></thead>";
+
+
+                                                //Skip the first 2 columns for nested result
+                                                for(var hit_index = 0; hit_index < data[i].children.length; hit_index++) {
+                                                        var hits = data[i].children[hit_index];
+                                                        if(hits.length) {
+                                                                tableData += "<tr><td>";
+                                                                tableData += hits.join('</td><td>');
+                                                                tableData += "</td></tr>";
+                                                        }
+                                                }
+                                                tableData += "</table>";
+                                        }
+                                        if(data[i].pie) {
+                                                tableData += data[i].pie;
+                                        }
+                                        // Encapsulate the piechart in the content as well
+                                        tableData += "</div>";
+                                        wholeTable += tableData;
+                                }
+
+                                resultData(wholeTable);
+
+				// Find all elements that have collapsible class
+				var coll = document.getElementsByClassName('collapsible');
+				// Toggle the following div element to expand or collapse
+				for (var i = 0; i < coll.length; i++) {
+					coll[i].addEventListener('click', function() {
+						this.classList.toggle('active');
+						var content = this.nextElementSibling;
+						if (content.style.height) {
+							content.style.height = null;
+							$('.show_hide').val( $('.collapsible').length == $('.collapsible.active').length ? 'Collapse All' : 'Expand All' );
+						} else {
+							content.style.height = 'auto';//content.scrollHeight + 'px';
+							$('.show_hide').val( $('.collapsible').length == $('.collapsible.active').length ? 'Collapse All' : 'Expand All' );
+						}
+					});
+				}
+
+                                // Expand or collapse all result divs at once
+				$('.show_hide').on('click', function(){
+					if($(this).val() == 'Expand All') {
+						$('.collapsible').addClass('active');
+						$('div.content').css('height', 'auto');
+					}
+					else {
+						$('.collapsible').removeClass('active');
+						$('div.content').css('height', '');
+					}
+					// Change the button text on expansion nd collapse
+					$(this).val( $(this).val() == 'Expand All' ? 'Collapse All' : 'Expand All' );
+				});
+
+
+				//$("#download").on("click", download);
+				$("#download").on("click", download);
+				$("#download").show();
+
+                        }
+                        else {
+                                if(JSONres.error) {
+                                        $("#results").html(JSONres.error);
+                                }
+                                $("#wait").slideUp("slow");
+                                $("#spinner").hide();
+                                $("#sequences").prop("disabled", false);
+                                //Reconnect button
+                                $("#submit").on("click",getBlastResult);
+                        }
                 },
                 error: function(xhr, desc, err) {
                         console.log(xhr);
                         console.log("Details: " + desc + "\nError:" + err);
+                        $("#wait").slideUp("slow");
+                        $("#sequences").prop("disabled", false);
+                        $("#spinner").hide();
 			$("#results").html("Server Error");
-			}
+	        }
         });
-
-        return;
 }
 
 function resultData(data) {
@@ -199,13 +380,13 @@ function resultData(data) {
 
 	//Force pause
 	setTimeout(function() {
+		//Hide wait
+		$("#wait").slideUp("slow");
+		$("#sequences").prop("disabled", false);
+		$("#spinner").hide();
 
-	//Hide wait
-        $("#wait").slideUp("slow");
-	$("#sequences").prop("disabled", false);
-
-	//Reconnect button	
-	$("#submit").on("click", getBlastResult);
+		//Reconnect button	
+		$("#submit").on("click", getBlastResult);
 	}, 1000);
 }
 

@@ -14,6 +14,43 @@ $theme->addStyle(<<<CSS
     width: 50%;
     float:left;
 }
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  margin: 4px;
+  border: 4px solid #ff0;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #f00 transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 CSS
 , 'style');
 $theme->drawHeader();
@@ -26,7 +63,7 @@ The HA sequence identity tool uses BLAST to find similair hemagglutinin sequence
 </p>
 
 <form id="target">
-<textarea rows="16" cols="100" id="sequences" placeholder="Paste sequences (fasta/plain text)">
+<textarea rows="16" cols="100" id="sequences" placeholder="Paste sequences (fasta/plain text) in the following format:\n\n>defline1\nATCAAATTTTCCCCGGGG\n\n>defline2\nAAATTTTTCCCGGGCTGA">
 </textarea><br/>
 <b>Sequence type</b><br/>
 <input type="radio" name="blasttype" value="nt" checked="checked" />nucleotide<br>
@@ -39,17 +76,7 @@ The HA sequence identity tool uses BLAST to find similair hemagglutinin sequence
 Please wait, BLAST in progress...
 </div>
 
-<!-- <div id="wrapper">
-	<h2>Influenza cases in ISU FLUture with 96% or greater similarity to query sequence</h2>
-	<div class="chartChild">
-		<h3>State of Detection</h3>
-		<div id="stateChart" class="chartChild"></div>
-	</div>
-	<div class="chartChild">
-		<h3>Paired Neuraminidase</h3>
-		<div id="naChart" class="chartChild"></div>
-	</div>
-</div> -->
+<div class="lds-ring" id="spinner"><div></div><div></div><div></div><div></div></div>
 <div id="results">
 
 </div>
@@ -71,9 +98,17 @@ Please wait, BLAST in progress...
 <script>
 
 $(document).ready(function() {
+        //Placeholder text multiline
+        var textAreas = document.getElementsByTagName('textarea');
+
+        Array.prototype.forEach.call(textAreas, function(elem) {
+                elem.placeholder = elem.placeholder.replace(/\\n/g, '\n');
+        });
+
 	//Hide wait
 	$("#wait").hide();
 	$("#wrapper").hide();
+	$("#spinner").hide();
         $("#submit").click(getBlastResult);
 });
 
@@ -81,6 +116,8 @@ function getBlastResult() {
 	//Hide form, show wait
 	$("#wait").slideDown("slow");
 	$("#wrapper").show();
+        $("#results").html("");
+        $("#spinner").show();
 	$("#sequences").prop("disabled", true);
 	
 	//Disconnect button
@@ -103,13 +140,15 @@ function getBlastResult() {
                         console.log(xhr);
                         console.log("Details: " + desc + "\nError:" + err);
 			$("#results").html("Server Error");
-			}
+                        $("#spinner").hide();
+		}
         });
 
         return;
 }
 
 function returnData(data) {
+        $("#spinner").hide();
 	//Show results as soon as they come in
 	$("#results").html(data);
 

@@ -604,7 +604,7 @@ function drawTable(state, value)
 {
         var stateTable = "<table class=\"wd-Table--striped wd-Table--hover\">";
         stateTable += "<tr><th>State</th>";
-        stateTable += "<td><strong>Frequence</strong></td>";
+        stateTable += "<td><strong>Frequency</strong></td>";
         stateTable += "<td><strong>Percentage</strong></td></tr>";
         for (var key in state) {
 		if (value[state[key]].freq == 0)

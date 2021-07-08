@@ -97,7 +97,7 @@ if($blastHits[0] == "Warning: [blastn] Query is Empty!" | $blastHits[0] == "Warn
 }
 
 //Invalid searches
-if(strpos($blastHits[0], "FASTA-Reader: Ignoring invalid residues at position") !== false)
+if((strpos($blastHits[0], "FASTA-Reader: Ignoring invalid residues at position") !== false) || (strpos($blastHits[0], "CFastaReader: Hyphens are invalid and will be ignored around line") !== false))
 {
         //Send error message
         echo "<p>Potentially invalid characters detected.</p>";
