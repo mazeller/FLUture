@@ -148,7 +148,7 @@ $(document).ready(function() {
        	$("#spinner").hide();
         $("#submit").on("click", getBlastResult);
         document.getElementById('fileUploader').addEventListener('change', addDataToTextField, false);
-        document.getElementById('download').addEventListener('click', download, false);
+        //document.getElementById('download').addEventListener('click', download, false);
 });
 
 function download() {

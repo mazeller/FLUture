@@ -15,7 +15,11 @@ class Theme extends \IastateTheme\Theme
 		    'pages' => '',
                 ),
 	    ),*/
-            'sidebar' => array( 
+            'sidebar' => array(
+                array(
+                    'label' => 'FLUture',
+                    'uri' => '/',
+                ),
 		array(
                     'label' => 'Correlation',
                     'uri' => '/correlation.php',
