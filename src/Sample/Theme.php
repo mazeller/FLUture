@@ -18,7 +18,7 @@ class Theme extends \IastateTheme\Theme
             'sidebar' => array(
                 array(
                     'label' => 'FLUture',
-                    'uri' => '/',
+                    'uri' => '/index.php',
                 ),
 		array(
                     'label' => 'Correlation',
