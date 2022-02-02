@@ -80,6 +80,11 @@ class Theme extends \IastateTheme\Theme
 		    'uri' => 'https://fieldepi.research.cvm.iastate.edu/sdrs/',
 		
                 ),
+                array(
+                    'label' => 'USDA IAV-S Surveillance',
+                    'uri' => 'https://www.aphis.usda.gov/aphis/ourfocus/animalhealth/animal-disease-information/swine-disease-information/influenza-a-virus',
+
+                ),
                 /*array(
                     'label' => '3D View',
                     'uri' => '/3dview.php',

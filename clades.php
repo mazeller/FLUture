@@ -131,7 +131,7 @@ $theme->drawHeader();
         <tr>
             <td>H1</td>
             <td>delta-like</td>
-            <td>delta-like</td>
+            <td>Other-Human-1B.2</td>
             <td>
                 H1 HA sequence does not belong to a delta clade but share an internal node or is phylogenetically closest to H1 delta clade.
             </td>
