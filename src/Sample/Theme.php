@@ -41,7 +41,7 @@ class Theme extends \IastateTheme\Theme
                     'uri' => '/identity.php',
               	),
                 array(
-                    'label' => 'MultiSequence Identity Tool',
+                    'label' => 'Multisequence Identity Tool',
                     'uri' => '/multisequenceidentity.php'
                 ),
                 /*array(
