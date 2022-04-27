@@ -64,7 +64,7 @@ $theme->drawHeader();
 <h2 id="chartTitle">Multisequence Identity Tool</h2>
 
 <p>
-The HA-NA sequence identity tool uses BLAST to find similar hemagglutinin/neuraminidase sequences in the ISU-VDL data. Results are limited to greater than 96% identity, with at max 10 results returned per query sequence. For a more complex analysis, please refer to the <a href="https://www.fludb.org/brc/blast.spg?method=ShowCleanInputPage&decorator=influenza">IRD BLAST tool</a>. 
+The HA-NA sequence identity tool uses BLAST to find similar hemagglutinin/neuraminidase sequences in the ISU-VDL data. Results are limited to &ge; 96% identity, with at max 10 results returned per query sequence. For a more complex analysis, please refer to the <a href="https://www.fludb.org/brc/blast.spg?method=ShowCleanInputPage&decorator=influenza">IRD BLAST tool</a>. 
 </p>
 
 <form id="target">
@@ -102,9 +102,9 @@ Please wait, BLAST in progress...
 <!--<li>Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.</li>
 <li>Zhang Z., Schwartz S., Wagner L., & Miller W. (2000), "A greedy algorithm for aligning DNA sequences" J Comput Biol 2000; 7(1-2):203-14.</li>
 <li>Chang, J., Anderson, T.K., Zeller, M.A., Gauger, P.C., and Vincent, A.L. (2019). “octoFLU: Automated classification to evolutionary origin of influenza A virus gene sequences detected in U.S. swine” Microbiology Resource Announcements 8(32), e00673-19. <a href="https://github.com/flu-crew/octoFLU">Github repo.</a></li>-->
-<li>Altschul, S. F., Gish, W., Miller, W., Myers, E. W., & Lipman, D. J. (1990). Basic local alignment search tool. Journal of molecular biology, 215(3), 403-410.</li>
-<li>Zhang, Z., Schwartz, S., Wagner, L., & Miller, W. (2000). A greedy algorithm for aligning DNA sequences. Journal of Computational biology, 7(1-2), 203-214.</li>
-<li>Chang, J., Anderson, T. K., Zeller, M. A., Gauger, P. C., & Vincent, A. L. (2019). octoFLU: Automated Classification for the Evolutionary Origin of Influenza A Virus Gene Sequences Detected in US Swine. Microbiology resource announcements, 8(32), e00673-19. <a href="https://github.com/flu-crew/octoFLU">Github repo.</a></li>
+<li>Altschul, S. F., Gish, W., Miller, W., Myers, E. W., &amp; Lipman, D. J. (1990). Basic local alignment search tool. Journal of molecular biology, 215(3), 403-410.</li>
+<li>Zhang, Z., Schwartz, S., Wagner, L., &amp; Miller, W. (2000). A greedy algorithm for aligning DNA sequences. Journal of Computational biology, 7(1-2), 203-214.</li>
+<li>Chang, J., Anderson, T. K., Zeller, M. A., Gauger, P. C., &amp; Vincent, A. L. (2019). octoFLU: Automated Classification for the Evolutionary Origin of Influenza A Virus Gene Sequences Detected in US Swine. Microbiology resource announcements, 8(32), e00673-19. <a href="https://github.com/flu-crew/octoFLU">Github repo.</a></li>
 
 </ol>
 </small>
